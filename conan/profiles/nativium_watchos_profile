@@ -1,0 +1,6 @@
+include(default)
+
+[settings]
+os=watchOS
+os.version=5.0
+arch=armv8_32

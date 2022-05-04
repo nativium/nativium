@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+
+    <title>{nativium-product-name}</title>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <script>
+        // variables
+        let pageLoaded = false; // default: false
+        let moduleLoaded = false; // default: false
+        let debugMode = false; // default: false
+        let appFullPage = false; // default: false
+        let appType = "form"; // default: form, options: form, canvas
+        let appFullScreen = false; // default: false
+        let appShowTitle = true; // default: true
+
+        // module
+        var Module = {
+            noExitRuntime: true,
+            noInitialRun: false,
+            preInit: [],
+            preRun: [],
+            postRun: [],
+            print: (function () {
+                return function (text) {
+                    if (text) {
+                        text = Array.prototype.slice.call(arguments).join(' ');
+                        console.log(text);
+                    }
+                };
+            })(),
+            printErr: function (text) {
+                if (text) {
+                    text = Array.prototype.slice.call(arguments).join(' ');
+                    console.error(text);
+                }
+            },
+            setStatus: function (text) {
+                if (text) {
+                    console.log("Status: " + text);
+                }
+            },
+            onRuntimeInitialized: function () {
+                moduleLoaded = true;
+
+                if (pageLoaded) {
+                    console.log('The module was loaded!');
+                }
+
+                checkIfEverythingWasLoaded();
+            },
+            onAbort: function () {
+                console.log('The module was aborted!');
+            }
+        };
+
+        // general functions
+        function getAllUrlParams(url) {
+            // get query string from url (optional) or window
+            var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+
+            // we'll store the parameters here
+            var obj = {};
+
+            // if query string exists
+            if (queryString) {
+
+                // stuff after # is not part of query string, so get rid of it
+                queryString = queryString.split('#')[0];
+
+                // split our query string into its component parts
+                var arr = queryString.split('&');
+
+                for (var i = 0; i < arr.length; i++) {
+                    // separate the keys and the values
+                    var a = arr[i].split('=');
+
+                    // in case params look like: list[]=thing1&list[]=thing2
+                    var paramNum = undefined;
+                    var paramName = a[0].replace(/\[\d*\]/, function (v) {
+                        paramNum = v.slice(1, -1);
+                        return '';
+                    });
+
+                    // set parameter value (use 'true' if empty)
+                    var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+
+                    // if parameter name already exists
+                    if (obj[paramName]) {
+                        // convert value to array (if still string)
+                        if (typeof obj[paramName] === 'string') {
+                            obj[paramName] = [obj[paramName]];
+                        }
+                        // if no array index number specified...
+                        if (typeof paramNum === 'undefined') {
+                            // put the value on the end of the array
+                            obj[paramName].push(paramValue);
+                        }
+                        // if array index number specified...
+                        else {
+                            // put the value at that index number
+                            obj[paramName][paramNum] = paramValue;
+                        }
+                    }
+                    // if param name doesn't exist yet, set it
+                    else {
+                        obj[paramName] = paramValue;
+                    }
+                }
+            }
+
+            return obj;
+        }
+
+        function getUrlParam(param) {
+            let params = getAllUrlParams(window.location.href);
+
+            if (params != null && params !== undefined) {
+                if (params.hasOwnProperty(param)) {
+                    let value = params[param];
+
+                    if (value != null && value !== undefined) {
+                        return value;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        function checkDebug() {
+            let urlParamDebug = getUrlParam("debug");
+
+            if (urlParamDebug && urlParamDebug === "1") {
+                debugMode = true;
+            } else {
+                debugMode = false;
+            }
+        }
+
+        // ui functions
+        function changeAppButton(text, className) {
+            let btProcess = document.getElementById('btProcess');
+
+            if (btProcess) {
+                btProcess.firstChild.data = text;
+                btProcess.className = 'button is-' + className;
+            }
+        }
+
+        function buttonToInitialState() {
+            changeAppButton('Process', 'success');
+        }
+
+        function showDebugConsole(show) {
+            let debugConsole = document.getElementById('debugConsole');
+
+            if (debugConsole) {
+                if (show) {
+                    debugConsole.style.display = "block";
+                } else {
+                    debugConsole.style.display = "none";
+                }
+            }
+        }
+
+        function showAppContainer(show) {
+            let appContainer = document.getElementById('appContainer');
+
+            if (appContainer) {
+                if (show) {
+                    appContainer.style.display = "block";
+                } else {
+                    appContainer.style.display = "none";
+                }
+            }
+        }
+
+        function showAppResultContainer(show) {
+            let appResultContainer = document.getElementById('appResultContainer');
+
+            if (appResultContainer) {
+                if (show) {
+                    appResultContainer.style.display = "block";
+                } else {
+                    appResultContainer.style.display = "none";
+                }
+            }
+        }
+
+        function showAppHeader(show) {
+            let appHeader = document.getElementById('appHeader');
+
+            if (appHeader) {
+                if (show) {
+                    appHeader.style.display = "block";
+                } else {
+                    appHeader.style.display = "none";
+                }
+            }
+        }
+
+        function showAppLogo(show) {
+            let appLogo = document.getElementById('appLogo');
+
+            if (appLogo) {
+                if (show) {
+                    appLogo.style.display = "block";
+                } else {
+                    appLogo.style.display = "none";
+                }
+            }
+        }
+
+        function showAppForm(show) {
+            let appForm = document.getElementById('appForm');
+
+            if (appForm) {
+                if (show) {
+                    appForm.style.display = "block";
+                } else {
+                    appForm.style.display = "none";
+                }
+            }
+        }
+
+        function showAppCanvas(show) {
+            let appCanvas = document.getElementById('appCanvas');
+
+            if (appCanvas) {
+                if (show) {
+                    appCanvas.style.display = "block";
+                } else {
+                    appCanvas.style.display = "none";
+                }
+            }
+        }
+
+        function showAppTitle(show) {
+            let appTitle = document.getElementById('appTitle');
+
+            if (appTitle) {
+                if (show) {
+                    appTitle.style.display = "block";
+                } else {
+                    appTitle.style.display = "none";
+                }
+            }
+        }
+
+        function showLoading(show) {
+            let loading = document.getElementById('loadingContainer');
+
+            if (loading) {
+                if (show) {
+                    loading.className = "loader-wrapper is-active";
+                } else {
+                    loading.className = "loader-wrapper";
+                }
+            }
+
+            return false;
+        }
+
+        function showFooter(show) {
+            let footer = document.getElementById('footer');
+
+            if (footer) {
+                if (show) {
+                    footer.style.display = "block";
+                } else {
+                    footer.style.display = "none";
+                }
+            }
+        }
+
+        function showCanvas(show) {
+            let canvas = document.getElementById('canvas');
+
+            if (canvas) {
+                if (show) {
+                    canvas.style.display = "block";
+                } else {
+                    canvas.style.display = "none";
+                }
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0 })
+        }
+
+        function startUI() {
+            if (debugMode) {
+                // change console methods
+                if (typeof console != "undefined") {
+                    if (typeof console.log != 'undefined') {
+                        console.olog = console.log;
+                    } else {
+                        console.olog = function () { };
+                    }
+                }
+
+                console.log = function (message) {
+                    // we will disable it for now
+                    // console.olog(message);
+
+                    var currentDate = new Date().toLocaleTimeString();
+
+                    var e = document.createElement('p');
+                    e.innerHTML = "➔ [" + currentDate + "] " + message;
+
+                    document.getElementById('debugConsoleContent').prepend(e);
+                };
+
+                console.error = console.debug = console.info = console.log;
+            }
+
+            // check for wasm support
+            if (!('WebAssembly' in window)) {
+                console.log('You need a browser with Web Assembly support enabled :(');
+                changeAppButton('Web Assembly not supported', 'danger');
+                return;
+            }
+
+            // initial state
+            buttonToInitialState();
+
+            // canvas
+            Module.canvas = document.getElementById('canvas');
+        }
+
+        // application functions
+        async function runApp() {
+            let resultData = document.getElementById('resultData');
+
+            let version = Module.ApplicationCore.shared().getVersion();
+
+            let multiply = Module.ApplicationCore.shared().multiply(
+                parseFloat(document.getElementById('formValue1').value),
+                parseFloat(document.getElementById('formValue2').value)
+            );
+
+            let resultText = "Multiply: " + multiply + " - Version " + version;
+
+            resultData.innerHTML = resultText;
+        }
+
+        async function processApp() {
+            try {
+                // html general
+                changeAppButton('Processing...', 'warning');
+
+                showAppResultContainer(false);
+
+                // run
+                runApp();
+
+                // show result
+                showAppResultContainer(true);
+
+                // initial state
+                buttonToInitialState();
+
+                console.log('Processed with success!');
+            } catch (error) {
+                changeAppButton('Error while process application', 'danger');
+                console.log('Error while process application: ' + error.message);
+            }
+        }
+
+        function checkIfEverythingWasLoaded() {
+            if (pageLoaded && moduleLoaded) {
+                startApp();
+            }
+        }
+
+        function postStartApp() {
+            // random numbers
+            document.getElementById('formValue1').value = Math.floor(Math.random() * 100) + 1;
+            document.getElementById('formValue2').value = Math.floor(Math.random() * 100) + 1;
+        }
+
+        function startApp() {
+            // let button start load files
+            let btProcess = document.getElementById('btProcess');
+            btProcess.onclick = function () {
+                processApp();
+            }
+
+            // show inicial elements using variables
+            showDebugConsole(debugMode);
+            showAppContainer(true);
+
+            if (appFullPage) {
+                showAppHeader(false);
+                showFooter(false);
+
+                document.getElementById("appContainer").classList.add("p-0");
+            } else {
+                showAppHeader(true);
+                showFooter(true);
+            }
+
+            if (appFullScreen) {
+                if (appType == "canvas") {
+                    document.getElementById("canvas").classList.add("canvasFullScreen");
+                }
+            }
+
+            // show app by type
+            showAppForm(false);
+            showAppCanvas(false);
+
+            if (appType == "form") {
+                if (appShowTitle) {
+                    showAppTitle(true);
+                }
+
+                showAppForm(true);
+            } else if (appType == "canvas") {
+                if (appShowTitle) {
+                    showAppTitle(true);
+                }
+
+                showAppCanvas(true);
+            }
+
+            // post start
+            postStartApp();
+
+            // hide loading
+            setTimeout(function () {
+                showLoading(false);
+            }, 300);
+        }
+
+        window.onload = function (e) {
+            pageLoaded = true;
+
+            checkDebug();
+            startUI();
+
+            console.log('The page was loaded!');
+
+            checkIfEverythingWasLoaded();
+        }
+    </script>
+
+    <style>
+        /* general */
+        body {
+            touch-action: pan-x pan-y;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .section {
+            flex: 1;
+        }
+
+        .footer {
+            padding-bottom: 1.5rem;
+            padding-top: 1.5rem;
+            margin-top: 30px;
+            display: none;
+        }
+
+        /* app result container */
+        #appResultContainer {
+            display: none;
+            margin-bottom: 30px !important;
+        }
+
+        /* loader */
+        .loader-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: #fff;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity .3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+        }
+
+        .loader {
+            height: 80px;
+            width: 80px;
+            margin: 0 auto;
+        }
+
+        .is-active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        /* app container */
+        #appContainer {
+            display: none;
+            width: 100%;
+        }
+
+        /* app logo */
+        #appLogo {
+            width: 120px;
+            margin-left: 10px;
+        }
+
+        /* debug */
+        #debugConsole {
+            display: none;
+        }
+
+        /* canvas */
+        #canvas {
+            width: 100%;
+            background-color: #000;
+        }
+
+        .canvasFullScreen {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            margin: 0px;
+            padding: 0px;
+            width: 100% !important;
+            height: 100% !important;
+            overflow: hidden;
+            display: block;
+        }
+
+        #appCanvas {
+            text-align: center;
+        }
+
+        /* app title */
+        #appTitle {
+            display: none;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- loading -->
+    <div id="loadingContainer">
+        <div class="loader-wrapper is-active">
+            <div class="loader is-loading"></div>
+        </div>
+    </div>
+
+    <!-- header -->
+    <nav id="appHeader" class="navbar is-light">
+        <div class="navbar-brand">
+            <img id="appLogo" src="images/logo.png" alt="Logo">
+        </div>
+    </nav>
+
+    <!-- content -->
+    <div class="container" id="appContainer">
+        <!-- title -->
+        <h1 id="appTitle" class="p-3 title">{nativium-product-name}</h1>
+
+        <!-- form -->
+        <div id="appForm" class="p-3">
+            <!-- value 1 -->
+            <p>Value 1:</p>
+            <br>
+            <input class="input" type="text" placeholder="" id="formValue1">
+            <br>
+            <br>
+
+            <!-- value 2 -->
+            <p>Value 2:</p>
+            <br>
+            <input class="input" type="text" placeholder="" id="formValue2">
+            <br>
+            <br>
+
+            <!-- process button -->
+            <br>
+            <button class="button is-warning" id="btProcess">Loading...</button>
+            <br>
+            <br>
+        </div>
+
+        <!-- result container -->
+        <div class="card m-3" id="appResultContainer" style="display: none;">
+            <header class="card-header">
+                <p class="card-header-title" id="resultTitle">Result:</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <div id="resultData">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- canvas -->
+        <div id="appCanvas">
+            <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+        </div>
+
+        <!-- debug console -->
+        <div class="card m-3" id="debugConsole" style="display: none;">
+            <header class="card-header">
+                <p class="card-header-title">
+                    Debug console
+                </p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <div id="debugConsoleContent">
+                        <p>➔ Debug messages will be showed here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <footer id="footer" class="footer" style="display: none;">
+        <small class="content has-text-centered">
+            <p>
+                This application is powered by an open source project called Nativium and can be found <a
+                    target="_blank" href="https://github.com/nativium/nativium">here</a>. No data is stored and
+                everything run only on client side.
+            </p>
+            </div>
+    </footer>
+
+    <!-- wasm module -->
+    <script async type="text/javascript" src="{nativium-project-name}.js?ts={nativium-timestamp}"></script>
+</body>
+
+</html>

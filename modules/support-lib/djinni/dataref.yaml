@@ -1,0 +1,35 @@
+name: DataRef
+typedef: 'record'
+params: []
+prefix: ""
+cpp:
+  typename: '::djinni::DataRef'
+  header: '"$DataRef.hpp"'
+  byValue: false
+objc:
+  typename: 'NSData'
+  pointer: true
+  hash: '%s.hash'
+  boxed: 'NSData'
+  header: '<Foundation/Foundation.h>'
+objcpp:
+  translator: '::djinni::NativeDataRef'
+  header: '"$DataRef_objc.hpp"'
+java:
+  reference: true
+  typename: 'java.nio.ByteBuffer'
+  generic: true
+  hash: '%s.hashCode()'
+  boxed: 'java.nio.ByteBuffer'
+jni:
+  translator: '::djinni::NativeDataRef'
+  header: '"$DataRef_jni.hpp"'
+  typename: jobject
+  typeSignature: 'Ljava/nio/ByteBuffer;'
+wasm:
+  typename: 'em::val'
+  translator: '::djinni::NativeDataRef'
+  header: '"$DataRef_wasm.hpp"'
+ts:
+  typename: 'Uint8Array'
+  module: ''

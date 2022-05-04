@@ -1,0 +1,100 @@
+name: Linux
+
+on: [push]
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { name: "Ubuntu", os: ubuntu-latest, target: "linux" }
+        python-version: [3.7]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade PIP
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Display Python version
+        run: python --version
+
+      - name: Display PIP version
+        run: pip --version
+
+      - name: Install CMake
+        uses: jwlawson/actions-setup-cmake@v1.8
+        with:
+          cmake-version: "3.20.0"
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+        with:
+          version: "1.10.0"
+
+      - name: Nativium - Install python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Nativium - Install glue code tool
+        run: python nativium.py gluecode setup
+
+      - name: Nativium - Setup conan
+        run: python nativium.py conan setup
+
+      - name: Nativium - Test Prepare
+        run: python nativium.py target tests prepare
+
+      - name: Nativium - Test Run
+        run: python nativium.py target tests run
+
+      - name: Nativium - Prepare
+        run: python nativium.py target ${{ matrix.config.target }} prepare
+
+      - name: Nativium - Build
+        run: python nativium.py target ${{ matrix.config.target }} build
+
+      - name: Nativium - Package
+        run: python nativium.py target ${{ matrix.config.target }} package
+
+      - name: Nativium - Dist generate
+        run: python nativium.py target ${{ matrix.config.target }} dist generate
+
+      - name: Github Action - Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact-${{ matrix.config.target }}.tar.gz
+          path: build/${{ matrix.config.target }}/dist/dist.tar.gz
+
+      - name: Nativium - Dist upload
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          NATIVIUM_AWS_KEY_ID: ${{ secrets.NATIVIUM_AWS_KEY_ID }}
+          NATIVIUM_AWS_SECRET_KEY: ${{ secrets.NATIVIUM_AWS_SECRET_KEY }}
+        run: python nativium.py target ${{ matrix.config.target }} dist upload --force
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: build/${{ matrix.config.target }}/dist/dist.tar.gz
+          asset_name: ${{ matrix.config.target }}.tar.gz
+          asset_content_type: application/gzip

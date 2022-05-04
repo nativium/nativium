@@ -1,0 +1,122 @@
+{
+  "images" : [
+    {
+      "size" : "24x24",
+      "idiom" : "watch",
+      "filename" : "icon-48.png",
+      "subtype" : "38mm",
+      "role" : "notificationCenter",
+      "scale" : "2x"
+    },
+    {
+      "size" : "27.5x27.5",
+      "idiom" : "watch",
+      "filename" : "icon-55.png",
+      "subtype" : "42mm",
+      "role" : "notificationCenter",
+      "scale" : "2x"
+    },
+    {
+      "size" : "33x33",
+      "idiom" : "watch",
+      "filename" : "icon-66.png",
+      "subtype" : "45mm",
+      "role" : "notificationCenter",
+      "scale" : "2x"
+    },
+    {
+      "size" : "29x29",
+      "idiom" : "watch",
+      "filename" : "icon-58.png",
+      "role" : "companionSettings",
+      "scale" : "2x"
+    },
+    {
+      "size" : "29x29",
+      "idiom" : "watch",
+      "filename" : "icon-87.png",
+      "role" : "companionSettings",
+      "scale" : "3x"
+    },
+    {
+      "size" : "40x40",
+      "idiom" : "watch",
+      "filename" : "icon-80.png",
+      "subtype" : "38mm",
+      "role" : "appLauncher",
+      "scale" : "2x"
+    },
+    {
+      "size" : "44x44",
+      "idiom" : "watch",
+      "filename" : "icon-88.png",
+      "subtype" : "40mm",
+      "role" : "appLauncher",
+      "scale" : "2x"
+    },
+    {
+      "size" : "50x50",
+      "idiom" : "watch",
+      "filename" : "icon-100.png",
+      "subtype" : "44mm",
+      "role" : "appLauncher",
+      "scale" : "2x"
+    },
+    {
+      "size" : "46x46",
+      "idiom" : "watch",
+      "filename" : "icon-92.png",
+      "subtype" : "41mm",
+      "role" : "appLauncher",
+      "scale" : "2x"
+    },
+    {
+      "size" : "51x51",
+      "idiom" : "watch",
+      "filename" : "icon-102.png",
+      "subtype" : "45mm",
+      "role" : "appLauncher",
+      "scale" : "2x"
+    },
+    {
+      "size" : "86x86",
+      "idiom" : "watch",
+      "filename" : "icon-172.png",
+      "subtype" : "38mm",
+      "role" : "quickLook",
+      "scale" : "2x"
+    },
+    {
+      "size" : "98x98",
+      "idiom" : "watch",
+      "filename" : "icon-196.png",
+      "subtype" : "42mm",
+      "role" : "quickLook",
+      "scale" : "2x"
+    },
+    {
+      "size" : "108x108",
+      "idiom" : "watch",
+      "filename" : "icon-216.png",
+      "subtype" : "44mm",
+      "role" : "quickLook",
+      "scale" : "2x"
+    },
+    {
+      "size" : "117x117",
+      "idiom" : "watch",
+      "filename" : "icon-234.png",
+      "subtype" : "45mm",
+      "role" : "quickLook",
+      "scale" : "2x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "watch-marketing",
+      "filename" : "icon-1024.png",
+      "scale" : "1x"
+    }
+  ],
+  "author" : "Store Assets Generator",
+  "version" : "0.4.0"
+}

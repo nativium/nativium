@@ -1,0 +1,32 @@
+{
+  "info" : {
+    "version" : "0.4.0",
+    "author" : "Store Assets Generator"
+  },
+  "assets" : [
+    {
+      "size" : "1280x768",
+      "filename" : "App Icon - App Store.imagestack",
+      "idiom" : "tv",
+      "role" : "primary-app-icon"
+    },
+    {
+      "role" : "primary-app-icon",
+      "size" : "400x240",
+      "idiom" : "tv",
+      "filename" : "App Icon.imagestack"
+    },
+    {
+      "filename" : "Top Shelf Image Wide.imageset",
+      "role" : "top-shelf-image-wide",
+      "size" : "2320x720",
+      "idiom" : "tv"
+    },
+    {
+      "size" : "1920x720",
+      "role" : "top-shelf-image",
+      "filename" : "Top Shelf Image.imageset",
+      "idiom" : "tv"
+    }
+  ]
+}

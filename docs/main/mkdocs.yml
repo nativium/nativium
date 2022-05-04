@@ -1,0 +1,52 @@
+site_name: Nativium Documentation
+copyright: Copyright &copy; 2021-2022 Nativium
+theme:
+  name: material
+  language: en
+  direction: ltr
+  palette:
+    primary: orange
+    accent: orange
+use_directory_urls: false
+markdown_extensions:
+  - attr_list
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed
+  - pymdownx.highlight:
+      use_pygments: false
+extra:
+  generator: false
+  linux_version: 1.0.0
+  macos_version: 1.0.0
+  windows_version: 1.0.0
+  ios_version: 1.0.0
+  tvos_version: 1.0.0
+  watchos_version: 1.0.0
+  maccatalyst_version: 1.0.0
+  android_version: 1.0.0
+  wasm_version: 1.0.0
+plugins:
+  - macros
+  - search
+nav:
+  - Home: "index.md"
+  - About: "about.md"
+  - Platforms: "platforms.md"
+  - Requirements: "requirements.md"
+  - Libraries: "libraries.md"
+  - Commands: "commands.md"
+  - Modules: "modules.md"
+  - Targets: "targets.md"
+  - How to start: "how-to-start.md"
+  - CMake: "cmake.md"
+  - Distribution: "distribution.md"
+  - Glue code: "glue-code.md"
+  - Code tools: "code-tools.md"
+  - Apple: "apple.md"
+  - Tests: "tests.md"
+  - Projects: "projects.md"
+  - Custom: "custom.md"
+  - Documentation: "documentation.md"
+  - Troubleshooting: "troubleshooting.md"
+  - Support: "support.md"

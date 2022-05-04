@@ -1,0 +1,5 @@
+application_core = interface +c {
+    static shared(): application_core;
+    multiply(value1: f64, value2: f64): f64;
+    get_version(): string;
+}

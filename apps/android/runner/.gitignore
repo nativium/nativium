@@ -1,0 +1,15 @@
+# trash
+Thumbs.db
+.DS_Store
+
+# project
+*.iml
+.gradle
+/local.properties
+/.idea
+/build
+/app/build
+/captures
+.externalNativeBuild
+.vscode
+.vs

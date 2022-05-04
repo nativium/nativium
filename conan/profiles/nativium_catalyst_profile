@@ -1,0 +1,6 @@
+include(default)
+
+[settings]
+os=Macos
+os.subsystem=catalyst
+arch=x86_64

@@ -1,0 +1,35 @@
+name: DataView
+typedef: 'record'
+params: []
+prefix: ""
+cpp:
+  typename: '::djinni::DataView'
+  header: '"$DataView.hpp"'
+  byValue: false
+objc:
+  typename: 'NSData'
+  pointer: true
+  hash: '%s.hash'
+  boxed: 'NSData'
+  header: '<Foundation/Foundation.h>'
+objcpp:
+  translator: '::djinni::NativeDataView'
+  header: '"$DataView_objc.hpp"'
+java:
+  reference: true
+  typename: 'java.nio.ByteBuffer'
+  generic: true
+  hash: '%s.hashCode()'
+  boxed: 'java.nio.ByteBuffer'
+jni:
+  translator: '::djinni::NativeDataView'
+  header: '"$DataView_jni.hpp"'
+  typename: jobject
+  typeSignature: 'Ljava/nio/ByteBuffer;'
+wasm:
+  typename: 'em::val'
+  translator: '::djinni::NativeDataView'
+  header: '"$DataView_wasm.hpp"'
+ts:
+  typename: 'Uint8Array'
+  module: ''

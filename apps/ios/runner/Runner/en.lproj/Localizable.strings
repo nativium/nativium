@@ -1,0 +1,16 @@
+"DialogButtonCancel" = "Cancel";
+"DialogButtonNo" = "No";
+"DialogButtonOK" = "OK";
+"DialogButtonYes" = "Yes";
+"DialogLoadingMessage" = "Loading...";
+"DialogLoadingTitle" = "Message";
+"DialogProgressMessage" = "Progress: %d%%";
+"DialogTitle" = "Message";
+"DialogTitleNotification" = "Notification";
+"DialogMessageResult" = "Result: %f";
+
+"TitleHome" = "Home";
+"TitleSettings" = "Settings";
+
+"OptionMultiply" = "Multiply numbers";
+"OptionAppVersion" = "App version";

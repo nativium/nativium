@@ -1,0 +1,6 @@
+framework module Nativium {
+    umbrella header "Nativium.h"
+
+    export *
+    module * { export * }
+}
