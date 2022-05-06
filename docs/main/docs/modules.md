@@ -6,7 +6,7 @@ Organize the source code in modules is optional and your source code can exists 
 
 Some companies create a module for `core` code, other for `repository` code to work with database and a folder for `domain` classes. This varies from project to project.
 
-Nativium come with one module already implemented for test and example called `app-core` and is located here `modules/app-core`.
+Nativium come with one module already implemented for test and example called `app-core` and is located in `modules/app-core`.
 
 All modules source code are stored in **modules** folder.
 
