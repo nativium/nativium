@@ -27,3 +27,24 @@ It will execute bootstrap file of Nativium, that will do some validations and wi
 If you don't remember what verbs are available for a target you can execute the **target command** with **target name** to list all verbs:
 
 ```python nativium.py target linux```
+
+## Configuration
+
+The target can have a Conan configuration file located in `targets\[NAME]\config\target_conan.py`. It contains some Conan configuration and target dependencies.
+
+**Example:**
+
+```
+# -----------------------------------------------------------------------------
+def configure(params={}):
+    conanfile: ConanFile = params["conanfile"]
+
+    conanfile.options["date"].header_only = True
+
+
+# -----------------------------------------------------------------------------
+def requirements(params={}):
+    conanfile: ConanFile = params["conanfile"]
+
+    conanfile.requires("date/3.0.1")
+```
