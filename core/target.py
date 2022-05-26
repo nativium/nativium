@@ -60,7 +60,7 @@ def get_all_target_verbs(proj_path, target_name):
 
 
 # -----------------------------------------------------------------------------
-def add_target_prepare_common_args(
+def add_target_setup_common_args(
     run_args, target_name, target_config, arch, build_type
 ):
     run_args.append("-s:h")

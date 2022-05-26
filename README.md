@@ -72,7 +72,7 @@ Think about the **code** instead of C++ project **structure** and organization, 
 
 Download this template and check **sample apps** to test and see it working on mobile, desktop and web.
 
-Every **command** to setup, prepare, publish and generate final binary can be executed from **command line** and you can use any editor to work with Nativium.
+Every **command** to setup, build, package, generate and distribute, can be executed from **command line** and you can use any editor to work with Nativium.
 
 Each piece of code is separated by **modules**, making easy **extend** with custom code or any other C++ code and library.
 

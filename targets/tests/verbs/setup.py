@@ -1,11 +1,12 @@
 import os
 
 from pygemstones.io import file as f
+from pygemstones.system import platform as p
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
 
 from core import const, target
-from targets.windows.config import target as config
+from targets.tests.config import target as config
 
 
 # -----------------------------------------------------------------------------
@@ -22,7 +23,7 @@ def run(params):
             for build_type in build_types:
                 l.i("Building for: {0}/{1}...".format(arch["conan_arch"], build_type))
 
-                # conan install
+                # prepare
                 build_dir = os.path.join(
                     proj_path,
                     "build",
@@ -41,6 +42,7 @@ def run(params):
                         proj_path, "conan", "profiles", build_profile
                     )
 
+                # main run args
                 run_args = [
                     "conan",
                     "install",
@@ -56,13 +58,19 @@ def run(params):
                     os.path.join(proj_path, "conan", "profiles", arch["conan_profile"]),
                 ]
 
-                target.add_target_prepare_common_args(
+                target.add_target_setup_common_args(
                     run_args, target_name, target_config, arch, build_type
                 )
 
+                if p.is_macos():
+                    run_args.append("-s"),
+                    run_args.append("os.version={0}".format(arch["min_version"]))
+
+                # final run args
                 run_args.append("--build=missing")
                 run_args.append("--update")
 
+                # execute
                 r.run(run_args, build_dir)
 
         l.ok()

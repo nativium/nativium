@@ -12,7 +12,7 @@ class ApplicationCore {
 public:
     virtual ~ApplicationCore() = default;
 
-    static std::shared_ptr<ApplicationCore> shared();
+    static /*not-null*/ std::shared_ptr<ApplicationCore> shared();
 
     virtual double multiply(double value1, double value2) = 0;
 
