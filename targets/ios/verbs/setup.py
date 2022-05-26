@@ -59,7 +59,7 @@ def run(params):
                     "os.version={0}".format(arch["min_version"]),
                 ]
 
-                target.add_target_prepare_common_args(
+                target.add_target_setup_common_args(
                     run_args, target_name, target_config, arch, build_type
                 )
 

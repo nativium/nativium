@@ -14,17 +14,35 @@ em::val NTVCoreApplicationCore::cppProxyMethods() {
 }
 
 em::val NTVCoreApplicationCore::shared() {
-    auto r = ::nativium::core::ApplicationCore::shared();
-    return ::djinni_generated::NTVCoreApplicationCore::fromCpp(r);
+    try {
+        auto r = ::nativium::core::ApplicationCore::shared();
+        return ::djinni_generated::NTVCoreApplicationCore::fromCpp(r);
+    }
+    catch(const std::exception& e) {
+        djinni::djinni_throw_native_exception(e);
+        throw;
+    }
 }
 double NTVCoreApplicationCore::multiply(const CppType& self, double w_value1,double w_value2) {
-    auto r = self->multiply(::djinni::F64::toCpp(w_value1),
-             ::djinni::F64::toCpp(w_value2));
-    return ::djinni::F64::fromCpp(r);
+    try {
+        auto r = self->multiply(::djinni::F64::toCpp(w_value1),
+                 ::djinni::F64::toCpp(w_value2));
+        return ::djinni::F64::fromCpp(r);
+    }
+    catch(const std::exception& e) {
+        djinni::djinni_throw_native_exception(e);
+        throw;
+    }
 }
 std::string NTVCoreApplicationCore::getVersion(const CppType& self) {
-    auto r = self->getVersion();
-    return ::djinni::String::fromCpp(r);
+    try {
+        auto r = self->getVersion();
+        return ::djinni::String::fromCpp(r);
+    }
+    catch(const std::exception& e) {
+        djinni::djinni_throw_native_exception(e);
+        throw;
+    }
 }
 
 EMSCRIPTEN_BINDINGS(nativium_core_application_core) {

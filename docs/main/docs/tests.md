@@ -5,11 +5,11 @@ Nativium come with C++ test support using the [Google Testing and Mocking Framew
 You can test C++ code with the following commands:
 
 ```
-python nativium.py target tests prepare
+python nativium.py target tests setup
 python nativium.py target tests run
 ```
 
-Obs: The verb **prepare** install all tests dependencies and follows the previous instructions that it only needs to be done once.
+Obs: The verb **setup** install all tests dependencies and follows the previous instructions that it only needs to be done once.
 
 ## Source
 

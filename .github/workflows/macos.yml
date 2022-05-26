@@ -49,14 +49,14 @@ jobs:
       - name: Nativium - Setup conan
         run: python nativium.py conan setup
 
-      - name: Nativium - Test Prepare
-        run: python nativium.py target tests prepare
+      - name: Nativium - Test Setup
+        run: python nativium.py target tests setup
 
       - name: Nativium - Test Run
         run: python nativium.py target tests run
 
-      - name: Nativium - Prepare
-        run: python nativium.py target ${{ matrix.config.target }} prepare
+      - name: Nativium - Setup
+        run: python nativium.py target ${{ matrix.config.target }} setup
 
       - name: Nativium - Build
         run: python nativium.py target ${{ matrix.config.target }} build

@@ -5,7 +5,7 @@ from pygemstones.system import runner as r
 from pygemstones.util import log as l
 
 from core import const, target
-from targets.wasm.config import target as config
+from targets.macos.config import target as config
 
 
 # -----------------------------------------------------------------------------
@@ -54,9 +54,11 @@ def run(params):
                     build_profile,
                     "-pr:h",
                     os.path.join(proj_path, "conan", "profiles", arch["conan_profile"]),
+                    "-s:h",
+                    "os.version={0}".format(arch["min_version"]),
                 ]
 
-                target.add_target_prepare_common_args(
+                target.add_target_setup_common_args(
                     run_args, target_name, target_config, arch, build_type
                 )
 

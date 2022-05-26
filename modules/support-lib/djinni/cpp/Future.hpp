@@ -223,7 +223,11 @@ public:
         auto sharedState = std::atomic_load(&_sharedState);
         assert(sharedState);    // call on invalid future will trigger assertion
         std::unique_lock lk(sharedState->mutex);
+#if defined(__EMSCRIPTEN__)
+        assert(sharedState->isReady()); // in wasm we must not block and wait
+#else
         sharedState->cv.wait(lk, [state = sharedState] {return state->isReady();});
+#endif
     }
     // wait until future becomes `isReady()` and return the result. This can
     // only be called once.
@@ -232,7 +236,11 @@ public:
         sharedState = std::atomic_exchange(&_sharedState, sharedState);
         assert(sharedState);    // call on invalid future will trigger assertion
         std::unique_lock lk(sharedState->mutex);
+#if defined(__EMSCRIPTEN__)
+        assert(sharedState->isReady()); // in wasm we must not block and wait
+#else
         sharedState->cv.wait(lk, [state = sharedState] {return state->isReady();});
+#endif
         if (!sharedState->exception) {
             return sharedState->getValueUnsafe();
         } else {
@@ -311,6 +319,39 @@ private:
 template <typename T>
 Future<T> detail::PromiseBase<T>::getFuture() {
     return Future<T>(std::atomic_load(&_sharedState));
+}
+
+template <typename U>
+Future<void> combine(U&& futures, size_t c) {
+    struct Context {
+        std::atomic<size_t> counter;
+        Promise<void> promise;
+        Context(size_t c) : counter(c) {}
+    };
+    auto context = std::make_shared<Context>(c);
+    auto future = context->promise.getFuture();
+    if (futures.empty()) {
+        context->promise.setValue();
+        return future;
+    }
+    for (auto& f: futures) {
+        f.then([context] (auto f) {
+            if (--(context->counter) == 0) {
+                context->promise.setValue();
+            }
+        });
+    }
+    return future;
+}
+
+template <typename U>
+Future<void> whenAll(U&& futures) {
+    return combine(std::forward<U>(futures), futures.size());
+}
+
+template <typename U>
+Future<void> whenAny(U&& futures) {
+    return combine(std::forward<U>(futures), 1);
 }
 
 } // namespace djinni
