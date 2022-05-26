@@ -24,10 +24,10 @@ jobs:
       - name: Upgrade PIP
         run: python -m pip install --upgrade pip setuptools wheel
 
-      - name: Display Python version
+      - name: Display Python Version
         run: python --version
 
-      - name: Display PIP version
+      - name: Display PIP Version
         run: pip --version
 
       - name: Install CMake
@@ -40,13 +40,13 @@ jobs:
         with:
           version: "1.10.0"
 
-      - name: Nativium - Install python dependencies
+      - name: Nativium - Install Python Dependencies
         run: pip install -r requirements.txt
 
-      - name: Nativium - Install glue code tool
+      - name: Nativium - Install Glue Code Tool
         run: python nativium.py gluecode setup
 
-      - name: Nativium - Setup conan
+      - name: Nativium - Setup Conan
         run: python nativium.py conan setup
 
       - name: Nativium - Test Setup
@@ -64,7 +64,7 @@ jobs:
       - name: Nativium - Package
         run: python nativium.py target ${{ matrix.config.target }} package
 
-      - name: Nativium - Dist generate
+      - name: Nativium - Dist Generate
         run: python nativium.py target ${{ matrix.config.target }} dist generate
 
       - name: Github Action - Upload
@@ -73,28 +73,20 @@ jobs:
           name: artifact-${{ matrix.config.target }}.tar.gz
           path: build/${{ matrix.config.target }}/dist/dist.tar.gz
 
-      - name: Nativium - Dist upload
+      - name: Nativium - Dist Upload
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           NATIVIUM_AWS_KEY_ID: ${{ secrets.NATIVIUM_AWS_KEY_ID }}
           NATIVIUM_AWS_SECRET_KEY: ${{ secrets.NATIVIUM_AWS_SECRET_KEY }}
         run: python nativium.py target ${{ matrix.config.target }} dist upload --force
 
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
+      - name: Release - Setup
         if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        run: mv build/${{ matrix.config.target }}/dist/dist.tar.gz ${{ matrix.config.target }}.tar.gz
 
       - name: Release
         id: upload-release-asset
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: build/${{ matrix.config.target }}/dist/dist.tar.gz
-          asset_name: ${{ matrix.config.target }}.tar.gz
-          asset_content_type: application/gzip
+          files: ${{ matrix.config.target }}.tar.gz
