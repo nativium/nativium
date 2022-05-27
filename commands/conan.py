@@ -1,5 +1,8 @@
+import os
+
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
+from pygemstones.system import platform as p
 
 
 # -----------------------------------------------------------------------------
@@ -24,9 +27,9 @@ def run(params):
 def setup(params):
     proj_path = params["proj_path"]
 
+    # create default profile
     l.i("Creating default profile...")
 
-    # create default profile
     r.run(
         [
             "conan",
@@ -38,6 +41,19 @@ def setup(params):
         ],
         cwd=proj_path,
     )
+
+    # install darwin toolchain
+    if p.is_macos():
+        l.i("Installing darwin toolchain...")
+
+        r.run(
+            ["conan", "create", ".", "nativium/stable"],
+            cwd=os.path.join(
+                proj_path,
+                "conan",
+                "darwin-toolchain",
+            ),
+        )
 
     l.ok()
 
