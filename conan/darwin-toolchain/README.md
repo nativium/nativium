@@ -85,14 +85,16 @@ So you can only set it to `False` for iOS. Note that it is not defined for macOS
 ## Local development
 
 1. Install python packages:  
-```pip install conan_package_tools bincrafters_package_tools```
+```pip install conan_package_tools```
 2. Enter on project folder:  
-```cd conan-darwin-toolchain```
+```cd conan/darwin-toolchain```
 3. Install:  
 ```conan create . nativium/stable```
 4. Build:  
 ```python build.py```  
-or  
+
+or
+
 ```rm -rf test_package/build/ && python build.py```  
 5. Check all generated files:  
 ```find test_package/build -name hello -exec lipo -info {} \;```
