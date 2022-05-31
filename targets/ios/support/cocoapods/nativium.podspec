@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = 'https://github.com/nativium/nativium'
   s.license          = { :type => 'MIT', :text => 'Free' }
-  s.author           = { 'Paulo Coutinho' => 'paulo@prsolucoes.com' }
+  s.author           = { 'Paulo Coutinho' => 'paulocoutinhox@gmail.com' }
   s.source           = { :http => 'https://nativium.s3.amazonaws.com/dist/ios/{VERSION}/dist.tar.gz' }
 
   s.vendored_frameworks = 'Release/{PROJECT_NAME}.xcframework'
