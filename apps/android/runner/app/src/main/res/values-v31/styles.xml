@@ -8,7 +8,7 @@
         <item name="alertDialogTheme">@style/AlertDialog</item>
         <item name="android:windowBackground">@color/color_primary_dark</item>
         <item name="android:windowSplashScreenBackground">@color/color_primary</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_logo_splash</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
     </style>
 
@@ -20,7 +20,7 @@
         <item name="alertDialogTheme">@style/AlertDialog</item>
         <item name="android:windowBackground">@color/color_primary_dark</item>
         <item name="android:windowSplashScreenBackground">@color/color_primary</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_logo_splash</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
     </style>
 
