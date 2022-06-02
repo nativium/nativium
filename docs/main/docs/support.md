@@ -8,4 +8,4 @@ There is some ways that you can support Nativium project:
 
 ## Paid support
 
-This project is totally free, but if you need a paid support send an email to me: `paulo@prsolucoes.com`.
+This project is totally free, but if you need a paid support send an email to me: `paulocoutinhox@gmail.com`.
