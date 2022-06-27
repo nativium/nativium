@@ -1,4 +1,8 @@
+import os
+
 from pygemstones.type import list as l
+
+from core import const
 
 
 # -----------------------------------------------------------------------------
@@ -12,3 +16,9 @@ def get_version(params, config):
         version = target_config["version"]
 
     return version
+
+
+# -----------------------------------------------------------------------------
+def remove_sdkroot_from_env():
+    if const.REMOVE_SDKROOT_FROM_ENV:
+        os.environ.pop("SDKROOT", None)
