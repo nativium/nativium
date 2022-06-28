@@ -16,17 +16,17 @@ Some targets add more source files and compile parameters. For example are the t
 
 A target has their **verbs** that can have any name like **build** or **package**. All verbs are files stored inside **verbs** folder of a target **folder**, and the file name will be used to appear on target verb list when you call the target command on terminal. Example:
 
-```python nativium.py target linux```
+```python3 nativium.py target linux```
 
 When you execute a **target verb** the Nativium system will search for a file with it name inside **verbs folder**. Example:
 
-```python nativium.py target linux build```
+```python3 nativium.py target linux build```
 
 It will execute bootstrap file of Nativium, that will do some validations and will search for a file with the path `targets/linux/verbs/build.py` and will send all parameters to a function called **run** inside it.
 
 If you don't remember what verbs are available for a target you can execute the **target command** with **target name** to list all verbs:
 
-```python nativium.py target linux```
+```python3 nativium.py target linux```
 
 ## Configuration
 

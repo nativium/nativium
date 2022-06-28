@@ -94,6 +94,7 @@ open class BaseFragment : Fragment(), CoroutineScope {
         showMainView()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
 

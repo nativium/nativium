@@ -77,8 +77,7 @@ endif()
 # build type
 if(NATIVIUM_BUILD_TYPE STREQUAL "")
     message(STATUS "Nativium: Using default cmake build type (${CMAKE_BUILD_TYPE})")
-
-    set(NATIVIUM_BUILD_TYPE "${CMAKE_BUILD_TYPE}")
+    string(TOLOWER ${CMAKE_BUILD_TYPE} NATIVIUM_BUILD_TYPE)
 endif()
 
 # version parts

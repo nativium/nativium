@@ -12,6 +12,8 @@ These are the tools that Nativium need to work. Check on terminal if you have ev
 
 And for each platform you need have others small requirements.
 
+Obs: Generally Python 3 already come with PIP installed. Check it with command `python3 -m pip --version`.
+
 ## Requirements for Android
 
 1. Supported operational system: macOS, Linux or Windows.  

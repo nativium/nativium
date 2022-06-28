@@ -5,14 +5,14 @@ def run(proj_path, target_name, params):
         "product_name": "Nativium",
         "version": "1.0.0",
         "version_code": "1",
-        "build_types": ["Debug", "Release"],
+        "build_types": ["debug", "release"],
         "entrypoint": "main",
         "archs": [
             {
                 "arch": "armeabi-v7a",
                 "conan_arch": "armv7",
                 "conan_profile": "nativium_android_profile",
-                "api_level": 16,
+                "api_level": 19,
             },
             {
                 "arch": "arm64-v8a",
@@ -24,7 +24,7 @@ def run(proj_path, target_name, params):
                 "arch": "x86",
                 "conan_arch": "x86",
                 "conan_profile": "nativium_android_profile",
-                "api_level": 16,
+                "api_level": 19,
             },
             {
                 "arch": "x86_64",

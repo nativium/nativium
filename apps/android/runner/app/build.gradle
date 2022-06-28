@@ -18,14 +18,14 @@ repositories {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     flavorDimensions "default"
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId 'com.nativium.app'
         minSdkVersion 16
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName '1.0.0'
         multiDexEnabled true
@@ -91,12 +91,12 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.0'
 
     implementation 'com.google.android.material:material:1.6.1'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
 
     implementation 'com.google.android.instantapps:instantapps:1.1.0'
 

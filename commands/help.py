@@ -11,7 +11,7 @@ def run(params):
     args = params["args"]
 
     l.colored(
-        'Please use "python {0} <command>" where <command> is one of:\n'.format(
+        'Please use "python3 {0} <command>" where <command> is one of:\n'.format(
             sys.argv[0]
         ),
         l.MAGENTA,

@@ -1,3 +1,5 @@
+REMOVE_SDKROOT_FROM_ENV = True
+
 FILE_NAME_CONANFILE_TXT = "conanfile.txt"
 FILE_NAME_CONANFILE_PY = "conanfile.py"
 FILE_NAME_DIST_PACKED = "dist.tar.gz"

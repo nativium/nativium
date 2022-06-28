@@ -92,7 +92,7 @@ def generate(params):
     target_name = params["target_name"]
 
     target_config = config.run(proj_path, target_name, params)
-    build_types = target_config["build_types"]
+    build_types = util.get_parsed_build_type_list(params, target_config)
 
     version = util.get_version(params, config)
     source_files = []
@@ -155,7 +155,7 @@ def publish(params):
     found = False
 
     for item in target_config["build_types"]:
-        if item.lower() == build_type:
+        if item.lower() == build_type.lower():
             build_type = item
             found = True
 

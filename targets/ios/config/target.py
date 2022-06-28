@@ -140,7 +140,7 @@ def run(proj_path, target_name, params):
         "product_name": "Nativium",
         "version": "1.0.0",
         "version_code": "1",
-        "build_types": ["Debug", "Release"],
+        "build_types": ["debug", "release"],
         "archs": archs,
         "umbrella_header": "Nativium.h",
         "install_headers": get_header_dir_list(

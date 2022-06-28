@@ -37,7 +37,7 @@ def run(params):
     found = False
 
     for item in target_config["build_types"]:
-        if item.lower() == build_type:
+        if item.lower() == build_type.lower():
             build_type = item
             found = True
 
@@ -64,7 +64,7 @@ def run(params):
             "bin",
         )
     elif source == "dist":
-        output_path = os.path.join(proj_path, "dist", target_name, build_type, "wasm")
+        output_path = os.path.join(proj_path, "dist", target_name, build_type, arch)
 
     if not f.dir_exists(output_path):
         l.e("Output folder not exists: {0}".format(output_path))

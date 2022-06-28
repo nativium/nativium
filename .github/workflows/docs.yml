@@ -22,22 +22,22 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Upgrade PIP
-        run: python -m pip install --upgrade pip setuptools wheel
+        run: python3 -m pip install --upgrade pip setuptools wheel
 
       - name: Display Python Version
-        run: python --version
+        run: python3 --version
 
       - name: Display PIP Version
-        run: pip --version
+        run: pip3 --version
 
       - name: Nativium - Install Python Dependencies
-        run: pip install -r requirements.txt
+        run: pip3 install -r requirements.txt
 
       - name: Nativium - Generate
-        run: python nativium.py doc generate
+        run: python3 nativium.py doc generate
 
       - name: Pack
-        run: python -m tarfile -c docs.tar.gz docs
+        run: python3 -m tarfile -c docs.tar.gz docs
         working-directory: build
 
       - name: Github Action - Upload
@@ -51,7 +51,7 @@ jobs:
         env:
           NATIVIUM_AWS_KEY_ID: ${{ secrets.NATIVIUM_AWS_KEY_ID }}
           NATIVIUM_AWS_SECRET_KEY: ${{ secrets.NATIVIUM_AWS_SECRET_KEY }}
-        run: python nativium.py doc publish --force
+        run: python3 nativium.py doc publish --force
 
       - name: Release - Setup
         if: startsWith(github.ref, 'refs/tags/v')

@@ -64,7 +64,7 @@ def add_target_setup_common_args(
     run_args, target_name, target_config, arch, build_type
 ):
     run_args.append("-s:h")
-    run_args.append("build_type={0}".format(build_type))
+    run_args.append("build_type={0}".format(get_build_type(build_type)))
 
     run_args.append("-s:h")
     run_args.append("arch={0}".format(arch["conan_arch"]))
@@ -73,7 +73,10 @@ def add_target_setup_common_args(
     run_args.append("nativium_target={0}".format(target_name))
 
     run_args.append("-o")
-    run_args.append("nativium_arch={0}".format(arch["conan_arch"]))
+    run_args.append("nativium_build_type={0}".format(build_type))
+
+    run_args.append("-o")
+    run_args.append("nativium_arch={0}".format(arch["arch"]))
 
     run_args.append("-o")
     run_args.append("nativium_project_name={0}".format(target_config["project_name"]))
@@ -114,3 +117,49 @@ def get_build_profile():
         return const.PROFILE_BUILD_MACOS
     else:
         return const.PROFILE_BUILD_DEFAULT
+
+
+# -----------------------------------------------------------------------------
+def get_build_type(build_type):
+    # Release: high optimization level, no debug info, code or asserts
+    # Debug: no optimization, asserts enabled, [custom debug (output) code enabled], debug info included in executable (so you can step through the code with a debugger and have address to source-file:line-number translation)
+    # RelWithDebInfo: optimized, with debug info, but no debug (output) code or asserts
+    # MinSizeRel: same as Release but optimizing for size rather than speed
+
+    if build_type:
+        if build_type.lower() == "debug":
+            build_type = "Debug"
+        elif build_type.lower() == "release":
+            build_type = "Release"
+        elif build_type.lower() == "rel_with_deb_info":
+            build_type = "RelRelWithDebInfoease"
+        elif build_type.lower() == "rel-with-deb-info":
+            build_type = "RelRelWithDebInfoease"
+        elif build_type.lower() == "release_with_debug_info":
+            build_type = "RelRelWithDebInfoease"
+        elif build_type.lower() == "release-with-debug-info":
+            build_type = "RelRelWithDebInfoease"
+        elif build_type.lower() == "relwithdebinfo":
+            build_type = "RelRelWithDebInfoease"
+        elif build_type.lower() == "min_size_rel":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "min-size-rel":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "min_size_release":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "min-size-release":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "minimum_size_release":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "minimum-size-release":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "minimize_size_release":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "minimize-size-release":
+            build_type = "MinSizeRel"
+        elif build_type.lower() == "minsizerel":
+            build_type = "MinSizeRel"
+    else:
+        build_type = "Debug"
+
+    return build_type

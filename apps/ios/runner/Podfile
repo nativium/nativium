@@ -55,7 +55,12 @@ post_integrate do |installer|
     target.build_configurations.each do |config|
       if NATIVIUM_LIBRARY_LOCAL_PATH
         config.build_settings["USER_HEADER_SEARCH_PATHS"] = "$(inherited) "
-        config.build_settings["USER_HEADER_SEARCH_PATHS"] << "${PROJECT_DIR}/../../../dist/ios/Release/nativium.xcframework/ios-x86_64-simulator/nativium.framework/Headers"
+
+        build_type_dir = Dir.glob("../../../dist/ios/*").first()
+        package_dir = Dir.glob("#{build_type_dir}/*").first()
+        package_group_dir = Dir.glob("#{package_dir}/*").first()
+
+        config.build_settings["USER_HEADER_SEARCH_PATHS"] << "${PROJECT_DIR}/#{package_group_dir}/nativium.framework/Headers"
       else
         config.build_settings.delete "USER_HEADER_SEARCH_PATHS"
       end

@@ -17,25 +17,25 @@ cd nativium
 3 - Install python requirements:
 
 ```
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 4 -  Setup conan tool:
 
 ```
-python nativium.py conan setup
+python3 nativium.py conan setup
 ```
 
 5 - Setup glue code tool:
 
 ```
-python nativium.py gluecode setup
+python3 nativium.py gluecode setup
 ```
 
 6 - Now all commands are available. Run the following command to list all targets that you can build:
 
 ```
-python nativium.py target
+python3 nativium.py target
 ```
 
 If you are on **Linux**, you can build the **linux** target, if on **macOS** you can build **macos** target and if on **Windows** you can build **windows** target.
@@ -43,10 +43,10 @@ If you are on **Linux**, you can build the **linux** target, if on **macOS** you
 Example:
 
 ```
-python nativium.py target linux setup  
-python nativium.py target linux build  
-python nativium.py target linux package  
-python nativium.py target linux dist generate  
+python3 nativium.py target linux setup  
+python3 nativium.py target linux build  
+python3 nativium.py target linux package  
+python3 nativium.py target linux dist generate  
 ```
 
 ## Tips
