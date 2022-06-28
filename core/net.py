@@ -50,7 +50,7 @@ def download_dist_file(
 # -----------------------------------------------------------------------------
 def serve(root_path):
     run_args = [
-        "python",
+        "python3",
         "-m",
         "http.server",
         "{0}".format(const.HTTP_SERVER_PORT),

@@ -5,7 +5,7 @@ from pygemstones.system import platform as p
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
 
-from core import module
+from core import module, util
 from targets.android.config import target as config
 
 
@@ -15,8 +15,8 @@ def run(params):
     target_name = params["target_name"]
     target_config = config.run(proj_path, target_name, params)
 
-    archs = target_config["archs"]
-    build_types = target_config["build_types"]
+    archs = util.get_parsed_arch_list(params, target_config)
+    build_types = util.get_parsed_build_type_list(params, target_config)
     android_module_name = "library"
 
     l.i("Creating AAR library...")
@@ -154,7 +154,7 @@ def run(params):
                 for arch in archs:
                     compiled_arch_dir = os.path.join(
                         build_dir,
-                        arch["conan_arch"],
+                        arch["arch"],
                         "target",
                         "lib",
                     )

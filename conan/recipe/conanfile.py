@@ -23,6 +23,7 @@ class TargetConan(ConanFile):
         "nativium_product_name": "ANY",
         "nativium_version": "ANY",
         "nativium_version_code": "ANY",
+        "nativium_build_type": "ANY",
         "nativium_arch": "ANY",
         "nativium_target": "ANY",
         "nativium_group": "ANY",
@@ -35,6 +36,7 @@ class TargetConan(ConanFile):
         "nativium_product_name": "nativium",
         "nativium_version": "ANY",
         "nativium_version_code": "ANY",
+        "nativium_build_type": "ANY",
         "nativium_arch": "ANY",
         "nativium_target": "ANY",
         "nativium_group": "",
@@ -70,10 +72,10 @@ class TargetConan(ConanFile):
         cmake.definitions["NATIVIUM_PRODUCT_NAME"] = self.options.get_safe(
             "nativium_product_name"
         )
+        cmake.definitions["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")        
+        cmake.definitions["NATIVIUM_BUILD_TYPE"] = self.options.get_safe("nativium_build_type")
         cmake.definitions["NATIVIUM_ARCH"] = self.options.get_safe("nativium_arch")
-        cmake.definitions["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")
-        cmake.definitions["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")
-        cmake.definitions["NATIVIUM_BUILD_TYPE"] = self.settings.build_type
+        cmake.definitions["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")        
 
         cmake.definitions["NATIVIUM_VERSION"] = self.options.get_safe(
             "nativium_version"

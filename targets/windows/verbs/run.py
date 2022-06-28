@@ -6,6 +6,7 @@ from pygemstones.system import runner as r
 from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
+from core import util
 from targets.windows.config import target as config
 
 
@@ -38,7 +39,7 @@ def run(params):
     found = False
 
     for item in target_config["build_types"]:
-        if item.lower() == build_type:
+        if item.lower() == build_type.lower():
             build_type = item
             found = True
 
@@ -49,7 +50,7 @@ def run(params):
 
     # arch
     if not arch:
-        arch = "x86_64"
+        arch = util.get_default_arch()
 
     l.i("Arch defined: {0}".format(arch))
 

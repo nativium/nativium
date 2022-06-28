@@ -5,6 +5,7 @@ from pygemstones.system import runner as r
 from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
+from core import util
 from targets.ios.config import target as config
 
 
@@ -13,8 +14,8 @@ def run(params):
     proj_path = params["proj_path"]
     target_name = params["target_name"]
     target_config = config.run(proj_path, target_name, params)
-    archs = target_config["archs"]
-    build_types = target_config["build_types"]
+    archs = util.get_parsed_arch_list(params, target_config)
+    build_types = util.get_parsed_build_type_list(params, target_config)
 
     no_framework = ls.list_has_value(params["args"], "--no-framework")
     no_xcframework = ls.list_has_value(params["args"], "--no-xcframework")
@@ -153,7 +154,7 @@ def generate_framework(proj_path, target_name, target_config, archs, build_types
                     target_name,
                     build_type,
                     archs[0]["group"],
-                    archs[0]["conan_arch"],
+                    archs[0]["arch"],
                     "target",
                     "lib",
                     "{0}.framework".format(target_config["project_name"]),
@@ -209,7 +210,7 @@ def generate_framework(proj_path, target_name, target_config, archs, build_types
                                 target_name,
                                 build_type,
                                 arch["group"],
-                                arch["conan_arch"],
+                                arch["arch"],
                                 "target",
                                 "lib",
                                 "{0}.framework".format(target_config["project_name"]),
@@ -306,7 +307,7 @@ def generate_xcframework(proj_path, target_name, target_config, archs, build_typ
                         target_name,
                         build_type,
                         base_framework_arch["group"],
-                        base_framework_arch["conan_arch"],
+                        base_framework_arch["arch"],
                         "target",
                         "lib",
                         "{0}.framework".format(target_config["project_name"]),
@@ -340,7 +341,7 @@ def generate_xcframework(proj_path, target_name, target_config, archs, build_typ
                                     target_name,
                                     build_type,
                                     arch["group"],
-                                    arch["conan_arch"],
+                                    arch["arch"],
                                     "target",
                                     "lib",
                                     "{0}.framework".format(

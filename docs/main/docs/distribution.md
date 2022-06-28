@@ -5,13 +5,13 @@ Distribution can be done individually by target. Today all **dist.py** (target v
 You can call **dist** verb from any target, example:
 
 ```
-python nativium.py target linux dist
+python3 nativium.py target linux dist
 ```
 
 The folder with name **dist** has the data to deploy (Android, iOS, Windows, macOS, Linux and others) and this folder is not versioned, but you can download distribution file with the following command:
 
 ```
-python nativium.py target linux dist download --version=1.0.0
+python3 nativium.py target linux dist download --version=1.0.0
 ```
 
 This command will download a packed file and will unpack to **dist** folder:
@@ -19,13 +19,13 @@ This command will download a packed file and will unpack to **dist** folder:
 You can also generate a packed **dist** folder again using:
 
 ```
-python nativium.py target linux dist generate --version=1.0.0
+python3 nativium.py target linux dist generate --version=1.0.0
 ```
 
 And you can upload with:
 
 ```
-python nativium.py target linux dist upload --version=1.0.0
+python3 nativium.py target linux dist upload --version=1.0.0
 ```
 
 ## Tips
@@ -60,5 +60,5 @@ The iOS sample project is configured with a custom Pod to download SDK from AWS 
 When use local path, you need start a simple HTTP server to cocoapods tool download the file **dist.tar.gz** that was generated. You can do it with the command:
 
 ```
-python nativium.py target ios serve
+python3 nativium.py target ios serve
 ```

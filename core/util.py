@@ -1,6 +1,7 @@
-import os
+import platform
 
 from pygemstones.system import env as e
+from pygemstones.system import platform as p
 from pygemstones.type import list as l
 
 from core import const
@@ -69,3 +70,12 @@ def get_parsed_build_type_list(params, target_config):
                 build_types.append(target_build_type)
 
     return build_types
+
+
+# -----------------------------------------------------------------------------
+def get_default_arch():
+    if p.is_macos():
+        if "arm64" in platform.platform().lower():
+            return "arm64"
+
+    return "x86_64"

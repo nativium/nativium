@@ -11,7 +11,7 @@ Inside folder **docs** you can create how many documentations do you need.
 While you write your documentation, you can see it in your browser with the command:
 
 ```
-python nativium.py doc serve --name=main
+python3 nativium.py doc serve --name=main
 ```
 
 Now, open in your browser: [http://127.0.0.1:8000](http://127.0.0.1:8000)

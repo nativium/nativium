@@ -93,7 +93,9 @@ class DarwinToolchainConan(ConanFile):
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE = "YES"
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE = "bitcode"
 
-                if self.settings.build_type == "Debug":
+                build_type = self.settings_target.get_safe("build_type")
+
+                if build_type.lower() == "debug":
                     common_flags.append("-fembed-bitcode-marker")
                 else:
                     common_flags.append("-fembed-bitcode")

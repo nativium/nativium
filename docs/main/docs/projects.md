@@ -5,7 +5,7 @@ Nativium come with some applications inside **apps** folder.
 Some apps can be compiled and tested from the command line. Example:
 
 ```
-python nativium.py app
+python3 nativium.py app
 ```
 
 ## Android
@@ -13,13 +13,13 @@ python nativium.py app
 If you want test **android** application run:
 
 ```
-python nativium.py app android test
+python3 nativium.py app android test
 ```
 
 and
 
 ```
-python nativium.py app android integration-test
+python3 nativium.py app android integration-test
 ```
 
 ## iOS
@@ -27,5 +27,5 @@ python nativium.py app android integration-test
 If you want test **ios** application run:
 
 ```
-python nativium.py app ios test
+python3 nativium.py app ios test
 ```

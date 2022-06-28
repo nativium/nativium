@@ -22,11 +22,7 @@ def run(params):
         if build_types and len(build_types) > 0:
             for arch in archs:
                 for build_type in build_types:
-                    l.i(
-                        "Building for: {0}/{1}...".format(
-                            arch["conan_arch"], build_type
-                        )
-                    )
+                    l.i("Building for: {0}/{1}...".format(arch["arch"], build_type))
 
                     # prepare
                     build_dir = os.path.join(
@@ -34,7 +30,7 @@ def run(params):
                         "build",
                         target_name,
                         build_type,
-                        arch["conan_arch"],
+                        arch["arch"],
                         "conan",
                     )
 

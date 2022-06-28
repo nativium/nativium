@@ -5,13 +5,13 @@ Almost all modules use **Djinni** as glue code tool to generate glue code files 
 To install the glue code tool use the following command:
 
 ```
-python nativium.py gluecode setup
+python3 nativium.py gluecode setup
 ```
 
 And to check the version use:
 
 ```
-python nativium.py gluecode version
+python3 nativium.py gluecode version
 ```
 
 Obs: Version command is optional and is used to check current installed version.
@@ -21,7 +21,7 @@ Obs: Version command is optional and is used to check current installed version.
 When you want generate all glue code files again, use the following command:
 
 ```
-python nativium.py gluecode generate
+python3 nativium.py gluecode generate
 ```
 
 If you want create more modules with Djinni support, Nativium come with a easy way to do it. Only duplicate (copy and paste) any module inside **modules** and change files:
