@@ -87,7 +87,7 @@ def run(params):
             )
         ]
 
-        r.run(run_args, output_path)
+        r.run(run_args, cwd=output_path)
     else:
         run_args = [
             "./{0}".format(
@@ -95,7 +95,7 @@ def run(params):
             )
         ]
 
-        r.run(run_args, output_path)
+        r.run(run_args, cwd=output_path)
 
 
 # -----------------------------------------------------------------------------

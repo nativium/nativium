@@ -58,4 +58,4 @@ def serve(root_path):
         "{0}".format(const.HTTP_SERVER_HOST),
     ]
 
-    r.run(run_args, root_path)
+    r.run(run_args, cwd=root_path)
