@@ -50,7 +50,7 @@ def run(params):
 
     # arch
     if not arch:
-        arch = util.get_default_arch()
+        arch = util.get_default_run_arch()
 
     l.i("Arch defined: {0}".format(arch))
 

@@ -102,9 +102,5 @@ def get_parsed_group_list(params, target_config):
 
 
 # -----------------------------------------------------------------------------
-def get_default_arch():
-    if p.is_macos():
-        if "arm64" in platform.platform().lower():
-            return "arm64"
-
-    return "x86_64"
+def get_default_run_arch():
+    return platform.machine()
