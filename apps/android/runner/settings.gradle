@@ -5,11 +5,11 @@ gradle.ext.nativiumLibraryVersion = "1.0.0"
 gradle.ext.nativiumLibraryCacheDir = (System.getProperty("user.home") + "/.nativium-gradle")
 
 if (gradle.ext.isDebuggable) {
-    gradle.ext.localLibraryDir = "../../../../dist/android/Debug"
-    gradle.ext.remoteLibraryDir = "build/nativium-library/Debug"
+    gradle.ext.localLibraryDir = "../../../../dist/android/debug"
+    gradle.ext.remoteLibraryDir = "build/nativium-library/debug"
 } else {
-    gradle.ext.localLibraryDir = "../../../../dist/android/Release"
-    gradle.ext.remoteLibraryDir = "build/nativium-library/Release"
+    gradle.ext.localLibraryDir = "../../../../dist/android/release"
+    gradle.ext.remoteLibraryDir = "build/nativium-library/release"
 }
 
 include ':app'
@@ -18,8 +18,8 @@ if (!gradle.ext.useLocalLibrary && !gradle.ext.useRemoteLibrary) {
     include ':nativium-library'
 
     if (gradle.ext.isDebuggable) {
-        project(':nativium-library').projectDir = file("../../../build/android/Debug/aar/library")
+        project(':nativium-library').projectDir = file("../../../build/android/debug/aar/library")
     } else {
-        project(':nativium-library').projectDir = file("../../../build/android/Release/aar/library")
+        project(':nativium-library').projectDir = file("../../../build/android/release/aar/library")
     }
 }

@@ -16,9 +16,22 @@ def run(params):
     target_config = config.run(proj_path, target_name, params)
     archs = util.get_parsed_arch_list(params, target_config)
     build_types = util.get_parsed_build_type_list(params, target_config)
+    groups = util.get_parsed_group_list(params, target_config)
 
     no_framework = ls.list_has_value(params["args"], "--no-framework")
     no_xcframework = ls.list_has_value(params["args"], "--no-xcframework")
+
+    # check archs
+    if not archs:
+        l.e('Arch list for "{0}" is invalid or empty'.format(target_name))
+
+    # check build types
+    if not build_types:
+        l.e('Build type list for "{0}" is invalid or empty'.format(target_name))
+
+    # check groups
+    if not groups:
+        l.e('Group list for "{0}" is invalid or empty'.format(target_name))
 
     # at least one need be generated
     if no_framework and no_xcframework:
@@ -41,6 +54,7 @@ def run(params):
             target_config=target_config,
             archs=archs,
             build_types=build_types,
+            groups=groups,
         )
 
     # generate xcframework
@@ -51,6 +65,7 @@ def run(params):
             target_config=target_config,
             archs=archs,
             build_types=build_types,
+            groups=groups,
         )
 
     # add strip framework script (only required if final project use framework instead of xcframework)
@@ -95,7 +110,12 @@ def run(params):
         target_pod_file_path,
     )
 
-    # xcframework group dir
+    # build type replace
+    if build_types and len(build_types) > 0:
+        for build_type in build_types:
+            f.replace_in_file(target_pod_file_path, "{BUILD_TYPE}", build_type)
+
+    # xcframework group dir replace
     if not no_xcframework:
         if build_types and len(build_types) > 0:
             for build_type in build_types:
@@ -112,34 +132,54 @@ def run(params):
 
                     f.replace_in_file(
                         target_pod_file_path,
-                        "{XCFRAMEWORK_" + build_type.upper() + "_GROUP_DIR}",
+                        "{XCFRAMEWORK_GROUP_DIR}",
                         first_group,
                     )
 
+    # project name replace
     f.replace_in_file(
         target_pod_file_path,
         "{PROJECT_NAME}",
         target_config["project_name"],
     )
 
+    # product name replace
     f.replace_in_file(
         target_pod_file_path,
         "{PRODUCT_NAME}",
         target_config["product_name"] if "product_name" in target_config else "",
     )
 
+    # version replace
     f.replace_in_file(
         target_pod_file_path,
         "{VERSION}",
         target_config["version"],
     )
 
+    # package extension replace
+    if not no_framework:
+        f.replace_in_file(
+            target_pod_file_path,
+            "{PACKAGE_EXTENSION}",
+            "framework",
+        )
+
+    if not no_xcframework:
+        f.replace_in_file(
+            target_pod_file_path,
+            "{PACKAGE_EXTENSION}",
+            "xcframework",
+        )
+
     # finish
     l.ok()
 
 
 # -----------------------------------------------------------------------------
-def generate_framework(proj_path, target_name, target_config, archs, build_types):
+def generate_framework(
+    proj_path, target_name, target_config, archs, build_types, groups
+):
     l.i("Packaging framework...")
 
     if archs and len(archs) > 0:
@@ -147,13 +187,30 @@ def generate_framework(proj_path, target_name, target_config, archs, build_types
             for build_type in build_types:
                 l.i("Copying for: {0}...".format(build_type))
 
+                # first group
+                first_group = groups[0] if len(groups) > 0 else None
+
+                if not first_group:
+                    l.e('Group list for "{0}" is invalid or empty'.format(target_name))
+
+                # first arch
+                first_arch = None
+
+                for arch in archs:
+                    if arch["group"] in groups:
+                        first_arch = arch["arch"]
+                        break
+
+                if not first_arch:
+                    l.e('Arch list for "{0}" is invalid or empty'.format(target_name))
+
                 # copy first folder for base
                 framework_dir = os.path.join(
                     proj_path,
                     "build",
                     target_name,
                     build_type,
-                    archs[0]["group"],
+                    groups[0],
                     archs[0]["arch"],
                     "target",
                     "lib",
@@ -202,6 +259,9 @@ def generate_framework(proj_path, target_name, target_config, archs, build_types
                 lipo_archs_args = []
 
                 for arch in archs:
+                    if arch["group"] not in groups:
+                        continue
+
                     if is_valid_group(arch["group"]):
                         lipo_archs_args.append(
                             os.path.join(
@@ -267,7 +327,9 @@ def generate_framework(proj_path, target_name, target_config, archs, build_types
 
 
 # -----------------------------------------------------------------------------
-def generate_xcframework(proj_path, target_name, target_config, archs, build_types):
+def generate_xcframework(
+    proj_path, target_name, target_config, archs, build_types, groups
+):
     l.i("Packaging xcframework...")
 
     if archs and len(archs) > 0:
@@ -276,12 +338,7 @@ def generate_xcframework(proj_path, target_name, target_config, archs, build_typ
                 l.i("Generating for: {0}...".format(build_type))
 
                 # generate group list
-                groups = []
                 groups_command = []
-
-                for arch in archs:
-                    if not arch["group"] in groups:
-                        groups.append(arch["group"])
 
                 if len(groups) == 0:
                     l.e(

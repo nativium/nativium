@@ -72,7 +72,7 @@ class SettingsFragment :
                     "Library: %s\nVersion: %s\nBuild: %d",
                     ApplicationCore.shared().version,
                     BuildConfig.VERSION_NAME,
-                    BuildConfig.VERSION_CODE,
+                    BuildConfig.VERSION_CODE
                 )
 
                 UIHelper.showAlert(context, getString(R.string.dialog_title), version)

@@ -73,6 +73,35 @@ def get_parsed_build_type_list(params, target_config):
 
 
 # -----------------------------------------------------------------------------
+def get_parsed_group_list(params, target_config):
+    param_groups = l.get_arg_list_values(params["args"], "--group")
+    target_archs = target_config["archs"] if "archs" in target_config else None
+    target_groups = []
+
+    if target_archs:
+        for target_arch in target_archs:
+            group_name = target_arch["group"]
+
+            if group_name not in target_groups:
+                target_groups.append(group_name)
+
+    if not param_groups:
+        return target_groups
+
+    if not target_archs:
+        return None
+
+    groups = []
+
+    for param_group in param_groups:
+        for target_group in target_groups:
+            if target_group.lower() == param_group.lower():
+                groups.append(target_group)
+
+    return groups
+
+
+# -----------------------------------------------------------------------------
 def get_default_arch():
     if p.is_macos():
         if "arm64" in platform.platform().lower():

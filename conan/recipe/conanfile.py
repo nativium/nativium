@@ -61,7 +61,7 @@ class TargetConan(ConanFile):
 
         if self.settings.os in c.APPLE_MOBILE_OS_LIST:
             cmake.definitions["NATIVIUM_PLATFORM_ARCH"] = tools.to_apple_arch(
-                self.options.get_safe("nativium_arch"),
+                self.settings.get_safe("arch"),
             )
 
         # definitions
@@ -72,10 +72,12 @@ class TargetConan(ConanFile):
         cmake.definitions["NATIVIUM_PRODUCT_NAME"] = self.options.get_safe(
             "nativium_product_name"
         )
-        cmake.definitions["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")        
-        cmake.definitions["NATIVIUM_BUILD_TYPE"] = self.options.get_safe("nativium_build_type")
+        cmake.definitions["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")
+        cmake.definitions["NATIVIUM_BUILD_TYPE"] = self.options.get_safe(
+            "nativium_build_type"
+        )
         cmake.definitions["NATIVIUM_ARCH"] = self.options.get_safe("nativium_arch")
-        cmake.definitions["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")        
+        cmake.definitions["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")
 
         cmake.definitions["NATIVIUM_VERSION"] = self.options.get_safe(
             "nativium_version"

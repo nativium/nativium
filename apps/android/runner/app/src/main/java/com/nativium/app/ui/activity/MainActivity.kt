@@ -15,6 +15,7 @@ class MainActivity : BaseActivity() {
             return fragment
         }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         fragment?.onActivityResult(requestCode, resultCode, data)

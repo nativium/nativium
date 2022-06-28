@@ -50,16 +50,16 @@ jobs:
         run: python3 nativium.py conan setup
 
       - name: Nativium - Setup
-        run: python3 nativium.py target ${{ matrix.config.target }} setup
+        run: python3 nativium.py target ${{ matrix.config.target }} setup --build=release
 
       - name: Nativium - Build
-        run: python3 nativium.py target ${{ matrix.config.target }} build
+        run: python3 nativium.py target ${{ matrix.config.target }} build --build=release
 
       - name: Nativium - Package
-        run: python3 nativium.py target ${{ matrix.config.target }} package --no-framework
+        run: python3 nativium.py target ${{ matrix.config.target }} package --build=release --no-framework
 
       - name: Nativium - Dist Generate
-        run: python3 nativium.py target ${{ matrix.config.target }} dist generate
+        run: python3 nativium.py target ${{ matrix.config.target }} dist generate --build=release
 
       - name: Github Action - Upload
         uses: actions/upload-artifact@v2

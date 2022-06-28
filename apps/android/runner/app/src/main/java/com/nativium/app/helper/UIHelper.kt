@@ -19,7 +19,8 @@ object UIHelper {
         alertDialog.setMessage(message)
 
         alertDialog.setButton(
-            AlertDialog.BUTTON_NEUTRAL, context.getString(R.string.dialog_button_ok)
+            AlertDialog.BUTTON_NEUTRAL,
+            context.getString(R.string.dialog_button_ok)
         ) { dialog, _ -> dialog.dismiss() }
 
         alertDialog.show()
