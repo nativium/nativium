@@ -83,7 +83,7 @@ def run(params):
                     if param_dry_run:
                         run_args.append("--build")
 
-                    r.run(run_args, build_dir)
+                    r.run(run_args, cwd=build_dir)
 
                     # copy dependencies
                     deps_bin_dir = os.path.join(

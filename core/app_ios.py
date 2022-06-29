@@ -73,7 +73,7 @@ def ios_build(params):
         config["destination"]["build"],
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -107,7 +107,7 @@ def ios_test(params):
         config["destination"]["test"],
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -147,7 +147,7 @@ def ios_install(params):
         ),
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -172,7 +172,7 @@ def ios_uninstall(params):
         config["bundle-id"],
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -222,7 +222,7 @@ def ios_run(params):
         bundle_path,
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -260,7 +260,7 @@ def ios_archive(params):
         archive_path,
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -295,7 +295,7 @@ def ios_clean(params):
         "clean",
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -318,7 +318,7 @@ def ios_pods(params):
         "install",
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 

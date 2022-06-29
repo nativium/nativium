@@ -252,7 +252,7 @@ def generate_framework(
                             "CFBundleSupportedPlatforms",
                             plist_path,
                         ],
-                        proj_path,
+                        cwd=proj_path,
                     )
 
                 # lipo
@@ -311,14 +311,14 @@ def generate_framework(
                     )
 
                 lipo_args.extend(lipo_archs_args)
-                r.run(lipo_args, proj_path)
+                r.run(lipo_args, cwd=proj_path)
 
                 # check file
                 l.i("Checking file for: {0}...".format(build_type))
 
                 r.run(
                     ["file", os.path.join(dist_dir, target_config["project_name"])],
-                    proj_path,
+                    cwd=proj_path,
                 )
         else:
             l.i('Build type list for "{0}" is invalid or empty'.format(target_name))
@@ -441,7 +441,7 @@ def generate_xcframework(
                         )
 
                     lipo_args.extend(lipo_archs_args)
-                    r.run(lipo_args, proj_path)
+                    r.run(lipo_args, cwd=proj_path)
 
                     # add final framework to group
                     groups_command.append("-framework")
@@ -462,12 +462,12 @@ def generate_xcframework(
                 xcodebuild_command += groups_command
                 xcodebuild_command += ["-output", xcframework_dir]
 
-                r.run(xcodebuild_command, proj_path)
+                r.run(xcodebuild_command, cwd=proj_path)
 
                 # check file
                 l.i("Checking file for: {0}...".format(build_type))
 
-                r.run(["ls", xcframework_dir], proj_path)
+                r.run(["ls", xcframework_dir], cwd=proj_path)
         else:
             l.i('Build type list for "{0}" is invalid or empty'.format(target_name))
     else:

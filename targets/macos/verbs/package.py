@@ -107,7 +107,7 @@ def run(params):
 
                         lipo_args.extend(lipo_archs_args)
 
-                        r.run(lipo_args, proj_path)
+                        r.run(lipo_args, cwd=proj_path)
 
                         # check file
                         l.i("Checking file for: {0}...".format(build_type))
@@ -117,7 +117,7 @@ def run(params):
                                 "file",
                                 os.path.join(dist_dir, target_config["project_name"]),
                             ],
-                            proj_path,
+                            cwd=proj_path,
                         )
 
             l.ok()

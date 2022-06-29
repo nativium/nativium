@@ -74,7 +74,7 @@ def code_format(params):
                             "-i",
                             os.path.relpath(file_item),
                         ],
-                        proj_path,
+                        cwd=proj_path,
                     ),
                     ignore_path_list=[],
                 )
@@ -105,7 +105,7 @@ def code_format(params):
                             "-q",
                             file_item,
                         ],
-                        proj_path,
+                        cwd=proj_path,
                     ),
                     ignore_path_list=[],
                 )
@@ -138,7 +138,7 @@ def code_format(params):
                             "-i",
                             file_item,
                         ],
-                        proj_path,
+                        cwd=proj_path,
                     ),
                     ignore_path_list=[],
                 )
@@ -197,7 +197,7 @@ def code_format(params):
                             "-i",
                             os.path.relpath(file_item),
                         ],
-                        proj_path,
+                        cwd=proj_path,
                     ),
                     ignore_path_list=[
                         os.path.join(format_path, "apps", "ios", "runner", "Pods"),
@@ -274,7 +274,7 @@ def code_format(params):
                             "-q",
                             file_item,
                         ],
-                        proj_path,
+                        cwd=proj_path,
                     ),
                     ignore_path_list=[
                         os.path.join(format_path, "apps", "ios", "runner", "Pods"),
@@ -376,7 +376,7 @@ def code_format(params):
                             "-i",
                             file_item,
                         ],
-                        proj_path,
+                        cwd=proj_path,
                     ),
                     ignore_path_list=[
                         os.path.join(format_path, "apps", "ios", "runner", "Pods"),

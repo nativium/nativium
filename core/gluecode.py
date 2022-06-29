@@ -56,7 +56,8 @@ def generate(params):
     runner_args.extend([gluecode_tool_path])
     runner_args.extend(tool_params)
 
-    r.run_as_shell(
+    r.run(
         args=" ".join(runner_args),
+        shell=True,
         cwd=module_dir,
     )

@@ -68,7 +68,7 @@ def android_build(params):
 
     run_args.append("assemble{0}".format(build_type))
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -94,7 +94,7 @@ def android_test(params):
 
     run_args.append("test")
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -120,7 +120,7 @@ def android_integration_test(params):
 
     run_args.append("connectedAndroidTest")
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -147,7 +147,7 @@ def android_install(params):
 
     run_args.append("install{0}".format(build_type))
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -173,7 +173,7 @@ def android_uninstall(params):
 
     run_args.append("uninstallAll")
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -204,7 +204,7 @@ def android_run(params):
         "{0}/{1}".format(config["package"], config["activity"]),
     ]
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -236,7 +236,7 @@ def android_bundle(params):
 
     run_args.append("bundle{0}".format(build_type))
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -262,7 +262,7 @@ def android_logcat(params):
             "-c",
         ]
 
-        r.run(run_args, path)
+        r.run(run_args, cwd=path)
     else:
         l.i(
             "Logcat for application {0} and package {1}...".format(
@@ -302,7 +302,7 @@ def android_logcat(params):
             "--pid={0}".format(adb_pid),
         ]
 
-        r.run(run_args, path)
+        r.run(run_args, cwd=path)
 
     l.ok()
 
@@ -328,7 +328,7 @@ def android_clean(params):
 
     run_args.append("clean")
 
-    r.run(run_args, path)
+    r.run(run_args, cwd=path)
 
     l.ok()
 

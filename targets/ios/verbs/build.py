@@ -95,7 +95,7 @@ def run(params):
                         if param_dry_run:
                             run_args.append("--build")
 
-                        r.run(run_args, build_dir)
+                        r.run(run_args, cwd=build_dir)
 
                         # find correct info plist file
                         plist_path1 = os.path.join(
@@ -145,7 +145,7 @@ def run(params):
                                 arch["min_version"],
                                 plist_path,
                             ],
-                            proj_path,
+                            cwd=proj_path,
                         )
 
                         # add supported platform inside plist
@@ -158,7 +158,7 @@ def run(params):
                                 '[ "{0}" ]'.format(arch["supported_platform"]),
                                 plist_path,
                             ],
-                            proj_path,
+                            cwd=proj_path,
                         )
 
                         # headers
