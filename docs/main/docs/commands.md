@@ -6,13 +6,13 @@ Every command script in Nativium is a python file hosted on **commands** folder.
 
 Commands are simple functions that will receive command line arguments, the project path and that will executed desired operations. Example:
 
-```python3 nativium.py clean```
+```python3 nativium.py clear```
 
 or
 
 ```python3 nativium.py code format```
 
-So, when you execute `python3 nativium.py clean` the Nativium system will search for a file called **clean.py** inside folder **commands** (commands/clean.py) and will send all parameters to a function inside it called **run**.
+So, when you execute `python3 nativium.py clear` the Nativium system will search for a file called **clear.py** inside folder **commands** (commands/clear.py) and will send all parameters to a function inside it called **run**.
 
 If you don't remember what commands are available, you can execute the **bootstrap** file to list all commands:
 
