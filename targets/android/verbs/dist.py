@@ -98,8 +98,8 @@ def generate(params):
     for build_type in build_types:
         source_files.append(
             {
-                "path": os.path.join(dist_folder, build_type),
-                "arcname": build_type,
+                "path": os.path.join(dist_folder, get_build_type_dir(build_type)),
+                "arcname": get_build_type_dir(build_type),
             }
         )
 
@@ -110,6 +110,14 @@ def generate(params):
         version=version,
         source_files=source_files,
     )
+
+
+# -----------------------------------------------------------------------------
+def get_build_type_dir(build_type):
+    if build_type.lower() == "debug":
+        return "debug"
+    else:
+        return "release"
 
 
 # -----------------------------------------------------------------------------
