@@ -42,16 +42,15 @@ class SettingsFragment :
         listData = MutableLiveData()
 
         (listData as MutableLiveData<ArrayList<SimpleOption>>).observe(
-            this,
-            { list ->
-                adapter = SimpleOptionAdapter(requireContext(), list)
-                (adapter as SimpleOptionAdapter).setListener(this)
+            this
+        ) { list ->
+            adapter = SimpleOptionAdapter(requireContext(), list)
+            (adapter as SimpleOptionAdapter).setListener(this)
 
-                updateAdapter()
+            updateAdapter()
 
-                adapter.notifyDataSetChanged()
-            }
-        )
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun needLoadNewData(): Boolean {

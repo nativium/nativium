@@ -21,6 +21,7 @@ android {
     compileSdkVersion 33
     flavorDimensions "default"
     buildToolsVersion "30.0.3"
+    ndkVersion "24.0.8215888"
 
     defaultConfig {
         applicationId 'com.nativium.app'
@@ -31,6 +32,10 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+        ndk {
+            debugSymbolLevel 'full'
+        }
     }
 
     compileOptions {

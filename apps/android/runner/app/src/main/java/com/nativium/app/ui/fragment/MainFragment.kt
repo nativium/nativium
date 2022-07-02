@@ -11,7 +11,6 @@ import com.nativium.app.adapter.MainViewPagerAdapter
 import com.nativium.app.ui.fragment.base.BaseFragment
 
 class MainFragment : BaseFragment(), BottomNavigationView.OnNavigationItemSelectedListener {
-
     private var viewPager: ViewPager2? = null
     private var adapter: MainViewPagerAdapter? = null
 

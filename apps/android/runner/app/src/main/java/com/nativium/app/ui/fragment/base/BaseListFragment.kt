@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.nativium.app.R
 
 open class BaseListFragment<T> : BaseFragment() {
-
     protected var listData: MutableLiveData<ArrayList<T>>? = null
     protected lateinit var rvList: RecyclerView
     protected lateinit var layoutManager: LinearLayoutManager

@@ -6,7 +6,6 @@ import com.nativium.app.ui.fragment.MainFragment
 import com.nativium.app.ui.fragment.base.BaseFragment
 
 class MainActivity : BaseActivity() {
-
     private var fragment: MainFragment? = null
 
     override val fragmentInstance: BaseFragment?

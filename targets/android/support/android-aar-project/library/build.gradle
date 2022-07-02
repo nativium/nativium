@@ -1,14 +1,14 @@
 allprojects {
-   repositories {
-       google()
-       jcenter()
-   }
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
 
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.1'
@@ -32,6 +32,21 @@ android {
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        debug {
+            packagingOptions {
+                doNotStrip '**/*.so'
+            }
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            packagingOptions {
+                doNotStrip '**/*.so'
+            }
+        }
     }
 }
 

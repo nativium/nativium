@@ -121,8 +121,8 @@ def get_build_profile():
 
 # -----------------------------------------------------------------------------
 def get_build_type(build_type):
-    # Release: high optimization level, no debug info, code or asserts
     # Debug: no optimization, asserts enabled, [custom debug (output) code enabled], debug info included in executable (so you can step through the code with a debugger and have address to source-file:line-number translation)
+    # Release: high optimization level, no debug info, code or asserts
     # RelWithDebInfo: optimized, with debug info, but no debug (output) code or asserts
     # MinSizeRel: same as Release but optimizing for size rather than speed
 
@@ -132,15 +132,15 @@ def get_build_type(build_type):
         elif build_type.lower() == "release":
             build_type = "Release"
         elif build_type.lower() == "rel_with_deb_info":
-            build_type = "RelRelWithDebInfoease"
+            build_type = "RelWithDebInfo"
         elif build_type.lower() == "rel-with-deb-info":
-            build_type = "RelRelWithDebInfoease"
+            build_type = "RelWithDebInfo"
         elif build_type.lower() == "release_with_debug_info":
-            build_type = "RelRelWithDebInfoease"
+            build_type = "RelWithDebInfo"
         elif build_type.lower() == "release-with-debug-info":
-            build_type = "RelRelWithDebInfoease"
+            build_type = "RelWithDebInfo"
         elif build_type.lower() == "relwithdebinfo":
-            build_type = "RelRelWithDebInfoease"
+            build_type = "RelWithDebInfo"
         elif build_type.lower() == "min_size_rel":
             build_type = "MinSizeRel"
         elif build_type.lower() == "min-size-rel":

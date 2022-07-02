@@ -39,8 +39,13 @@ class HomeFragment :
     }
 
     override fun onSimpleOptionItemClick(view: View, option: SimpleOption) {
-        when {
-            option.type == SimpleOptionTypeEnum.MULTIPLY -> doActionMultiply()
+        when (option.type) {
+            SimpleOptionTypeEnum.MULTIPLY -> {
+                doActionMultiply()
+            }
+            else -> {
+                // ignore
+            }
         }
     }
 
@@ -48,16 +53,15 @@ class HomeFragment :
         listData = MutableLiveData()
 
         (listData as MutableLiveData<ArrayList<SimpleOption>>).observe(
-            this,
-            androidx.lifecycle.Observer { list ->
-                adapter = SimpleOptionAdapter(requireContext(), list)
-                (adapter as SimpleOptionAdapter).setListener(this)
+            this
+        ) { list ->
+            adapter = SimpleOptionAdapter(requireContext(), list)
+            (adapter as SimpleOptionAdapter).setListener(this)
 
-                updateAdapter()
+            updateAdapter()
 
-                adapter.notifyDataSetChanged()
-            }
-        )
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun needLoadNewData(): Boolean {
@@ -71,7 +75,9 @@ class HomeFragment :
                 getString(R.string.dialog_title),
                 getString(
                     R.string.dialog_message_result,
-                    ApplicationCore.shared().multiply(Random.nextDouble(1.0, 100.0), Random.nextDouble(1.0, 100.0)).toString()
+                    ApplicationCore.shared()
+                        .multiply(Random.nextDouble(1.0, 100.0), Random.nextDouble(1.0, 100.0))
+                        .toString()
                 )
             )
         }

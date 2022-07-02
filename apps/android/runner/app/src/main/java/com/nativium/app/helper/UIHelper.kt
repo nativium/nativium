@@ -12,7 +12,6 @@ import com.nativium.app.R
 import kotlin.math.roundToInt
 
 object UIHelper {
-
     fun showAlert(context: Context, title: String, message: String) {
         val alertDialog = AlertDialog.Builder(context).create()
         alertDialog.setTitle(title)

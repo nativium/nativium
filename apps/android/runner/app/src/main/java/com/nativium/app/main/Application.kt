@@ -8,7 +8,6 @@ import com.nativium.app.BuildConfig
 import com.nativium.app.main.Constants.LOG_GROUP
 
 class Application : MultiDexApplication() {
-
     override fun onCreate() {
         super.onCreate()
 
