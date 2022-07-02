@@ -20,6 +20,7 @@ if (!gradle.ext.useLocalLibrary && !gradle.ext.useRemoteLibrary) {
     if (gradle.ext.isDebuggable) {
         project(':nativium-library').projectDir = file("../../../build/android/debug/aar/library")
     } else {
-        project(':nativium-library').projectDir = file("../../../build/android/release/aar/library")
+        // here can be used "release" or "relwithdebinfo", check android target config what is available
+        project(':nativium-library').projectDir = file("../../../build/android/relwithdebinfo/aar/library")
     }
 }

@@ -200,7 +200,9 @@ def run(params):
                     "aar",
                 )
 
-                dist_dir = os.path.join(proj_path, "dist", target_name, build_type)
+                dist_dir = os.path.join(
+                    proj_path, "dist", target_name, get_build_type_dir(build_type)
+                )
 
                 f.remove_dir(dist_dir)
 
@@ -224,3 +226,11 @@ def get_build_type(build_type):
         build_type = "Debug"
 
     return build_type
+
+
+# -----------------------------------------------------------------------------
+def get_build_type_dir(build_type):
+    if build_type.lower() == "debug":
+        return "debug"
+    else:
+        return "release"
