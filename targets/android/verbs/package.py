@@ -181,12 +181,12 @@ def run(params):
 
                     run_args = [
                         os.path.join("..", "gradlew.bat"),
-                        "bundle{0}Aar".format(build_type),
+                        "bundle{0}Aar".format(get_build_type(build_type)),
                     ]
                 else:
                     run_args = [
                         os.path.join("..", "gradlew"),
-                        "bundle{0}Aar".format(build_type),
+                        "bundle{0}Aar".format(get_build_type(build_type)),
                     ]
 
                 r.run(run_args, cwd=android_module_dir)
@@ -200,7 +200,9 @@ def run(params):
                     "aar",
                 )
 
-                dist_dir = os.path.join(proj_path, "dist", target_name, build_type)
+                dist_dir = os.path.join(
+                    proj_path, "dist", target_name, get_build_type_dir(build_type)
+                )
 
                 f.remove_dir(dist_dir)
 
@@ -211,3 +213,24 @@ def run(params):
             l.i('Build type list for "{0}" is invalid or empty'.format(target_name))
     else:
         l.i('Arch list for "{0}" is invalid or empty'.format(target_name))
+
+
+# -----------------------------------------------------------------------------
+def get_build_type(build_type):
+    if build_type:
+        if build_type.lower() == "debug":
+            build_type = "Debug"
+        else:
+            build_type = "Release"
+    else:
+        build_type = "Debug"
+
+    return build_type
+
+
+# -----------------------------------------------------------------------------
+def get_build_type_dir(build_type):
+    if build_type.lower() == "debug":
+        return "debug"
+    else:
+        return "release"

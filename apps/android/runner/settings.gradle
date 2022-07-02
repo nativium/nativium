@@ -17,9 +17,10 @@ include ':app'
 if (!gradle.ext.useLocalLibrary && !gradle.ext.useRemoteLibrary) {
     include ':nativium-library'
 
+    // here can be used "debug", "release", "relwithdebinfo" or other available in target config
     if (gradle.ext.isDebuggable) {
         project(':nativium-library').projectDir = file("../../../build/android/debug/aar/library")
     } else {
-        project(':nativium-library').projectDir = file("../../../build/android/release/aar/library")
+        project(':nativium-library').projectDir = file("../../../build/android/relwithdebinfo/aar/library")
     }
 }

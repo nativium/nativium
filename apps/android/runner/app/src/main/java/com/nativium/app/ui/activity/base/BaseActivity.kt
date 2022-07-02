@@ -7,7 +7,6 @@ import com.nativium.app.R
 import com.nativium.app.ui.fragment.base.BaseFragment
 
 open class BaseActivity : AppCompatActivity() {
-
     protected open val fragmentInstance: BaseFragment?
         get() = null
 
@@ -47,9 +46,5 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    protected fun registerForEventBus(): Boolean {
-        return false
     }
 }

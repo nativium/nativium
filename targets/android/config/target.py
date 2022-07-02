@@ -5,7 +5,7 @@ def run(proj_path, target_name, params):
         "product_name": "Nativium",
         "version": "1.0.0",
         "version_code": "1",
-        "build_types": ["debug", "release"],
+        "build_types": ["debug", "relwithdebinfo"],
         "entrypoint": "main",
         "archs": [
             {

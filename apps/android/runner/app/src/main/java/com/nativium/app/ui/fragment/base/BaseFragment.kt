@@ -24,7 +24,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 open class BaseFragment : Fragment(), CoroutineScope {
-
     override val coroutineContext = Dispatchers.Main
 
     protected var remoteDataLoadState = LoadStateEnum.NOT_LOADED
@@ -254,8 +253,20 @@ open class BaseFragment : Fragment(), CoroutineScope {
             return
         }
 
-        if (remoteDataLoadState != LoadStateEnum.NOT_LOADED) {
-            return
+        if (remoteDataLoadState == LoadStateEnum.LOADED) {
+            onDataIsAlreadyLoaded()
+        }
+
+        if (canReloadData()) {
+            // only can reload if is not loading
+            if (remoteDataLoadState == LoadStateEnum.LOADING) {
+                return
+            }
+        } else {
+            // only can load if is not loaded (loading or loaded are discarded)
+            if (remoteDataLoadState != LoadStateEnum.NOT_LOADED) {
+                return
+            }
         }
 
         remoteDataLoadState = LoadStateEnum.LOADING
@@ -263,7 +274,7 @@ open class BaseFragment : Fragment(), CoroutineScope {
         onLoadNewData()
     }
 
-    protected fun validateLoadData() {
+    protected open fun validateLoadData() {
         validateCache()
         loadData()
     }
@@ -274,6 +285,14 @@ open class BaseFragment : Fragment(), CoroutineScope {
 
     protected open fun needLoadNewData(): Boolean {
         return false
+    }
+
+    protected open fun canReloadData(): Boolean {
+        return false
+    }
+
+    protected open fun onDataIsAlreadyLoaded() {
+        // ignore
     }
 
     // ///////////////////////////////////////////
