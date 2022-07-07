@@ -172,6 +172,7 @@ def get_header_dir_list(proj_path, target_name, params):
             "generated-src",
             "objc",
         )
+
         module_impl_dir = os.path.join(
             modules_path,
             module_name,

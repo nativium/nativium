@@ -37,19 +37,19 @@ double ApplicationCoreImpl::multiply(double value1, double value2)
 
 std::string ApplicationCoreImpl::getVersion()
 {
-#ifdef NATIVIUM_CONFIG_VERSION
-#define NATIVIUM_CONFIG_VERSION_STR NATIVIUM_CONFIG_VERSION
+#ifdef NATIVIUM_VERSION
+#define NATIVIUM_VERSION_STR NATIVIUM_VERSION
 #else
-#define NATIVIUM_CONFIG_VERSION_STR "1.0.0"
+#define NATIVIUM_VERSION_STR "1.0.0"
 #endif
 
-#ifdef NATIVIUM_CONFIG_VERSION_CODE
-#define NATIVIUM_CONFIG_VERSION_CODE_STR NATIVIUM_CONFIG_VERSION_CODE
+#ifdef NATIVIUM_VERSION_CODE
+#define NATIVIUM_VERSION_CODE_STR NATIVIUM_VERSION_CODE
 #else
-#define NATIVIUM_CONFIG_VERSION_CODE_STR "1"
+#define NATIVIUM_VERSION_CODE_STR "1"
 #endif
 
-    return std::string(NATIVIUM_CONFIG_VERSION_STR) + " (" + std::string(NATIVIUM_CONFIG_VERSION_CODE_STR) + ")";
+    return std::string(NATIVIUM_VERSION_STR) + " (" + std::string(NATIVIUM_VERSION_CODE_STR) + ")";
 }
 
 } // namespace core
