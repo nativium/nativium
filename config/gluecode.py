@@ -8,4 +8,5 @@ def run(proj_path, params):
         "java_package_prefix": "com.nativium",
         "jni_class_prefix": "NTV",
         "jni_file_prefix": "NTV",
+        "order": [],
     }

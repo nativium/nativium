@@ -33,6 +33,8 @@ The file **proj.djinni** contain all interface that will be generated and requir
 
 The file **generate.py** contain the method with instructions for that module that will be called automatically when you generate glue code (example: package name, namespace, include paths etc).
 
+If you need to set the generation order because of dependencies between modules, set the order by module name within the gluecode configuration file located in `config/gluecode.py`.
+
 If you don't use any glue code tool in your project, ignore this section, because some people prefer create the glue code files manually and is not a requirement in Nativium that modules have these files.
 
 ## Djinni forks
