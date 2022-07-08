@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 repositories {
-    if (gradle.ext.useLocalLibrary) {
+    if (gradle.ext.nativiumUseLocalLibrary) {
         flatDir {
-            dirs gradle.ext.localLibraryDir
+            dirs gradle.ext.nativiumLocalLibraryDir
         }
     }
 
-    if (gradle.ext.useRemoteLibrary) {
+    if (gradle.ext.nativiumUseRemoteLibrary) {
         flatDir {
-            dirs gradle.ext.remoteLibraryDir
+            dirs gradle.ext.nativiumRemoteLibraryDir
         }
     }
 
@@ -79,8 +79,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    if (gradle.ext.useLocalLibrary || gradle.ext.useRemoteLibrary) {
-        if (gradle.ext.isDebuggable) {
+    if (gradle.ext.nativiumUseLocalLibrary || gradle.ext.nativiumUseRemoteLibrary) {
+        if (gradle.ext.nativiumIsDebuggable) {
             implementation(name: "library-debug", ext: "aar")
         } else {
             implementation(name: "library-release", ext: "aar")
@@ -100,8 +100,8 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.6.1'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3'
 
     implementation 'com.google.android.instantapps:instantapps:1.1.0'
 
@@ -112,23 +112,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
-// custom download task
-if (gradle.ext.useRemoteLibrary) {
-    apply plugin: "de.undercouch.download"
-
-    task downloadNativiumLibraryFile(type: Download) {
-        src "https://nativium.s3.amazonaws.com/dist/android/${gradle.ext.nativiumLibraryVersion}/dist.tar.gz"
-        dest new File(gradle.ext.nativiumLibraryCacheDir, "nativium-library/library-${gradle.ext.nativiumLibraryVersion}.tar.gz")
-        tempAndMove true
-        onlyIfModified true
-        overwrite false
-        downloadTaskDir gradle.ext.nativiumLibraryCacheDir
-    }
-
-    task getNativiumLibrary(dependsOn: downloadNativiumLibraryFile, type: Copy) {
-        from tarTree(downloadNativiumLibraryFile.dest)
-        into new File(buildDir, "nativium-library")
-    }
-
-    preBuild.dependsOn getNativiumLibrary
-}
+apply from: "nativium.dependency.gradle"

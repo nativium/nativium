@@ -1,0 +1,27 @@
+if (gradle.ext.nativiumUseRemoteLibrary) {
+    apply plugin: "de.undercouch.download"
+
+    var fileURL = ""
+
+    if (gradle.ext.nativiumUseLocalServer) {
+        fileURL = "http://localhost:8000/dist.tar.gz"
+    } else {
+        fileURL = "https://nativium.s3.amazonaws.com/dist/android/${gradle.ext.nativiumLibraryVersion}/dist.tar.gz"
+    }
+
+    task downloadNativiumLibraryFile(type: Download) {
+        src fileURL
+        dest new File(gradle.ext.nativiumLibraryCacheDir, "nativium-library/library-${gradle.ext.nativiumLibraryVersion}.tar.gz")
+        tempAndMove true
+        onlyIfModified true
+        overwrite false
+        downloadTaskDir gradle.ext.nativiumLibraryCacheDir
+    }
+
+    task getNativiumLibrary(dependsOn: downloadNativiumLibraryFile, type: Copy) {
+        from tarTree(downloadNativiumLibraryFile.dest)
+        into new File(buildDir, "nativium-library")
+    }
+
+    preBuild.dependsOn getNativiumLibrary
+}

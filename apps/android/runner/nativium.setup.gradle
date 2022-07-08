@@ -1,0 +1,25 @@
+gradle.ext.nativiumUseLocalLibrary = false
+gradle.ext.nativiumUseRemoteLibrary = true
+gradle.ext.nativiumUseLocalServer = false
+gradle.ext.nativiumIsDebuggable = false
+gradle.ext.nativiumLibraryVersion = "1.0.0"
+gradle.ext.nativiumLibraryCacheDir = (System.getProperty("user.home") + "/.nativium-gradle")
+
+if (gradle.ext.nativiumIsDebuggable) {
+    gradle.ext.nativiumLocalLibraryDir = "../../../../dist/android/debug"
+    gradle.ext.nativiumRemoteLibraryDir = "build/nativium-library/debug"
+} else {
+    gradle.ext.nativiumLocalLibraryDir = "../../../../dist/android/release"
+    gradle.ext.nativiumRemoteLibraryDir = "build/nativium-library/release"
+}
+
+if (!gradle.ext.nativiumUseLocalLibrary && !gradle.ext.nativiumUseRemoteLibrary) {
+    include ':nativium-library'
+
+    // here can be used "debug", "release", "relwithdebinfo" or other available in target config
+    if (gradle.ext.nativiumIsDebuggable) {
+        project(':nativium-library').projectDir = file("../../../build/android/debug/aar/library")
+    } else {
+        project(':nativium-library').projectDir = file("../../../build/android/relwithdebinfo/aar/library")
+    }
+}
