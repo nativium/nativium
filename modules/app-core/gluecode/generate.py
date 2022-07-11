@@ -93,6 +93,8 @@ def run(params):
             objc_prefix,
             "--objc-include-prefix",
             objc_include_prefix,
+            "--objc-strict-protocols",
+            "true",
             "--objcpp-include-cpp-prefix",
             objc_include_cpp_prefix,
             "--objcpp-include-prefix",
