@@ -73,6 +73,16 @@ def get_parsed_build_type_list(params, target_config):
 
 
 # -----------------------------------------------------------------------------
+def get_first_parsed_build_type_list(params, target_config):
+    build_types = get_parsed_build_type_list(params, target_config)
+
+    if build_types:
+        return build_types[-1]
+    else:
+        return const.BUILD_TYPE_DEFAULT
+
+
+# -----------------------------------------------------------------------------
 def get_parsed_group_list(params, target_config):
     param_groups = l.get_arg_list_values(params["args"], "--group")
     target_archs = target_config["archs"] if "archs" in target_config else None

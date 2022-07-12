@@ -126,40 +126,42 @@ def get_build_type(build_type):
     # RelWithDebInfo: optimized, with debug info, but no debug (output) code or asserts
     # MinSizeRel: same as Release but optimizing for size rather than speed
 
-    if build_type:
-        if build_type.lower() == "debug":
-            build_type = "Debug"
-        elif build_type.lower() == "release":
-            build_type = "Release"
-        elif build_type.lower() == "rel_with_deb_info":
-            build_type = "RelWithDebInfo"
-        elif build_type.lower() == "rel-with-deb-info":
-            build_type = "RelWithDebInfo"
-        elif build_type.lower() == "release_with_debug_info":
-            build_type = "RelWithDebInfo"
-        elif build_type.lower() == "release-with-debug-info":
-            build_type = "RelWithDebInfo"
-        elif build_type.lower() == "relwithdebinfo":
-            build_type = "RelWithDebInfo"
-        elif build_type.lower() == "min_size_rel":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "min-size-rel":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "min_size_release":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "min-size-release":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "minimum_size_release":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "minimum-size-release":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "minimize_size_release":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "minimize-size-release":
-            build_type = "MinSizeRel"
-        elif build_type.lower() == "minsizerel":
-            build_type = "MinSizeRel"
-    else:
-        build_type = "Debug"
+    if not build_type:
+        build_type = const.BUILD_TYPE_DEFAULT
 
-    return build_type
+    build_type = build_type.lower()
+
+    if build_type == "debug":
+        return "Debug"
+    elif build_type == "release":
+        return "Release"
+    elif build_type == "rel_with_deb_info":
+        return "RelWithDebInfo"
+    elif build_type == "rel-with-deb-info":
+        return "RelWithDebInfo"
+    elif build_type == "release_with_debug_info":
+        return "RelWithDebInfo"
+    elif build_type == "release-with-debug-info":
+        return "RelWithDebInfo"
+    elif build_type == "relwithdebinfo":
+        return "RelWithDebInfo"
+    elif build_type == "min_size_rel":
+        return "MinSizeRel"
+    elif build_type == "min-size-rel":
+        return "MinSizeRel"
+    elif build_type == "min_size_release":
+        return "MinSizeRel"
+    elif build_type == "min-size-release":
+        return "MinSizeRel"
+    elif build_type == "minimum_size_release":
+        return "MinSizeRel"
+    elif build_type == "minimum-size-release":
+        return "MinSizeRel"
+    elif build_type == "minimize_size_release":
+        return "MinSizeRel"
+    elif build_type == "minimize-size-release":
+        return "MinSizeRel"
+    elif build_type == "minsizerel":
+        return "MinSizeRel"
+    else:
+        l.e("Invalid build type: {0}".format(build_type))
