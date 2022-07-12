@@ -224,7 +224,7 @@ def get_build_type(build_type):
 
     if build_type == "debug":
         return "Debug"
-    elif build_type == "release":
+    elif build_type.startswith("rel"):
         return "Release"
     else:
         l.e("Invalid build type: {0}".format(build_type))
@@ -236,7 +236,7 @@ def get_build_type_dir(build_type):
 
     if build_type == "debug":
         return "Debug"
-    elif build_type == "release":
+    elif build_type.startswith("rel"):
         return "Release"
     else:
         l.e("Invalid build type: {0}".format(build_type))
