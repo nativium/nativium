@@ -114,10 +114,14 @@ def generate(params):
 
 # -----------------------------------------------------------------------------
 def get_build_type_dir(build_type):
-    if build_type.lower() == "debug":
-        return "debug"
+    build_type = build_type.lower()
+
+    if build_type == "debug":
+        return "Debug"
+    elif build_type == "release":
+        return "Release"
     else:
-        return "release"
+        l.e("Invalid build type: {0}".format(build_type))
 
 
 # -----------------------------------------------------------------------------

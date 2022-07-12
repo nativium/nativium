@@ -129,7 +129,7 @@ def publish(params):
         target_config["append_version"] if "append_version" in target_config else None
     )
     force = ls.list_has_value(params["args"], "--force")
-    build_type = ls.get_arg_list_value(params["args"], "--build")
+    build_type = util.get_first_parsed_build_type_list(params, target_config)
 
     aws_key_id = os.getenv(const.AWS_KEY_ID_ENV)
     aws_secret_key = os.getenv(const.AWS_SECRET_KEY_ENV)
@@ -149,20 +149,7 @@ def publish(params):
     l.i("Version defined: {0}".format(version))
 
     # build type
-    if not build_type:
-        build_type = "debug"
-
-    found = False
-
-    for item in target_config["build_types"]:
-        if item.lower() == build_type.lower():
-            build_type = item
-            found = True
-
-    if found:
-        l.i("Build type defined: {0}".format(build_type))
-    else:
-        l.e("Build type is invalid: {0}".format(build_type))
+    l.i("Build type defined: {0}".format(build_type))
 
     # output folder
     output_path = os.path.join(proj_path, "dist", target_name, build_type, "wasm")

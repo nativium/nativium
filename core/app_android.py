@@ -8,7 +8,7 @@ from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
 from config import apps as config
-from core import tool
+from core import const, tool
 
 
 # -----------------------------------------------------------------------------
@@ -361,15 +361,17 @@ def get_android_path(params):
 def get_build_type(params):
     build_type = ls.get_arg_list_value(params["args"], "--build")
 
-    if build_type:
-        if build_type.lower() == "debug":
-            build_type = "Debug"
-        elif build_type.lower() == "release":
-            build_type = "Release"
-    else:
-        build_type = "Debug"
+    if not build_type:
+        build_type = const.BUILD_TYPE_DEFAULT
 
-    return build_type
+    build_type = build_type.lower()
+
+    if build_type == "debug":
+        return "Debug"
+    elif build_type == "release":
+        return "Release"
+    else:
+        l.e("Invalid build type: {0}".format(build_type))
 
 
 # -----------------------------------------------------------------------------
