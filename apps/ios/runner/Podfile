@@ -5,13 +5,14 @@ TVOS_PLATFORM = '14.0'
 NATIVIUM_LIBRARY_LOCAL_PATH = false
 NATIVIUM_LIBRARY_LOCAL_SERVER = false
 NATIVIUM_LIBRARY_VERSION = '1.0.0'
+NATIVIUM_IS_DEBUGGABLE = false
 
 # settings
 use_frameworks!
 
 # dependencies
 def shared_pods
-
+  
   if NATIVIUM_LIBRARY_LOCAL_PATH
     pod 'nativium', :path => '../../../dist/ios'
   elsif NATIVIUM_LIBRARY_LOCAL_SERVER
@@ -19,13 +20,13 @@ def shared_pods
   else
     pod 'nativium', :http => 'https://nativium.s3.amazonaws.com/dist/ios/' + NATIVIUM_LIBRARY_VERSION + '/dist.tar.gz'
   end
-
+  
 end
 
 target 'Runner' do
   platform :ios, IOS_PLATFORM
   shared_pods
-
+  
   target 'Runner-Tests' do
     # specific pods
   end
@@ -54,18 +55,69 @@ post_integrate do |installer|
   project.targets.each do |target|
     target.build_configurations.each do |config|
       if NATIVIUM_LIBRARY_LOCAL_PATH
+        item_name = "target: #{target.name} and config: #{config.name}"
+        
+        print("· Configuration for #{item_name}\n")
+        
         config.build_settings["USER_HEADER_SEARCH_PATHS"] = "$(inherited) "
-
-        build_type_dir = Dir.glob("../../../dist/ios/*").first()
-        package_dir = Dir.glob("#{build_type_dir}/*").first()
-        package_group_dir = Dir.glob("#{package_dir}/*").first()
-
-        config.build_settings["USER_HEADER_SEARCH_PATHS"] << "${PROJECT_DIR}/#{package_group_dir}/nativium.framework/Headers"
+        
+        # distribution directory
+        distribution_dir = "../../../dist/ios"
+        
+        if distribution_dir.blank?
+          raise "Distribution directory is empty"
+        end
+        
+        print("Distribution directory: #{distribution_dir}\n")
+        
+        # build type directory
+        if NATIVIUM_IS_DEBUGGABLE
+          build_type = "debug"
+        else
+          build_type = "release"
+        end
+        
+        build_type_dir = "#{distribution_dir}/#{build_type}"
+        
+        if build_type_dir.blank?
+          raise "Build type directory is empty"
+        end
+        
+        print("Build type directory: #{build_type_dir}\n")
+        
+        # package directory
+        package_dir = Dir.glob("#{build_type_dir}/*").reject { |f| File.file?(f) }.first()
+        
+        if package_dir.blank?
+          raise "Package directory is empty"
+        end
+        
+        print("Package directory: #{package_dir}\n")
+        
+        # package directory
+        package_group_dir = Dir.glob("#{package_dir}/*").reject { |f| File.file?(f) }.first()
+        
+        if package_group_dir.blank?
+          raise "Package group directory is empty"
+        end
+        
+        print("Package group directory: #{package_group_dir}\n")
+        
+        # headers directory
+        headers_directory = "${PROJECT_DIR}/#{package_group_dir}/nativium.framework/Headers"
+        
+        print("Headers directory: #{headers_directory}\n")
+        print("\n")
+        
+        # build settings
+        config.build_settings["USER_HEADER_SEARCH_PATHS"] << headers_directory
       else
+        # build settings
         config.build_settings.delete "USER_HEADER_SEARCH_PATHS"
+        config.build_settings.delete "XYZ"
       end
     end
   end
-
+  
   project.save
 end
