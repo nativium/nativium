@@ -41,3 +41,12 @@ But if you have an `error` like this, you don't have this problem in your python
 ```
 KeyError: 'SDKROOT'
 ```
+
+### Application for iOS don't archive using local path
+
+If you are using `local path` enabled inside `apps/ios/runner/Podfile` and get an error like `framework not found` when archive your application, use `local server` instead, changing the file `apps/ios/runner/Podfile` to:
+
+```
+NATIVIUM_LIBRARY_LOCAL_PATH = false
+NATIVIUM_LIBRARY_LOCAL_SERVER = true
+```
