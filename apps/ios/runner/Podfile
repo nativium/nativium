@@ -2,6 +2,7 @@
 IOS_PLATFORM = '9.0'
 WATCHOS_PLATFORM = '6.2'
 TVOS_PLATFORM = '14.0'
+
 NATIVIUM_LIBRARY_LOCAL_PATH = false
 NATIVIUM_LIBRARY_LOCAL_SERVER = false
 NATIVIUM_LIBRARY_VERSION = '1.0.0'
@@ -94,7 +95,7 @@ post_integrate do |installer|
 
         print("Package directory: #{package_dir}\n")
 
-        # package directory
+        # package group directory
         package_group_dir = Dir.glob("#{package_dir}/*").reject { |f| File.file?(f) }.first()
 
         if package_group_dir.blank?
