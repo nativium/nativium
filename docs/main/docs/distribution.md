@@ -44,20 +44,28 @@ Obs 6: You can force AWS S3 delete file if it exists using parameter `--force`.
 
 ## Android
 
-The Android sample project is configured with a custom task to download SDK from AWS S3. You can change to local path or attach SDK project as module.
+The Android sample project is configured with a custom task to download SDK from AWS S3 or local server. You can change to local path or attach SDK project as module.
 
 1. Local repository mode
 2. Remote repository mode
-2. Module project
+3. Module project
+4. Local server mode
+
+When use local server, you need start a simple HTTP server to gradle tool download the file **dist.tar.gz** that was generated. You can do it with the command:
+
+```
+python3 nativium.py target android serve
+```
 
 ## iOS
 
-The iOS sample project is configured with a custom Pod to download SDK from AWS S3. You can change to local path or remote file.
+The iOS sample project is configured with a custom Pod to download SDK from AWS S3 or local server. You can change to local path or remote file.
 
 1. Local repository mode
 2. Remote repository mode
+3. Local server mode
 
-When use local path, you need start a simple HTTP server to cocoapods tool download the file **dist.tar.gz** that was generated. You can do it with the command:
+When use local server, you need start a simple HTTP server to cocoapods tool download the file **dist.tar.gz** that was generated. You can do it with the command:
 
 ```
 python3 nativium.py target ios serve
