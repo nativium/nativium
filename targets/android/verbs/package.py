@@ -235,8 +235,8 @@ def get_build_type_dir(build_type):
     build_type = build_type.lower()
 
     if build_type == "debug":
-        return "Debug"
+        return "debug"
     elif build_type.startswith("rel"):
-        return "Release"
+        return "release"
     else:
         l.e("Invalid build type: {0}".format(build_type))
