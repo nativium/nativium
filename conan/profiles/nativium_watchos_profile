@@ -3,6 +3,7 @@ include(default)
 [settings]
 os=watchOS
 os.version=5.0
+os.sdk=watchos
 arch=armv8_32
 
 [build_requires]

@@ -69,6 +69,10 @@ def add_target_setup_common_args(
     run_args.append("-s:h")
     run_args.append("arch={0}".format(arch["conan_arch"]))
 
+    if "sdk" in arch:
+        run_args.append("-s:h")
+        run_args.append("os.sdk={0}".format(arch["sdk"]))
+
     run_args.append("-o")
     run_args.append("nativium_target={0}".format(target_name))
 

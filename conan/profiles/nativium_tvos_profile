@@ -3,6 +3,7 @@ include(default)
 [settings]
 os=tvOS
 os.version=11.0
+os.sdk=appletvos
 arch=armv8
 
 [build_requires]
