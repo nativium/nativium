@@ -1,5 +1,17 @@
 # -----------------------------------------------------------------------------
 def run(proj_path, target_name, params):
+    # build types
+    has_debug = True
+    has_release = True
+
+    build_types = []
+
+    if has_debug:
+        build_types.append("debug")
+
+    if has_release:
+        build_types.append("release")
+
     # archs
     has_mac_x64 = True
     has_mac_arm64 = True
@@ -39,7 +51,7 @@ def run(proj_path, target_name, params):
         "product_name": "Nativium",
         "version": "1.0.0",
         "version_code": "1",
-        "build_types": ["debug", "release"],
+        "build_types": build_types,
         "universal_binary": True,
         "assets_dir": "",
         "archs": archs,
