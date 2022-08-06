@@ -31,16 +31,6 @@ set(NATIVIUM_VERSION_CODE
     CACHE STRING "Version Code"
 )
 
-set(NATIVIUM_ARCH
-    "x86_64"
-    CACHE STRING "Architecture"
-)
-
-set(NATIVIUM_PLATFORM_ARCH
-    "arm64"
-    CACHE STRING "Platform Architecture"
-)
-
 set(NATIVIUM_GROUP
     "ios"
     CACHE STRING "Group"
@@ -55,22 +45,23 @@ project(${NATIVIUM_PROJECT_NAME})
 # common
 include(${NATIVIUM_ROOT_PATH}/cmake/common.cmake)
 
+# architecture
+nativium_set_current_arch()
+
+set(NATIVIUM_ARCH
+    ${NATIVIUM_CURRENT_ARCH}
+    CACHE STRING "Architecture"
+)
+
+set(NATIVIUM_PLATFORM_ARCH
+    ${NATIVIUM_CURRENT_ARCH}
+    CACHE STRING "Platform Architecture"
+)
+
 # target
 if(NATIVIUM_TARGET STREQUAL "")
-    if(NATIVIUM_SYSTEM_WINDOWS)
-        set(NATIVIUM_DEFAULT_TARGET "windows")
-    endif()
-
-    if(NATIVIUM_SYSTEM_APPLE)
-        set(NATIVIUM_DEFAULT_TARGET "macos")
-    endif()
-
-    if(NATIVIUM_SYSTEM_LINUX)
-        set(NATIVIUM_DEFAULT_TARGET "linux")
-    endif()
-
+    nativium_set_default_target()
     message(STATUS "Nativium: Using default target (${NATIVIUM_DEFAULT_TARGET})")
-
     set(NATIVIUM_TARGET "${NATIVIUM_DEFAULT_TARGET}")
 endif()
 

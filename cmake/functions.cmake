@@ -95,3 +95,23 @@ macro(nativium_add_conan_build_info)
         message(FATAL_ERROR "Did you forget to run the setup target action? Conan file for dependencies was not found in path: ${NATIVIUM_BUILD_PATH}/conan/conanbuildinfo.cmake")
     endif()
 endmacro()
+
+# get current architecture
+macro(nativium_set_current_arch)
+    set(NATIVIUM_CURRENT_ARCH "${CMAKE_HOST_SYSTEM_PROCESSOR}")
+endmacro()
+
+# set default target
+macro(nativium_set_default_target)
+    if(NATIVIUM_SYSTEM_WINDOWS)
+        set(NATIVIUM_DEFAULT_TARGET "windows")
+    endif()
+
+    if(NATIVIUM_SYSTEM_APPLE)
+        set(NATIVIUM_DEFAULT_TARGET "macos")
+    endif()
+
+    if(NATIVIUM_SYSTEM_LINUX)
+        set(NATIVIUM_DEFAULT_TARGET "linux")
+    endif()
+endmacro()
