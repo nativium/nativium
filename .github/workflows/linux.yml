@@ -61,6 +61,13 @@ jobs:
       - name: Nativium - Test Run
         run: python3 nativium.py target tests coverage
 
+      - name: Code Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: build/tests/debug/x86_64/lcov.coverage.info
+          fail_ci_if_error: true
+          verbose: true
+
       - name: Nativium - Setup
         run: python3 nativium.py target ${{ matrix.config.target }} setup
 
