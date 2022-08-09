@@ -31,3 +31,9 @@ HTTP_SERVER_PORT = "8000"
 
 BUILD_TYPE_DEFAULT = "debug"
 RUN_SOURCE_DEFAULT = "build"
+
+CODE_COVERAGE_EXCLUDE_LIST = [
+    "*Xcode.app*",
+    "*.conan*",
+    "*/tests/*",
+]

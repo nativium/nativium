@@ -69,6 +69,13 @@ def run(params):
                         run_args.append("-s"),
                         run_args.append("os.version={0}".format(arch["min_version"]))
 
+                    run_args.append("-o")
+                    run_args.append(
+                        "nativium_code_coverage={0}".format(
+                            target_config["code_coverage"]
+                        )
+                    )
+
                     # final run args
                     run_args.append("--build=missing")
                     run_args.append("--update")

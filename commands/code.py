@@ -51,7 +51,7 @@ def code_format(params):
     # process
     if all_files:
         # format c++ files
-        has_tool = tool.check_cpp_formatter()
+        has_tool = tool.check_tool_cpp_formatter()
 
         if has_tool:
             path_list = [
@@ -84,7 +84,7 @@ def code_format(params):
                 l.i("No C++ files found to format")
 
         # format python files
-        has_tool = tool.check_python_formatter()
+        has_tool = tool.check_tool_python_formatter()
 
         if has_tool:
             path_list = [
@@ -115,7 +115,7 @@ def code_format(params):
                 l.i("No Python files found to format")
 
         # format cmake files
-        has_tool = tool.check_cmake_formatter()
+        has_tool = tool.check_tool_cmake_formatter()
 
         if has_tool:
             path_list = [
@@ -148,7 +148,7 @@ def code_format(params):
                 l.i("No CMake files found to format")
     else:
         # format c++ files
-        has_tool = tool.check_cpp_formatter()
+        has_tool = tool.check_tool_cpp_formatter()
 
         if has_tool:
             path_list = [
@@ -217,7 +217,7 @@ def code_format(params):
                 l.i("No C++ files found to format")
 
         # format python files
-        has_tool = tool.check_python_formatter()
+        has_tool = tool.check_tool_python_formatter()
 
         if has_tool:
             path_list = [
@@ -294,7 +294,7 @@ def code_format(params):
                 l.i("No Python files found to format")
 
         # format cmake files
-        has_tool = tool.check_cmake_formatter()
+        has_tool = tool.check_tool_cmake_formatter()
 
         if has_tool:
             path_list = [

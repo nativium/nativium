@@ -22,6 +22,7 @@ def run(proj_path, target_name, params):
         "build_types": build_types,
         "assets_dir": get_assets_dir(),
         "archs": get_archs(),
+        "code_coverage": True,
     }
 
 
