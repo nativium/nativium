@@ -22,6 +22,12 @@
     <a href="https://github.com/nativium/nativium/actions/workflows/docs.yml"><img src="https://github.com/nativium/nativium/actions/workflows/docs.yml/badge.svg"></a>
 </p>
 
+<br>
+
+<p align="center">
+    <a href="https://codecov.io/github/nativium/nativium?branch=main"><img src="https://img.shields.io/codecov/c/github/nativium/nativium/main.svg?sanitize=true" alt="Coverage Status"></a>
+</p>
+
 ## About
 
 Write a **single code** in C++ and compile for **any platform**.
