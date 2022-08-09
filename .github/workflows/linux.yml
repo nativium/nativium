@@ -40,6 +40,9 @@ jobs:
         with:
           version: "1.10.0"
 
+      - name: Install LCOV
+        run: brew install lcov
+
       - name: Nativium - Install Python Dependencies
         run: pip3 install -r requirements.txt
 
@@ -55,13 +58,8 @@ jobs:
       - name: Nativium - Test Run
         run: python3 nativium.py target tests run
 
-      - name: Report code coverage
-        uses: zgosalvez/github-actions-report-lcov@v1
-        with:
-          coverage-files: build/tests/lcov.*.info
-          minimum-coverage: 90
-          artifact-name: code-coverage-report
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Nativium - Test Run
+        run: python3 nativium.py target tests coverage
 
       - name: Nativium - Setup
         run: python3 nativium.py target ${{ matrix.config.target }} setup
