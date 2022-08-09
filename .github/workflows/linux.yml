@@ -40,6 +40,9 @@ jobs:
         with:
           version: "1.10.0"
 
+      - name: Install LCOV
+        run: brew install lcov
+
       - name: Nativium - Install Python Dependencies
         run: pip3 install -r requirements.txt
 
@@ -54,6 +57,16 @@ jobs:
 
       - name: Nativium - Test Run
         run: python3 nativium.py target tests run
+
+      - name: Nativium - Test Coverage
+        run: python3 nativium.py target tests coverage
+
+      - name: Code Coverage - Upload
+        uses: codecov/codecov-action@v3
+        with:
+          files: build/tests/debug/x86_64/lcov.coverage.info
+          fail_ci_if_error: true
+          verbose: true
 
       - name: Nativium - Setup
         run: python3 nativium.py target ${{ matrix.config.target }} setup

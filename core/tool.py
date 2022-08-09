@@ -76,7 +76,7 @@ def check_tool_cocoapods():
 
 
 # -----------------------------------------------------------------------------
-def check_cpp_formatter():
+def check_tool_cpp_formatter():
     try:
         subprocess.check_output(["clang-format", "--version"])
         return True
@@ -88,7 +88,7 @@ def check_cpp_formatter():
 
 
 # -----------------------------------------------------------------------------
-def check_python_formatter():
+def check_tool_python_formatter():
     try:
         subprocess.check_output(["black", "--version"])
         return True
@@ -98,7 +98,7 @@ def check_python_formatter():
 
 
 # -----------------------------------------------------------------------------
-def check_cmake_formatter():
+def check_tool_cmake_formatter():
     try:
         subprocess.check_output(["cmake-format", "--version"])
         return True
@@ -116,4 +116,26 @@ def check_tool_mkdocs():
         return True
     except OSError:
         l.e("Mkdocs is not installed, check: https://www.mkdocs.org/")
+        return False
+
+
+# -----------------------------------------------------------------------------
+def check_tool_lcov():
+    try:
+        subprocess.check_output(["lcov", "--version"])
+        return True
+    except OSError:
+        l.e("LCOV is not installed, check: https://github.com/linux-test-project/lcov")
+        return False
+
+
+# -----------------------------------------------------------------------------
+def check_tool_lcov_genhtml():
+    try:
+        subprocess.check_output(["genhtml", "--version"])
+        return True
+    except OSError:
+        l.e(
+            "GenHTML from LCOV is not installed, check: https://github.com/linux-test-project/lcov"
+        )
         return False

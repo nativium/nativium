@@ -28,6 +28,7 @@ class TargetConan(ConanFile):
         "nativium_target": "ANY",
         "nativium_group": "ANY",
         "nativium_entrypoint": "ANY",
+        "nativium_code_coverage": [True, False],
     }
     default_options = {
         "shared": False,
@@ -41,6 +42,7 @@ class TargetConan(ConanFile):
         "nativium_target": "ANY",
         "nativium_group": "",
         "nativium_entrypoint": "",
+        "nativium_code_coverage": False,
     }
     exports_sources = "*"
     generators = "cmake"
@@ -89,6 +91,10 @@ class TargetConan(ConanFile):
 
         cmake.definitions["NATIVIUM_ENTRYPOINT"] = self.options.get_safe(
             "nativium_entrypoint"
+        )
+
+        cmake.definitions["NATIVIUM_CODE_COVERAGE"] = self.options.get_safe(
+            "nativium_code_coverage"
         )
 
         # configure and build

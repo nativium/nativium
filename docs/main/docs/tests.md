@@ -24,3 +24,25 @@ On tests folder you have some folders:
 On target tests you have some folders:
 
 - **cmake:** contains cmake module instructions by platform
+
+## Code coverage
+
+The tests come configure to export coverage data when the tests run.
+
+Coverage option can be enabled of disabled in tests config target: `targets/tests/config/target.py`.
+
+You can run coverage tool with the following command:
+
+```
+python3 nativium.py target tests coverage
+```
+
+After run coverage tool open the HTML page from last coverage information, example:
+
+```
+open build/tests/debug/x86_64/coverage-html/index.html
+```
+
+You need have installed these tool:
+
+* LCOV (macOS: `brew install lcov`, Linux: `apt install lcov`)
