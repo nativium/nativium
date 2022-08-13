@@ -22,7 +22,7 @@ def run(proj_path, target_name, params):
         archs.extend(
             [
                 {
-                    "arch": "wasm",
+                    "arch": "wasm32",
                     "conan_arch": "wasm",
                     "conan_profile": "nativium_wasm_profile",
                 },
