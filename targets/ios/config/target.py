@@ -23,6 +23,7 @@ def run(proj_path, target_name, params):
     has_ios_arm32 = True
     has_ios_arm64 = True
     has_ios_simulator_x64 = True
+    has_ios_simulator_arm64 = True
     has_tvos_arm64 = True
     has_tvos_simulator_x64 = True
     has_watchos_arm32 = True
@@ -74,6 +75,23 @@ def run(proj_path, target_name, params):
                 {
                     "arch": "x86_64",
                     "conan_arch": "x86_64",
+                    "conan_profile": "nativium_ios_profile",
+                    "min_version": "9.0",
+                    "supported_platform": "iPhoneSimulator",
+                    "enable_bitcode": False,
+                    "sdk": "iphonesimulator",
+                    "group": "ios_simulator",
+                },
+            ]
+        )
+
+    # ios simulator - arm64
+    if has_ios_simulator_arm64:
+        archs.extend(
+            [
+                {
+                    "arch": "arm64",
+                    "conan_arch": "armv8",
                     "conan_profile": "nativium_ios_profile",
                     "min_version": "9.0",
                     "supported_platform": "iPhoneSimulator",
