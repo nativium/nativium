@@ -60,7 +60,7 @@ post_integrate do |installer|
 
         print("· Configuration for #{item_name}\n")
 
-        config.build_settings["USER_HEADER_SEARCH_PATHS"] = "$(inherited) "
+        config.build_settings["USER_HEADER_SEARCH_PATHS"] = "$(inherited)"
 
         # distribution directory
         distribution_dir = "../../../dist/ios"
@@ -111,7 +111,7 @@ post_integrate do |installer|
         print("\n")
 
         # build settings
-        config.build_settings["USER_HEADER_SEARCH_PATHS"] << headers_directory
+        config.build_settings["USER_HEADER_SEARCH_PATHS"] << " #{headers_directory}"
       else
         # build settings
         config.build_settings.delete "USER_HEADER_SEARCH_PATHS"
