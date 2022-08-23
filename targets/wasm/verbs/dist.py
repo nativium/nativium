@@ -152,7 +152,7 @@ def publish(params):
     l.i("Build type defined: {0}".format(build_type))
 
     # output folder
-    output_path = os.path.join(proj_path, "dist", target_name, build_type, "wasm")
+    output_path = os.path.join(proj_path, "dist", target_name, build_type, "wasm32")
 
     if not f.dir_exists(output_path):
         l.e("Distribution folder not exists: {0}".format(output_path))
