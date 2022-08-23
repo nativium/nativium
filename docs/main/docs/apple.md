@@ -211,4 +211,4 @@ end
 
 2 - Add target data in file `targets/ios/config/target.py`.
 
-3 - Remove `Exclude Architectures` from Xcode project watchOS `extension` project.
+3 - Remove `Exclude Architectures` from Xcode project watchOS `extension` target.
