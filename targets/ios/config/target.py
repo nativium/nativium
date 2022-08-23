@@ -26,9 +26,11 @@ def run(proj_path, target_name, params):
     has_ios_simulator_arm64 = True
     has_tvos_arm64 = True
     has_tvos_simulator_x64 = True
+    has_tvos_simulator_arm64 = True
     has_watchos_arm32 = True
     has_watchos_arm64 = True
     has_watchos_simulator_x64 = True
+    has_watchos_simulator_arm64 = True
     has_mac_catalyst_x64 = True
     has_mac_catalyst_arm64 = True
 
@@ -136,6 +138,23 @@ def run(proj_path, target_name, params):
             ]
         )
 
+    # tvos simulator - arm64
+    if has_tvos_simulator_arm64:
+        archs.extend(
+            [
+                {
+                    "arch": "arm64",
+                    "conan_arch": "armv8",
+                    "conan_profile": "nativium_tvos_profile",
+                    "min_version": "11.0",
+                    "supported_platform": "AppleTVSimulator",
+                    "enable_bitcode": False,
+                    "sdk": "appletvsimulator",
+                    "group": "tvos_simulator",
+                },
+            ]
+        )
+
     # watchos - arm32
     if has_watchos_arm32:
         archs.extend(
@@ -170,13 +189,30 @@ def run(proj_path, target_name, params):
             ]
         )
 
-    # watchos - x64
+    # watchos simulator - x64
     if has_watchos_simulator_x64:
         archs.extend(
             [
                 {
                     "arch": "x86_64",
                     "conan_arch": "x86_64",
+                    "conan_profile": "nativium_watchos_profile",
+                    "min_version": "5.0",
+                    "supported_platform": "WatchSimulator",
+                    "enable_bitcode": False,
+                    "sdk": "watchsimulator",
+                    "group": "watchos_simulator",
+                },
+            ]
+        )
+
+    # watchos simulator - arm64
+    if has_watchos_simulator_arm64:
+        archs.extend(
+            [
+                {
+                    "arch": "arm64",
+                    "conan_arch": "armv8",
                     "conan_profile": "nativium_watchos_profile",
                     "min_version": "5.0",
                     "supported_platform": "WatchSimulator",
@@ -205,7 +241,7 @@ def run(proj_path, target_name, params):
             ]
         )
 
-    # mac catalyst arm
+    # mac catalyst arm64
     if has_mac_catalyst_arm64:
         archs.extend(
             [
