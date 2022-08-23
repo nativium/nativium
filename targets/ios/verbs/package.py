@@ -1,5 +1,4 @@
 import os
-from logging import root
 
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
@@ -21,7 +20,7 @@ def run(params):
 
     no_framework = ls.list_has_value(params["args"], "--no-framework")
     no_xcframework = ls.list_has_value(params["args"], "--no-xcframework")
-    is_dev = ls.list_has_value(params["args"], "--dev")
+    is_local = ls.list_has_value(params["args"], "--local")
 
     # check archs
     if not archs:
@@ -114,7 +113,7 @@ def run(params):
     )
 
     # root folder replace
-    if is_dev:
+    if is_local:
         if build_types and len(build_types) > 0:
             for build_type in build_types:
                 root_dir = os.path.dirname(os.path.abspath(target_pod_file_path))

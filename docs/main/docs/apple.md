@@ -179,19 +179,19 @@ if (@available(macOS 10.9, iOS 9, tvOS 11, watchOS 5, *)) {
 }
 ```
 
-## Package for development
+## Package for local development
 
-If you are developing the framework locally, you can set the Podfile variable `NATIVIUM_LIBRARY_LOCAL_PATH` to `true` and package the framework for development using `--dev` flag. Example:
+If you are developing the framework locally, you can set the Podfile variable `NATIVIUM_LIBRARY_LOCAL_PATH` to `true` and package the framework for development using `--local` flag. Example:
 
 ```
-python3 nativium.py target ios package --no-framework --dev
+python3 nativium.py target ios package --no-framework --local
 ```
 
-The flag `--dev` change all paths inside `podspec` to your local path.
+The flag `--local` change all paths inside `podspec` to your local path.
 
 This is useful if you don't want start the local HTTP server to Cocoapods download the binary archive.
 
-And when you package for development with local HTTP server or for production, remove the `--dev` flag, because it is exclusive for development with local path enabled.
+And when you package for development with local HTTP server or for production, remove the `--local` flag, because it is exclusive for development with local path enabled.
 
 ## Simulator for watchOS
 
