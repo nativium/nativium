@@ -1,5 +1,4 @@
 import os
-from logging import root
 
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
