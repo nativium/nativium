@@ -14,13 +14,13 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '5.0'
   s.tvos.deployment_target = '11.0'
 
-  s.public_header_files = '{BUILD_TYPE}/{PROJECT_NAME}.{PACKAGE_EXTENSION}/{XCFRAMEWORK_GROUP_DIR}/{PROJECT_NAME}.framework/Headers/**/*.h'
-  s.source_files = '{BUILD_TYPE}/{PROJECT_NAME}.{PACKAGE_EXTENSION}/{XCFRAMEWORK_GROUP_DIR}/{PROJECT_NAME}.framework/Headers/**/*.h'
+  s.public_header_files = '{BUILD_TYPE}/{FRAMEWORK_DIR}/Headers/**/*.h'
+  s.source_files = '{BUILD_TYPE}/{FRAMEWORK_DIR}/Headers/**/*.h'
 
   s.requires_arc = true
 
   s.user_target_xcconfig = {
-    'USER_HEADER_SEARCH_PATHS' => '"$(PODS_ROOT)/{PROJECT_NAME}/{BUILD_TYPE}" "$(PODS_ROOT)/{PROJECT_NAME}/{BUILD_TYPE}/{PROJECT_NAME}.{PACKAGE_EXTENSION}/{XCFRAMEWORK_GROUP_DIR}/{PROJECT_NAME}.framework/Headers"',
-    'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/{PROJECT_NAME}/{BUILD_TYPE}"'
+    'USER_HEADER_SEARCH_PATHS' => '"{PACKAGE_ROOT_DIR}/{FRAMEWORK_DIR}/Headers"',
+    'FRAMEWORK_SEARCH_PATHS' => '"{PACKAGE_ROOT_DIR}"'
   }
 end

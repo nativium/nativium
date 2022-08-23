@@ -1,4 +1,5 @@
 import os
+from logging import root
 
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
@@ -20,6 +21,7 @@ def run(params):
 
     no_framework = ls.list_has_value(params["args"], "--no-framework")
     no_xcframework = ls.list_has_value(params["args"], "--no-xcframework")
+    is_dev = ls.list_has_value(params["args"], "--dev")
 
     # check archs
     if not archs:
@@ -71,22 +73,23 @@ def run(params):
     # add strip framework script (only required if final project use framework instead of xcframework)
     l.i("Adding strip framework script...")
 
-    target_scripts_dir = os.path.join(
-        "targets",
-        target_name,
-        "support",
-        "scripts",
-    )
-
-    f.copy_dir(
-        target_scripts_dir,
-        os.path.join(
-            "dist",
+    if not no_framework:
+        target_scripts_dir = os.path.join(
+            "targets",
             target_name,
+            "support",
             "scripts",
-        ),
-        symlinks=True,
-    )
+        )
+
+        f.copy_dir(
+            target_scripts_dir,
+            os.path.join(
+                "dist",
+                target_name,
+                "scripts",
+            ),
+            symlinks=True,
+        )
 
     # cocoapods
     l.i("Adding cocoapods script...")
@@ -110,10 +113,35 @@ def run(params):
         target_pod_file_path,
     )
 
+    # root folder replace
+    if is_dev:
+        if build_types and len(build_types) > 0:
+            for build_type in build_types:
+                root_dir = os.path.dirname(os.path.abspath(target_pod_file_path))
+                root_dir = os.path.join(root_dir, build_type)
+                f.replace_in_file(target_pod_file_path, "{PACKAGE_ROOT_DIR}", root_dir)
+    else:
+        f.replace_in_file(
+            target_pod_file_path,
+            "{PACKAGE_ROOT_DIR}",
+            "$(PODS_ROOT)/{PROJECT_NAME}/{BUILD_TYPE}",
+        )
+
     # build type replace
     if build_types and len(build_types) > 0:
         for build_type in build_types:
             f.replace_in_file(target_pod_file_path, "{BUILD_TYPE}", build_type)
+
+    # framework dir replace
+    if not no_framework:
+        f.replace_in_file(
+            target_pod_file_path,
+            "{FRAMEWORK_DIR}",
+            "{0}.{1}".format(
+                target_config["project_name"],
+                "framework",
+            ),
+        )
 
     # xcframework group dir replace
     if not no_xcframework:
@@ -134,6 +162,18 @@ def run(params):
                         target_pod_file_path,
                         "{XCFRAMEWORK_GROUP_DIR}",
                         first_group,
+                    )
+
+                    f.replace_in_file(
+                        target_pod_file_path,
+                        "{FRAMEWORK_DIR}",
+                        "{0}.{1}/{2}/{3}.{4}".format(
+                            target_config["project_name"],
+                            "xcframework",
+                            first_group,
+                            target_config["project_name"],
+                            "framework",
+                        ),
                     )
 
     # project name replace

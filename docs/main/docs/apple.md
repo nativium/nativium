@@ -25,8 +25,8 @@ conan profile update settings.arch_build="x86_64" default
 4. Add to your target **Build Settings** that is a **watch extension** in row **Excluded Architectures**:
 
 ```
-> Debug > Any watchOS Simulator SDK > i386 arm64      
-> Release > Any watchOS Simulator SDK > i386 arm64  
+> Debug > Any watchOS Simulator SDK > i386      
+> Release > Any watchOS Simulator SDK > i386  
 ```
 
 ## tvOS
@@ -38,12 +38,17 @@ conan profile update settings.arch_build="x86_64" default
 ## Sample of Podfile
 
 ```
+source 'https://github.com/CocoaPods/Specs.git'
+
 # variables
 IOS_PLATFORM = '9.0'
 WATCHOS_PLATFORM = '6.2'
 TVOS_PLATFORM = '14.0'
-NATIVIUM_LIBRARY_LOCAL = false
+
+NATIVIUM_LIBRARY_LOCAL_PATH = true
+NATIVIUM_LIBRARY_LOCAL_SERVER = false
 NATIVIUM_LIBRARY_VERSION = '1.0.0'
+NATIVIUM_IS_DEBUGGABLE = false
 
 # settings
 use_frameworks!
@@ -51,9 +56,11 @@ use_frameworks!
 # dependencies
 def shared_pods
 
-  if NATIVIUM_LIBRARY_LOCAL
+  if NATIVIUM_LIBRARY_LOCAL_PATH
+    pod 'nativium', :path => '../../../dist/ios'
+  elsif NATIVIUM_LIBRARY_LOCAL_SERVER
     pod 'nativium', :http => 'http://127.0.0.1:8000/dist.tar.gz'
-    else
+  else
     pod 'nativium', :http => 'https://nativium.s3.amazonaws.com/dist/ios/' + NATIVIUM_LIBRARY_VERSION + '/dist.tar.gz'
   end
 
@@ -79,13 +86,11 @@ target 'Runner-Tv' do
 end
 
 post_install do |installer|
-
   installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-              config.build_settings['EXCLUDED_ARCHS[sdk=watchsimulator*]'] = 'arm64 i386'
-        end
+    target.build_configurations.each do |config|
+      config.build_settings['EXCLUDED_ARCHS[sdk=watchsimulator*]'] = 'i386'
+    end
   end
-
 end
 ```
 
@@ -95,7 +100,7 @@ end
 #ifndef Bridging_Header_h
 #define Bridging_Header_h
 
-#include "Nativium.h"
+#include <Nativium/Nativium.h>
 
 #endif /* Bridging_Header_h */
 ```
@@ -173,3 +178,37 @@ if (@available(macOS 10.9, iOS 9, tvOS 11, watchOS 5, *)) {
   // compiles for OS X and iOS and TV OS and Watch OS with specified versions
 }
 ```
+
+## Package for development
+
+If you are developing the framework locally, you can set the Podfile variable `NATIVIUM_LIBRARY_LOCAL_PATH` to `true` and package the framework for development using `--dev` flag. Example:
+
+```
+python3 nativium.py target ios package --no-framework --dev
+```
+
+The flag `--dev` change all paths inside `podspec` to your local path.
+
+This is useful if you don't want start the local HTTP server to Cocoapods download the binary archive.
+
+And when you package for development with local HTTP server or for production, remove the `--dev` flag, because it is exclusive for development with local path enabled.
+
+## Simulator for watchOS
+
+Compilation for watchOS 32-bits was removed. If you need it follow the steps:
+
+1 - Remove the lines from `Podfile`:
+
+```
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['EXCLUDED_ARCHS[sdk=watchsimulator*]'] = 'i386'
+    end
+  end
+end
+```
+
+2 - Add target data in file `targets/ios/config/target.py`.
+
+3 - Remove `Exclude Architectures` from Xcode project watchOS `extension` project.
