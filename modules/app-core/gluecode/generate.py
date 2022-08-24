@@ -8,6 +8,7 @@ def run(params):
 
     # djinni configurations
     djinni_file = "proj.djinni"
+    module_name = "app-core"
 
     # cpp configuration
     cpp_namespace = "{0}::core".format(
@@ -49,9 +50,13 @@ def run(params):
     wasm_include_cpp_prefix = "{0}".format(cpp_include_prefix)
     wasm_include_prefix = "{0}".format(cpp_include_prefix)
 
+    # typescript configuration
+    ts_out = "generated-src/ts/".format(cpp_include_prefix)
+    ts_module = "{0}".format(module_name)
+
     # module data
     module_data = {
-        "name": "app-core",
+        "name": module_name,
         "tool_params": [
             "--java-out",
             java_out,
@@ -111,6 +116,10 @@ def run(params):
             wasm_include_cpp_prefix,
             "--wasm-base-lib-include-prefix",
             "djinni/wasm/",
+            "--ts-out",
+            ts_out,
+            "--ts-module",
+            ts_module,
             "--yaml-out",
             "yaml",
             "--idl",
