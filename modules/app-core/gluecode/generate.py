@@ -5,10 +5,10 @@ from config import gluecode as config
 def run(params):
     proj_path = params["proj_path"]
     gluecode_config = config.run(proj_path, params)
+    module_name = "app-core"
 
     # djinni configurations
     djinni_file = "proj.djinni"
-    module_name = "app-core"
 
     # cpp configuration
     cpp_namespace = "{0}::core".format(
