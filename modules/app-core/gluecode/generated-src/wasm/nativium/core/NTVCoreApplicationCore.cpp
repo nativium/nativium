@@ -19,8 +19,7 @@ em::val NTVCoreApplicationCore::shared() {
         return ::djinni_generated::NTVCoreApplicationCore::fromCpp(r);
     }
     catch(const std::exception& e) {
-        djinni::djinni_throw_native_exception(e);
-        throw;
+        return djinni::ExceptionHandlingTraits<::djinni_generated::NTVCoreApplicationCore>::handleNativeException(e);
     }
 }
 double NTVCoreApplicationCore::multiply(const CppType& self, double w_value1,double w_value2) {
@@ -30,8 +29,7 @@ double NTVCoreApplicationCore::multiply(const CppType& self, double w_value1,dou
         return ::djinni::F64::fromCpp(r);
     }
     catch(const std::exception& e) {
-        djinni::djinni_throw_native_exception(e);
-        throw;
+        return djinni::ExceptionHandlingTraits<::djinni::F64>::handleNativeException(e);
     }
 }
 std::string NTVCoreApplicationCore::getVersion(const CppType& self) {
@@ -40,8 +38,7 @@ std::string NTVCoreApplicationCore::getVersion(const CppType& self) {
         return ::djinni::String::fromCpp(r);
     }
     catch(const std::exception& e) {
-        djinni::djinni_throw_native_exception(e);
-        throw;
+        return djinni::ExceptionHandlingTraits<::djinni::String>::handleNativeException(e);
     }
 }
 
