@@ -66,6 +66,7 @@ jobs:
         with:
           files: build/tests/debug/x86_64/lcov.coverage.info
           fail_ci_if_error: true
+          functionalities: fixes
           verbose: true
 
       - name: Nativium - Setup
