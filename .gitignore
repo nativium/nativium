@@ -5,6 +5,7 @@ Thumbs.db
 # ide
 .idea
 .vscode
+.iml
 
 # auto generated
 **/*.pyc
