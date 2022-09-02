@@ -1,7 +1,15 @@
-build
-*.pyc
-tmp
-.vscode
-.DS_Store
+# os
 Thumbs.db
+.DS_Store
+
+# ide
+.idea
+.vscode
+.iml
+
+# auto generated
+**/*.pyc
+build
+tmp
 __pycache__
+*.
