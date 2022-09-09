@@ -1,11 +1,15 @@
-from conans import ConanFile, tools
-from conans.errors import ConanInvalidConfiguration
+from conan import ConanFile
+from conans import tools
+from conan.errors import ConanInvalidConfiguration
+
+
+required_conan_version = ">=1.51.3"
 
 
 class DarwinToolchainConan(ConanFile):
     name = "darwin-toolchain"
     version = "1.0.0"
-    license = "Apple"
+    license = "MIT"
     settings = "os", "arch", "build_type", "os_build", "compiler"
     options = {
         "enable_bitcode": [True, False, None],
@@ -21,7 +25,6 @@ class DarwinToolchainConan(ConanFile):
     url = "https://github.com/nativium/nativium"
     build_policy = "missing"
 
-    # -----------------------------------------------------------------------------
     def config_options(self):
         if self.settings.os == "Macos":
             self.options.enable_bitcode = None
@@ -32,8 +35,7 @@ class DarwinToolchainConan(ConanFile):
         if self.settings.os == "tvOS":
             self.options.enable_bitcode = True
 
-    # -----------------------------------------------------------------------------
-    def configure(self):
+    def validate(self):
         if self.settings.os_build != "Macos":
             raise ConanInvalidConfiguration("Build machine must be Macos")
 
@@ -79,7 +81,6 @@ class DarwinToolchainConan(ConanFile):
                 "watchOS: Only supported archs: [armv7k, armv8_32, x86, x86_64]"
             )
 
-    # -----------------------------------------------------------------------------
     def package_info(self):
         # Settings
         settings_target = None
@@ -101,6 +102,11 @@ class DarwinToolchainConan(ConanFile):
         self.env_info.CONAN_CMAKE_OSX_SYSROOT = sysroot
         self.env_info.SDKROOT = sysroot
 
+        self.buildenv_info.define("CONAN_CMAKE_OSX_SYSROOT", sysroot)
+        self.buildenv_info.define("SDKROOT", sysroot)
+        self.runenv_info.define("CONAN_CMAKE_OSX_SYSROOT", sysroot)
+        self.runenv_info.define("SDKROOT", sysroot)
+
         # Bitcode
         if self.options.enable_bitcode is None:
             self.output.info("Bitcode enabled: IGNORED")
@@ -109,6 +115,8 @@ class DarwinToolchainConan(ConanFile):
                 self.output.info("Bitcode enabled: YES")
 
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE = "YES"
+                self.buildenv_info.define("CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE", "YES")
+                self.runenv_info.define("CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE", "YES")
 
                 build_type = settings_target.get_safe("build_type")
 
@@ -164,7 +172,3 @@ class DarwinToolchainConan(ConanFile):
         self.env_info.CPPFLAGS = cxxflags_str
         self.env_info.CXXFLAGS = cxxflags_str
         self.env_info.LDFLAGS = ldflags_str
-
-    # -----------------------------------------------------------------------------
-    def package_id(self):
-        self.info.clear()
