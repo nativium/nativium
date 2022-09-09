@@ -1,7 +1,8 @@
-from conan import ConanFile
-from conan.tools import apple
 from conan.errors import ConanInvalidConfiguration
+from conan.tools import apple
+from conan.tools.apple.apple import XCRun
 
+from conan import ConanFile
 
 required_conan_version = ">=1.52.0"
 
@@ -99,7 +100,7 @@ class DarwinToolchainConan(ConanFile):
             self.output.info("Settings: Default")
 
         # Sysroot
-        xcrun = apple.XCRun(settings_target)
+        xcrun = XCRun(settings_target)
         sysroot = xcrun.sdk_path
 
         self.cpp_info.sysroot = sysroot
