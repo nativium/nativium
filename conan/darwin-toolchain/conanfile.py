@@ -3,7 +3,7 @@ from conans import tools
 from conan.errors import ConanInvalidConfiguration
 
 
-required_conan_version = ">=1.51.3"
+required_conan_version = ">=1.52.0"
 
 
 class DarwinToolchainConan(ConanFile):

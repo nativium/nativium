@@ -1,4 +1,4 @@
-from conans import ConanFile
+from conan import ConanFile
 
 
 # -----------------------------------------------------------------------------
