@@ -4,7 +4,9 @@ import sys
 proj_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.append(proj_path)
 
-from conan import CMake, ConanFile, tools
+from conan import ConanFile
+from conan.tools.apple.apple import to_apple_arch
+from conan.tools.cmake import CMake, cmake_layout
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
@@ -45,26 +47,32 @@ class TargetConan(ConanFile):
         "nativium_code_coverage": False,
     }
     exports_sources = "*"
-    generators = "cmake"
+    generators = "CMakeDeps", "CMakeToolchain", "VirtualRunEnv"
+
+    # -----------------------------------------------------------------------------
+    def layout(self):
+        generator = None
+
+        if self.settings.os in c.APPLE_OS_LIST:
+            generator = "Xcode"
+        elif self.settings.os == "Android":
+            generator = "Unix Makefiles"
+
+        cmake_layout(self, generator=generator)
 
     # -----------------------------------------------------------------------------
     def build(self):
         # initialize cmake
-        if self.settings.os in c.APPLE_OS_LIST:
-            cmake = CMake(self, generator="Xcode")
+        cmake = CMake(self)
 
-            cmake.definitions["NATIVIUM_DEPLOYMENT_TARGET"] = self.settings.get_safe(
-                "os.version"
-            )
-        elif self.settings.os == "Android":
-            cmake = CMake(self, generator="Unix Makefiles")
-        else:
-            cmake = CMake(self)
+        # apple platform data
+        if self.settings.os in c.APPLE_OS_LIST:
+            os_version = self.settings.get_safe("os.version")
+            cmake.definitions["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
 
         if self.settings.os in c.APPLE_MOBILE_OS_LIST:
-            cmake.definitions["NATIVIUM_PLATFORM_ARCH"] = tools.to_apple_arch(
-                self.settings.get_safe("arch"),
-            )
+            apple_arch = to_apple_arch(self.settings.get_safe("arch"))
+            cmake.definitions["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
         # definitions
         cmake.definitions["CMAKE_BUILD_TYPE"] = self.settings.build_type
