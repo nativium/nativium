@@ -1,5 +1,5 @@
 # main configurations
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.20.0)
 
 set(NATIVIUM_PROJECT_NAME
     "nativium"
