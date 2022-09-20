@@ -4,7 +4,7 @@ import sys
 proj_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.append(proj_path)
 
-from conans import CMake, ConanFile, tools
+from conan import CMake, ConanFile, tools
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
