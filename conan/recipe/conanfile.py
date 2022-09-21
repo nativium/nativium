@@ -6,7 +6,7 @@ sys.path.append(proj_path)
 
 from conan import ConanFile
 from conan.tools.apple.apple import to_apple_arch
-from conan.tools.cmake import CMake, cmake_layout
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
@@ -47,65 +47,60 @@ class TargetConan(ConanFile):
         "nativium_code_coverage": False,
     }
     exports_sources = "*"
-    generators = "cmake"
+    generators = "CMakeToolchain", "CMakeDeps"
 
     # -----------------------------------------------------------------------------
     def layout(self):
-        generator = None
-
-        if self.settings.os in c.APPLE_OS_LIST:
-            generator = "Xcode"
-        elif self.settings.os == "Android":
-            generator = "Unix Makefiles"
-
-        cmake_layout(self, generator=generator)
+        cmake_layout(self)
 
     # -----------------------------------------------------------------------------
-    def build(self):
-        # initialize cmake
-        cmake = CMake(self)
+    def generate(self):
+        tc = CMakeToolchain(self)
 
         # apple platform data
         if self.settings.os in c.APPLE_OS_LIST:
             os_version = self.settings.get_safe("os.version")
-            cmake.definitions["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
+            tc.variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
 
         if self.settings.os in c.APPLE_MOBILE_OS_LIST:
             apple_arch = to_apple_arch(self.settings.get_safe("arch"))
-            cmake.definitions["NATIVIUM_PLATFORM_ARCH"] = apple_arch
+            tc.variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
         # definitions
-        cmake.definitions["CMAKE_BUILD_TYPE"] = self.settings.build_type
-        cmake.definitions["NATIVIUM_PROJECT_NAME"] = self.options.get_safe(
+        tc.variables["CMAKE_BUILD_TYPE"] = self.settings.build_type
+        tc.variables["NATIVIUM_PROJECT_NAME"] = self.options.get_safe(
             "nativium_project_name"
         )
-        cmake.definitions["NATIVIUM_PRODUCT_NAME"] = self.options.get_safe(
+        tc.variables["NATIVIUM_PRODUCT_NAME"] = self.options.get_safe(
             "nativium_product_name"
         )
-        cmake.definitions["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")
-        cmake.definitions["NATIVIUM_BUILD_TYPE"] = self.options.get_safe(
+        tc.variables["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")
+        tc.variables["NATIVIUM_BUILD_TYPE"] = self.options.get_safe(
             "nativium_build_type"
         )
-        cmake.definitions["NATIVIUM_ARCH"] = self.options.get_safe("nativium_arch")
-        cmake.definitions["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")
+        tc.variables["NATIVIUM_ARCH"] = self.options.get_safe("nativium_arch")
+        tc.variables["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")
 
-        cmake.definitions["NATIVIUM_VERSION"] = self.options.get_safe(
-            "nativium_version"
-        )
+        tc.variables["NATIVIUM_VERSION"] = self.options.get_safe("nativium_version")
 
-        cmake.definitions["NATIVIUM_VERSION_CODE"] = self.options.get_safe(
+        tc.variables["NATIVIUM_VERSION_CODE"] = self.options.get_safe(
             "nativium_version_code"
         )
 
-        cmake.definitions["NATIVIUM_ENTRYPOINT"] = self.options.get_safe(
+        tc.variables["NATIVIUM_ENTRYPOINT"] = self.options.get_safe(
             "nativium_entrypoint"
         )
 
-        cmake.definitions["NATIVIUM_CODE_COVERAGE"] = self.options.get_safe(
+        tc.variables["NATIVIUM_CODE_COVERAGE"] = self.options.get_safe(
             "nativium_code_coverage"
         )
 
-        # configure and build
+        # generate
+        tc.generate()
+
+    # -----------------------------------------------------------------------------
+    def build(self):
+        cmake = CMake(self)
         cmake.configure()
         cmake.build()
 
@@ -229,4 +224,3 @@ class TargetConan(ConanFile):
     def imports(self):
         if self.settings.os == "Windows":
             self.copy("*.dll", dst="bin", src="lib")
-            self.copy("*.dylib", dst="bin", src="lib")
