@@ -219,8 +219,3 @@ class TargetConan(ConanFile):
                 show_error_log=True,
                 throw_error=True,
             )
-
-    # -----------------------------------------------------------------------------
-    def imports(self):
-        if self.settings.os == "Windows":
-            self.copy("*.dll", dst="bin", src="lib")
