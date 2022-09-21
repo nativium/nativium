@@ -47,7 +47,7 @@ class TargetConan(ConanFile):
         "nativium_code_coverage": False,
     }
     exports_sources = "*"
-    generators = "CMakeToolchain", "CMakeDeps"
+    generators = "CMakeDeps"
 
     # -----------------------------------------------------------------------------
     def layout(self):
