@@ -93,11 +93,11 @@ class TargetConan(ConanFile):
         tc = CMakeToolchain(self)
 
         if self.settings.os in c.APPLE_OS_LIST:
-            os_version = self.settings.get_safe("os.version")
+            os_version = self.settings.get_safe("os.version").value
             tc.variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
 
         if self.settings.os in c.APPLE_MOBILE_OS_LIST:
-            apple_arch = to_apple_arch(self.settings.get_safe("arch"))
+            apple_arch = to_apple_arch(self.settings.get_safe("arch").value)
             tc.variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
         tc.variables["CMAKE_BUILD_TYPE"] = self.settings.build_type
