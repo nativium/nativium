@@ -1,6 +1,3 @@
-# conan
-nativium_add_conan_build_info()
-
 # modules
 nativium_add_modules()
 

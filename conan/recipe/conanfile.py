@@ -6,7 +6,8 @@ sys.path.append(proj_path)
 
 from conan import ConanFile
 from conan.tools.apple.apple import to_apple_arch
-from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
+from conan.tools.files import copy
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
@@ -46,18 +47,51 @@ class TargetConan(ConanFile):
         "nativium_entrypoint": "",
         "nativium_code_coverage": False,
     }
-    exports_sources = "*"
-    generators = "CMakeDeps"
+    generators = "CMakeToolchain", "CMakeDeps"
+
+    # -----------------------------------------------------------------------------
+    def config_options(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
 
     # -----------------------------------------------------------------------------
     def layout(self):
-        cmake_layout(self)
+        generators_dir = os.path.join(
+            "build",
+            self.options.get_safe("nativium_target").value,
+            self.options.get_safe("nativium_build_type").value,
+            self.options.get_safe("nativium_arch").value,
+            "conan",
+            "generators",
+        )
+
+        build_dir = os.path.join(
+            "build",
+            self.options.get_safe("nativium_target").value,
+            self.options.get_safe("nativium_build_type").value,
+            self.options.get_safe("nativium_arch").value,
+            "target",
+        )
+
+        self.folders.root = os.path.join("..", "..")
+        self.folders.source = "."
+        self.folders.build = build_dir
+        self.folders.generators = generators_dir
+
+    # -----------------------------------------------------------------------------
+    def export_sources(self):
+        copy(
+            self,
+            "CMakeLists.txt",
+            os.path.join(self.recipe_folder, os.path.join("..", "..")),
+            self.export_sources_folder,
+        )
 
     # -----------------------------------------------------------------------------
     def generate(self):
+        # toolchain
         tc = CMakeToolchain(self)
 
-        # apple platform data
         if self.settings.os in c.APPLE_OS_LIST:
             os_version = self.settings.get_safe("os.version")
             tc.variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
@@ -66,7 +100,6 @@ class TargetConan(ConanFile):
             apple_arch = to_apple_arch(self.settings.get_safe("arch"))
             tc.variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
-        # definitions
         tc.variables["CMAKE_BUILD_TYPE"] = self.settings.build_type
         tc.variables["NATIVIUM_PROJECT_NAME"] = self.options.get_safe(
             "nativium_project_name"
@@ -95,8 +128,11 @@ class TargetConan(ConanFile):
             "nativium_code_coverage"
         )
 
-        # generate
         tc.generate()
+
+        # dependencies
+        deps = CMakeDeps(self)
+        deps.generate()
 
     # -----------------------------------------------------------------------------
     def build(self):
@@ -219,3 +255,8 @@ class TargetConan(ConanFile):
                 show_error_log=True,
                 throw_error=True,
             )
+
+    # -----------------------------------------------------------------------------
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
