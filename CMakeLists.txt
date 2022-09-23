@@ -208,7 +208,6 @@ set_target_properties(
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
     CXX_VISIBILITY_PRESET default
-    VERSION "${NATIVIUM_VERSION}" # "current version" in semantic format in Mach-O binary file
     SOVERSION "${NATIVIUM_VERSION_MAJOR}" # "compatibility version" in semantic format in Mach-O binary file
     PUBLIC_HEADER "${NATIVIUM_HEADER_FILES}"
 )
@@ -234,6 +233,8 @@ if(NATIVIUM_TARGET STREQUAL "ios")
         XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "${DEVICE_FAMILY}"
         XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH YES
         XCODE_ATTRIBUTE_SKIP_INSTALL YES
+        # version in semantic format in Mach-O binary file
+        VERSION "${NATIVIUM_VERSION}"
     )
 
     if(NATIVIUM_GROUP STREQUAL "ios_catalyst")
@@ -241,6 +242,13 @@ if(NATIVIUM_TARGET STREQUAL "ios")
     else()
         set_target_properties(${NATIVIUM_PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_INSTALL_PATH "@loader_path/Frameworks")
     endif()
+elseif(NATIVIUM_TARGET STREQUAL "android")
+    set_target_properties(
+        ${NATIVIUM_PROJECT_NAME}
+        PROPERTIES
+        # version in semantic format in Mach-O binary file
+        VERSION "${NATIVIUM_VERSION}"
+    )
 elseif(NATIVIUM_TARGET STREQUAL "macos")
     set_target_properties(
         ${NATIVIUM_PROJECT_NAME}
