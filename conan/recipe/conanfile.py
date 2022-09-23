@@ -93,40 +93,24 @@ class TargetConan(ConanFile):
         tc = CMakeToolchain(self)
 
         if self.settings.os in c.APPLE_OS_LIST:
-            os_version = self.settings.get_safe("os.version").value
-            tc.variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
+            os_version = self.get_setting("os.version")
+            tc.cache_variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
 
         if self.settings.os in c.APPLE_MOBILE_OS_LIST:
-            apple_arch = to_apple_arch(self.settings.get_safe("arch").value)
-            tc.variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
+            apple_arch = to_apple_arch(self.get_setting("arch"))
+            tc.cache_variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
-        tc.variables["CMAKE_BUILD_TYPE"] = self.settings.build_type
-        tc.variables["NATIVIUM_PROJECT_NAME"] = self.options.get_safe(
-            "nativium_project_name"
-        )
-        tc.variables["NATIVIUM_PRODUCT_NAME"] = self.options.get_safe(
-            "nativium_product_name"
-        )
-        tc.variables["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")
-        tc.variables["NATIVIUM_BUILD_TYPE"] = self.options.get_safe(
-            "nativium_build_type"
-        )
-        tc.variables["NATIVIUM_ARCH"] = self.options.get_safe("nativium_arch")
-        tc.variables["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")
-
-        tc.variables["NATIVIUM_VERSION"] = self.options.get_safe("nativium_version")
-
-        tc.variables["NATIVIUM_VERSION_CODE"] = self.options.get_safe(
-            "nativium_version_code"
-        )
-
-        tc.variables["NATIVIUM_ENTRYPOINT"] = self.options.get_safe(
-            "nativium_entrypoint"
-        )
-
-        tc.variables["NATIVIUM_CODE_COVERAGE"] = self.options.get_safe(
-            "nativium_code_coverage"
-        )
+        tc.cache_variables["CMAKE_BUILD_TYPE"] = self.settings.build_type
+        tc.cache_variables["NATIVIUM_PROJECT_NAME"] = self.get_opt("nativium_project_name")
+        tc.cache_variables["NATIVIUM_PRODUCT_NAME"] = self.get_opt("nativium_product_name")
+        tc.cache_variables["NATIVIUM_TARGET"] = self.get_opt("nativium_target")
+        tc.cache_variables["NATIVIUM_BUILD_TYPE"] = self.get_opt("nativium_build_type")
+        tc.cache_variables["NATIVIUM_ARCH"] = self.get_opt("nativium_arch")
+        tc.cache_variables["NATIVIUM_GROUP"] = self.get_opt("nativium_group")
+        tc.cache_variables["NATIVIUM_VERSION"] = self.get_opt("nativium_version")
+        tc.cache_variables["NATIVIUM_VERSION_CODE"] = self.get_opt("nativium_version_code")
+        tc.cache_variables["NATIVIUM_ENTRYPOINT"] = self.get_opt("nativium_entrypoint")
+        tc.cache_variables["NATIVIUM_CODE_COVERAGE"] = self.get_opt("nativium_code_coverage")
 
         tc.generate()
 
@@ -260,3 +244,11 @@ class TargetConan(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
+
+    # -----------------------------------------------------------------------------
+    def get_opt(self, key):
+        return self.options.get_safe(key).value
+
+    # -----------------------------------------------------------------------------
+    def get_setting(self, key):
+        return self.settings.get_safe(key).value
