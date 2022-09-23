@@ -97,7 +97,7 @@ class TargetConan(ConanFile):
             tc.cache_variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
 
         if self.settings.os in c.APPLE_MOBILE_OS_LIST:
-            apple_arch = to_apple_arch(str(self.get_settings("arch")))
+            apple_arch = str(to_apple_arch(self))
             tc.cache_variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
         tc.cache_variables["CMAKE_BUILD_TYPE"] = str(self.settings.build_type)
