@@ -86,16 +86,6 @@ macro(nativium_version_to_ints major minor patch version)
     string(REGEX REPLACE "[0-9]+.[0-9]+.([0-9]+)" "\\1" ${patch} ${version})
 endmacro()
 
-# add conan build information file
-macro(nativium_add_conan_build_info)
-    if(EXISTS "${NATIVIUM_BUILD_PATH}/conan/conanbuildinfo.cmake")
-        include(${NATIVIUM_BUILD_PATH}/conan/conanbuildinfo.cmake)
-        conan_basic_setup()
-    else()
-        message(FATAL_ERROR "Did you forget to run the setup target action? Conan file for dependencies was not found in path: ${NATIVIUM_BUILD_PATH}/conan/conanbuildinfo.cmake")
-    endif()
-endmacro()
-
 # get current architecture
 macro(nativium_set_current_arch)
     set(NATIVIUM_CURRENT_ARCH "${CMAKE_HOST_SYSTEM_PROCESSOR}")
