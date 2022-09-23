@@ -39,6 +39,15 @@ def run(params):
                         "target",
                     )
 
+                    conan_dir = os.path.join(
+                        proj_path,
+                        "build",
+                        target_name,
+                        build_type,
+                        arch["arch"],
+                        "conan",
+                    )
+
                     clean_build_dir = True
 
                     # dry run
@@ -59,32 +68,12 @@ def run(params):
                             "recipe",
                             const.FILE_NAME_CONANFILE_PY,
                         ),
-                        "--source-folder",
-                        proj_path,
-                        "--build-folder",
-                        os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["arch"],
-                            "target",
-                        ),
-                        "--install-folder",
-                        os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["arch"],
-                            "conan",
-                        ),
                     ]
 
                     if param_dry_run:
                         run_args.append("--build")
 
-                    r.run(run_args, cwd=build_dir)
+                    r.run(run_args, cwd=conan_dir)
 
                     # copy assets
                     if "assets_dir" in target_config:

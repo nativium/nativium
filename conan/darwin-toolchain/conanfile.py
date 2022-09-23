@@ -131,8 +131,12 @@ class DarwinToolchainConan(ConanFile):
                     self.env_info.CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE = (
                         "marker"
                     )
-                    self.buildenv_info.define("CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "marker")
-                    self.runenv_info.define("CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "marker")
+                    self.buildenv_info.define(
+                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "marker"
+                    )
+                    self.runenv_info.define(
+                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "marker"
+                    )
                     common_flags.append("-fembed-bitcode-marker")
                 else:
                     self.env_info.CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE = (
@@ -149,14 +153,22 @@ class DarwinToolchainConan(ConanFile):
             if self.options.enable_arc:
                 common_flags.append("-fobjc-arc")
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC = "YES"
-                self.buildenv_info.define("CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "YES")
-                self.runenv_info.define("CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "YES")
+                self.buildenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "YES"
+                )
+                self.runenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "YES"
+                )
                 self.output.info("ObjC ARC enabled: YES")
             else:
                 common_flags.append("-fno-objc-arc")
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC = "NO"
-                self.buildenv_info.define("CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "NO")
-                self.runenv_info.define("CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "NO")
+                self.buildenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "NO"
+                )
+                self.runenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "NO"
+                )
                 self.output.info("ObjC ARC enabled: NO")
 
         # Visibility
@@ -165,14 +177,22 @@ class DarwinToolchainConan(ConanFile):
         else:
             if self.options.enable_visibility:
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN = "NO"
-                self.buildenv_info.define("CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "NO")
-                self.runenv_info.define("CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "NO")
+                self.buildenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "NO"
+                )
+                self.runenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "NO"
+                )
                 self.output.info("Visibility enabled: YES")
             else:
                 common_flags.append("-fvisibility=hidden")
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN = "YES"
-                self.buildenv_info.define("CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "YES")
-                self.runenv_info.define("CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "YES")
+                self.buildenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "YES"
+                )
+                self.runenv_info.define(
+                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "YES"
+                )
                 self.output.info("Visibility enabled: NO")
 
         self.cpp_info.cflags.extend(common_flags)

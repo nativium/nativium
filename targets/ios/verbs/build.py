@@ -49,6 +49,16 @@ def run(params):
                             "target",
                         )
 
+                        conan_dir = os.path.join(
+                            proj_path,
+                            "build",
+                            target_name,
+                            build_type,
+                            arch["group"],
+                            arch["arch"],
+                            "conan",
+                        )
+
                         clean_build_dir = True
 
                         if param_dry_run and os.path.isdir(build_dir):
@@ -68,34 +78,12 @@ def run(params):
                                 "recipe",
                                 const.FILE_NAME_CONANFILE_PY,
                             ),
-                            "--source-folder",
-                            proj_path,
-                            "--build-folder",
-                            os.path.join(
-                                proj_path,
-                                "build",
-                                target_name,
-                                build_type,
-                                arch["group"],
-                                arch["arch"],
-                                "target",
-                            ),
-                            "--install-folder",
-                            os.path.join(
-                                proj_path,
-                                "build",
-                                target_name,
-                                build_type,
-                                arch["group"],
-                                arch["arch"],
-                                "conan",
-                            ),
                         ]
 
                         if param_dry_run:
                             run_args.append("--build")
 
-                        r.run(run_args, cwd=build_dir)
+                        r.run(run_args, cwd=conan_dir)
 
                         # find correct info plist file
                         plist_path1 = os.path.join(
