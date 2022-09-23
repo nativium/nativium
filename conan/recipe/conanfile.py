@@ -56,23 +56,46 @@ class TargetConan(ConanFile):
 
     # -----------------------------------------------------------------------------
     def layout(self):
+        # generators
         generators_dir = os.path.join(
             "build",
-            self.options.get_safe("nativium_target").value,
-            self.options.get_safe("nativium_build_type").value,
-            self.options.get_safe("nativium_arch").value,
+            str(self.get_options("nativium_target")),
+            str(self.get_options("nativium_build_type")),
+        )
+
+        if self.get_options("nativium_group"):
+            generators_dir = os.path.join(
+                generators_dir,
+                str(self.get_options("nativium_group")),
+            )
+
+        generators_dir = os.path.join(
+            generators_dir,
+            str(self.get_options("nativium_arch")),
             "conan",
             "generators",
         )
 
+        # build dir
         build_dir = os.path.join(
             "build",
-            self.options.get_safe("nativium_target").value,
-            self.options.get_safe("nativium_build_type").value,
-            self.options.get_safe("nativium_arch").value,
+            str(self.get_options("nativium_target")),
+            str(self.get_options("nativium_build_type")),
+        )
+
+        if self.get_options("nativium_group"):
+            build_dir = os.path.join(
+                build_dir,
+                str(self.get_options("nativium_group")),
+            )
+
+        build_dir = os.path.join(
+            build_dir,
+            str(self.get_options("nativium_arch")),
             "target",
         )
 
+        # others
         self.folders.root = os.path.join("..", "..")
         self.folders.source = "."
         self.folders.build = build_dir

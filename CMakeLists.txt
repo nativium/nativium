@@ -155,8 +155,8 @@ if(NATIVIUM_TARGET STREQUAL "ios")
     endif()
 
     set(NATIVIUM_FRAMEWORK_LINKS ${NATIVIUM_FRAMEWORK_LINKS} "-framework Foundation" CACHE STRING "")
-    set(NATIVIUM_C_FLAGS "${NATIVIUM_C_FLAGS} -fobjc-arc -fobjc-abi-version=2" CACHE STRING "")
-    set(NATIVIUM_CXX_FLAGS "${NATIVIUM_CXX_FLAGS} -fobjc-arc -fobjc-abi-version=2" CACHE STRING "")
+    set(NATIVIUM_C_FLAGS "${NATIVIUM_C_FLAGS} -fobjc-abi-version=2" CACHE STRING "")
+    set(NATIVIUM_CXX_FLAGS "${NATIVIUM_CXX_FLAGS} -fobjc-abi-version=2" CACHE STRING "")
 endif()
 
 # macos platform settings
