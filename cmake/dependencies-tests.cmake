@@ -1,0 +1,5 @@
+if(NATIVIUM_TARGET STREQUAL "tests")
+    find_package(GTest REQUIRED CONFIG)
+    target_link_libraries(${NATIVIUM_PROJECT_NAME} PRIVATE ${GTest_LIBRARIES})
+    target_include_directories(${NATIVIUM_PROJECT_NAME} PRIVATE ${GTest_INCLUDE_DIRS})
+endif()
