@@ -1,4 +1,4 @@
-# cmake disable format
+# disable cmake format only for this file
 # cmake-format: off
 
 # cmake data
@@ -51,9 +51,30 @@ set(NATIVIUM_LIBRARY_LINKS "" CACHE STRING "Library Links")
 
 set(NATIVIUM_ENTRYPOINT "" CACHE STRING "Android Entrypoint Name (empty string or main or loader)")
 
+# project
+project(${NATIVIUM_PROJECT_NAME})
+
 # flags
-set(NATIVIUM_C_FLAGS "${NATIVIUM_C_FLAGS} -Wall" CACHE STRING "C Flags")
-set(NATIVIUM_CXX_FLAGS "${NATIVIUM_CXX_FLAGS} -Wall" CACHE STRING "CXX Flags")
+set(NATIVIUM_C_FLAGS "-Wall" CACHE STRING "Custom C Flags")
+set(NATIVIUM_CXX_FLAGS "-Wall" CACHE STRING "Custom CXX Flags")
+set(NATIVIUM_EXE_LINKER_FLAGS "" CACHE STRING "Custom EXE Linker Flags")
+
+# coverage flags
+if(NATIVIUM_CODE_COVERAGE)
+    if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        set(CODE_COVERAGE_COMPILE_FLAGS "--coverage")
+        set(CODE_COVERAGE_LINKER_FLAGS "--coverage")
+
+        message(STATUS "Nativium: Code coverage enabled (${CMAKE_CXX_COMPILER_ID})")
+    else()
+        set(CODE_COVERAGE_COMPILE_FLAGS "")
+        set(CODE_COVERAGE_LINKER_FLAGS "")
+    endif()
+
+    set(NATIVIUM_EXE_LINKER_FLAGS "${NATIVIUM_EXE_LINKER_FLAGS} ${CODE_COVERAGE_LINKER_FLAGS}")
+    set(NATIVIUM_C_FLAGS "${NATIVIUM_C_FLAGS} ${CODE_COVERAGE_COMPILE_FLAGS}")
+    set(NATIVIUM_CXX_FLAGS "${NATIVIUM_CXX_FLAGS} ${CODE_COVERAGE_COMPILE_FLAGS}")
+endif()
 
 # compile options
 set(NATIVIUM_COMPILE_OPTIONS "" CACHE STRING "Compile Options")
@@ -64,9 +85,6 @@ set(NATIVIUM_TARGETS_PATH "${NATIVIUM_ROOT_PATH}/targets" CACHE STRING "Targets 
 
 # functions
 include(${NATIVIUM_ROOT_PATH}/cmake/functions.cmake)
-
-# project
-project(${NATIVIUM_PROJECT_NAME})
 
 # architecture
 nativium_set_current_arch()
@@ -158,8 +176,9 @@ if(NATIVIUM_TARGET STREQUAL "wasm")
 endif()
 
 # flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NATIVIUM_C_FLAGS}" CACHE STRING "")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NATIVIUM_CXX_FLAGS}" CACHE STRING "")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NATIVIUM_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NATIVIUM_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${NATIVIUM_EXE_LINKER_FLAGS}")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
 set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_MINSIZEREL} -Os")
