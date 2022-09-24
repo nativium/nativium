@@ -5,7 +5,7 @@ from pygemstones.system import runner as r
 from pygemstones.util import log as l
 
 from core import util
-from targets.macos.config import target as config
+from targets.macos.config import target_config as config
 
 
 # -----------------------------------------------------------------------------

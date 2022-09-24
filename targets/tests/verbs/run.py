@@ -6,7 +6,7 @@ from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
 from core import const, util
-from targets.tests.config import target as config
+from targets.tests.config import target_config as config
 
 
 # -----------------------------------------------------------------------------
