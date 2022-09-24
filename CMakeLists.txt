@@ -43,6 +43,7 @@ set(NATIVIUM_CODE_COVERAGE OFF CACHE BOOL "Code Coverage")
 
 set(NATIVIUM_HEADER_FILES "" CACHE STRING "Header Files")
 set(NATIVIUM_SOURCE_FILES "" CACHE STRING "Source Files")
+set(NATIVIUM_PUBLIC_HEADER_FILES "" CACHE STRING "Public Header Files")
 set(NATIVIUM_HEADER_SEARCH_PATHS "" CACHE STRING "Header Search Paths")
 set(NATIVIUM_SOURCE_FILES_MERGED "" CACHE STRING "Source Files Merged")
 set(NATIVIUM_LIBRARY_SEARCH_PATHS "" CACHE STRING "Library Search Paths")
@@ -209,7 +210,7 @@ set_target_properties(
     CXX_EXTENSIONS NO
     CXX_VISIBILITY_PRESET default
     SOVERSION "${NATIVIUM_VERSION_MAJOR}" # "compatibility version" in semantic format in Mach-O binary file
-    PUBLIC_HEADER "${NATIVIUM_HEADER_FILES}"
+    PUBLIC_HEADER "${NATIVIUM_PUBLIC_HEADER_FILES}"
 )
 
 if(NATIVIUM_TARGET STREQUAL "ios")
@@ -232,7 +233,7 @@ if(NATIVIUM_TARGET STREQUAL "ios")
         XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${DEVELOPMENT_TEAM_ID}"
         XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "${DEVICE_FAMILY}"
         XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH YES
-        XCODE_ATTRIBUTE_SKIP_INSTALL YES
+        XCODE_ATTRIBUTE_SKIP_INSTALL NO
         # version in semantic format in Mach-O binary file
         VERSION "${NATIVIUM_VERSION}"
     )
@@ -277,6 +278,15 @@ target_compile_definitions(${NATIVIUM_PROJECT_NAME} PRIVATE HAS_UNCAUGHT_EXCEPTI
 
 # dependencies
 include(${NATIVIUM_ROOT_PATH}/cmake/dependencies.cmake)
+
+# copy public headers
+if("${NATIVIUM_TARGET}" MATCHES "^(ios|tvos|watchos|android)$")
+    set(NATIVIUM_HEADERS_INCLUDE_DIR "Headers")
+else()
+    set(NATIVIUM_HEADERS_INCLUDE_DIR "include")
+endif()
+
+nativium_copy_public_headers(TARGET "${NATIVIUM_PROJECT_NAME}" INCLUDE_DIR "${NATIVIUM_HEADERS_INCLUDE_DIR}")
 
 # cmake enable format
 # cmake-format: on

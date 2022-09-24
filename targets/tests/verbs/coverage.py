@@ -4,7 +4,7 @@ from pygemstones.system import runner as r
 from pygemstones.util import log as l
 
 from core import const, tool, util
-from targets.tests.config import target as config
+from targets.tests.config import target_config as config
 
 
 # -----------------------------------------------------------------------------

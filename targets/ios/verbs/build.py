@@ -6,7 +6,7 @@ from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
 from core import const, util
-from targets.ios.config import target as config
+from targets.ios.config import target_config as config
 
 
 # -----------------------------------------------------------------------------
@@ -18,7 +18,6 @@ def run(params):
     archs = util.get_parsed_arch_list(params, target_config)
     build_types = util.get_parsed_build_type_list(params, target_config)
     groups = util.get_parsed_group_list(params, target_config)
-    install_headers = target_config["install_headers"]
     param_dry_run = ls.list_has_value(params["args"], "--dry-run")
 
     if param_dry_run:
@@ -149,42 +148,6 @@ def run(params):
                             cwd=proj_path,
                         )
 
-                        # headers
-                        dist_headers_dir = os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["group"],
-                            arch["arch"],
-                            "target",
-                            "lib",
-                            "{0}.framework".format(target_config["project_name"]),
-                            "Headers",
-                        )
-
-                        f.create_dir(dist_headers_dir)
-
-                        if install_headers:
-                            for header in install_headers:
-                                source_header_dir = os.path.join(
-                                    proj_path, header["path"]
-                                )
-
-                                if header["type"] == "dir":
-                                    f.copy_dir(
-                                        source_header_dir,
-                                        dist_headers_dir,
-                                        ignore_file=_header_ignore_list,
-                                        symlinks=True,
-                                    )
-                                else:
-                                    l.e(
-                                        "Invalid type for install header list for {0}".format(
-                                            target_name
-                                        )
-                                    )
-
                         # modules
                         support_modules_dir = os.path.join(
                             proj_path,
@@ -269,8 +232,3 @@ def run(params):
             l.e('Build type list for "{0}" is invalid or empty'.format(target_name))
     else:
         l.e('Arch list for "{0}" is invalid or empty'.format(target_name))
-
-
-# -----------------------------------------------------------------------------
-def _header_ignore_list(filename):
-    return not filename.lower().endswith(".h") or "+Private" in filename

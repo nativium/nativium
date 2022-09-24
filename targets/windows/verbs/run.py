@@ -7,7 +7,7 @@ from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
 from core import const, util
-from targets.windows.config import target as config
+from targets.windows.config import target_config as config
 
 
 # -----------------------------------------------------------------------------
