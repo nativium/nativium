@@ -4,6 +4,3 @@ include(default)
 os=Macos
 os.version=10.9
 arch=x86_64
-
-[conf]
-tools.cmake.cmaketoolchain:generator=Xcode
