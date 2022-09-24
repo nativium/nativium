@@ -1,10 +1,3 @@
-import os
-
-from pygemstones.io import file as f
-
-from core import module as m
-
-
 # -----------------------------------------------------------------------------
 def run(proj_path, target_name, params):
     # build types
