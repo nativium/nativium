@@ -8,6 +8,3 @@ arch=armv8
 
 [build_requires]
 android-ndk/r24
-
-[conf]
-tools.cmake.cmaketoolchain:generator=Unix Makefiles

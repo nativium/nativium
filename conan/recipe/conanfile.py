@@ -1,16 +1,17 @@
 import os
 import sys
 
-proj_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.append(proj_path)
-
-from conan import ConanFile
-from conan.tools.apple.apple import to_apple_arch
+from conan.tools.apple import to_apple_arch
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import copy
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
+
+from conan import ConanFile
+
+proj_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.append(proj_path)
 
 from core import const as c
 from core import module as m

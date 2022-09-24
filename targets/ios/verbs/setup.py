@@ -69,6 +69,8 @@ def run(params):
                             ),
                             "-s:h",
                             "os.version={0}".format(arch["min_version"]),
+                            "-c",
+                            'tools.cmake.cmaketoolchain:generator="Xcode"',
                         ]
 
                         target.add_target_setup_common_args(
