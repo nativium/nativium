@@ -29,7 +29,7 @@ On target tests you have some folders:
 
 The tests come configure to export coverage data when the tests run.
 
-Coverage option can be enabled of disabled in tests config target: `targets/tests/config/target.py`.
+Coverage option can be enabled of disabled in tests config target: `targets/tests/config/target_config.py`.
 
 You can run coverage tool with the following command:
 
