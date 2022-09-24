@@ -53,7 +53,7 @@ set(NATIVIUM_LIBRARY_LINKS "" CACHE STRING "Library Links")
 set(NATIVIUM_ENTRYPOINT "" CACHE STRING "Android Entrypoint Name (empty string or main or loader)")
 
 # project
-project(${NATIVIUM_PROJECT_NAME})
+project(${NATIVIUM_PROJECT_NAME} LANGUAGES CXX)
 
 # flags
 set(NATIVIUM_C_FLAGS "-Wall" CACHE STRING "Custom C Flags")
