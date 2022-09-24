@@ -8,3 +8,6 @@ arch=armv8
 
 [build_requires]
 darwin-toolchain/1.0.0@nativium/stable
+
+[conf]
+tools.cmake.cmaketoolchain:generator=Xcode

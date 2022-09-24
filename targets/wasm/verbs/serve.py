@@ -5,7 +5,7 @@ from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
 from core import const, net, util
-from targets.wasm.config import target as config
+from targets.wasm.config import target_config as config
 
 
 # -----------------------------------------------------------------------------

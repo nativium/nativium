@@ -4,7 +4,10 @@ import sys
 proj_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.append(proj_path)
 
-from conans import CMake, ConanFile, tools
+from conan import ConanFile
+from conan.tools.apple.apple import to_apple_arch
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
+from conan.tools.files import copy
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
@@ -44,60 +47,134 @@ class TargetConan(ConanFile):
         "nativium_entrypoint": "",
         "nativium_code_coverage": False,
     }
-    exports_sources = "*"
-    generators = "cmake"
+    generators = "CMakeToolchain", "CMakeDeps"
+
+    # -----------------------------------------------------------------------------
+    def config_options(self):
+        if self.settings.os == "Windows":
+            del self.options.fPIC
+
+    # -----------------------------------------------------------------------------
+    def layout(self):
+        # generators
+        generators_dir = os.path.join(
+            "build",
+            str(self.get_options("nativium_target")),
+            str(self.get_options("nativium_build_type")),
+        )
+
+        if self.get_options("nativium_group"):
+            generators_dir = os.path.join(
+                generators_dir,
+                str(self.get_options("nativium_group")),
+            )
+
+        generators_dir = os.path.join(
+            generators_dir,
+            str(self.get_options("nativium_arch")),
+            "conan",
+            "generators",
+        )
+
+        # build dir
+        build_dir = os.path.join(
+            "build",
+            str(self.get_options("nativium_target")),
+            str(self.get_options("nativium_build_type")),
+        )
+
+        if self.get_options("nativium_group"):
+            build_dir = os.path.join(
+                build_dir,
+                str(self.get_options("nativium_group")),
+            )
+
+        build_dir = os.path.join(
+            build_dir,
+            str(self.get_options("nativium_arch")),
+            "target",
+        )
+
+        # others
+        self.folders.root = os.path.join("..", "..")
+        self.folders.source = "."
+        self.folders.build = build_dir
+        self.folders.generators = generators_dir
+
+    # -----------------------------------------------------------------------------
+    def export_sources(self):
+        copy(
+            self,
+            "CMakeLists.txt",
+            os.path.join(self.recipe_folder, os.path.join("..", "..")),
+            self.export_sources_folder,
+        )
+
+    # -----------------------------------------------------------------------------
+    def generate(self):
+        # toolchain
+        tc = CMakeToolchain(self)
+
+        if self.settings.os in c.APPLE_OS_LIST:
+            os_version = str(self.get_settings("os.version"))
+            tc.cache_variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
+
+            apple_arch = str(to_apple_arch(self))
+            tc.cache_variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
+
+        tc.cache_variables["CMAKE_BUILD_TYPE"] = str(
+            self.settings.build_type,
+        )
+
+        tc.cache_variables["NATIVIUM_PROJECT_NAME"] = str(
+            self.get_options("nativium_project_name"),
+        )
+
+        tc.cache_variables["NATIVIUM_PRODUCT_NAME"] = str(
+            self.get_options("nativium_product_name"),
+        )
+
+        tc.cache_variables["NATIVIUM_TARGET"] = str(
+            self.get_options("nativium_target"),
+        )
+
+        tc.cache_variables["NATIVIUM_BUILD_TYPE"] = str(
+            self.get_options("nativium_build_type"),
+        )
+
+        tc.cache_variables["NATIVIUM_ARCH"] = str(
+            self.get_options("nativium_arch"),
+        )
+
+        tc.cache_variables["NATIVIUM_GROUP"] = str(
+            self.get_options("nativium_group"),
+        )
+
+        tc.cache_variables["NATIVIUM_VERSION"] = str(
+            self.get_options("nativium_version"),
+        )
+
+        tc.cache_variables["NATIVIUM_VERSION_CODE"] = str(
+            self.get_options("nativium_version_code"),
+        )
+
+        tc.cache_variables["NATIVIUM_ENTRYPOINT"] = str(
+            self.get_options("nativium_entrypoint"),
+        )
+
+        tc.cache_variables["NATIVIUM_CODE_COVERAGE"] = bool(
+            self.get_options("nativium_code_coverage"),
+        )
+
+        tc.generate()
+
+        # dependencies
+        deps = CMakeDeps(self)
+        deps.generate()
 
     # -----------------------------------------------------------------------------
     def build(self):
-        # initialize cmake
-        if self.settings.os in c.APPLE_OS_LIST:
-            cmake = CMake(self, generator="Xcode")
-
-            cmake.definitions["NATIVIUM_DEPLOYMENT_TARGET"] = self.settings.get_safe(
-                "os.version"
-            )
-        elif self.settings.os == "Android":
-            cmake = CMake(self, generator="Unix Makefiles")
-        else:
-            cmake = CMake(self)
-
-        if self.settings.os in c.APPLE_MOBILE_OS_LIST:
-            cmake.definitions["NATIVIUM_PLATFORM_ARCH"] = tools.to_apple_arch(
-                self.settings.get_safe("arch"),
-            )
-
-        # definitions
-        cmake.definitions["CMAKE_BUILD_TYPE"] = self.settings.build_type
-        cmake.definitions["NATIVIUM_PROJECT_NAME"] = self.options.get_safe(
-            "nativium_project_name"
-        )
-        cmake.definitions["NATIVIUM_PRODUCT_NAME"] = self.options.get_safe(
-            "nativium_product_name"
-        )
-        cmake.definitions["NATIVIUM_TARGET"] = self.options.get_safe("nativium_target")
-        cmake.definitions["NATIVIUM_BUILD_TYPE"] = self.options.get_safe(
-            "nativium_build_type"
-        )
-        cmake.definitions["NATIVIUM_ARCH"] = self.options.get_safe("nativium_arch")
-        cmake.definitions["NATIVIUM_GROUP"] = self.options.get_safe("nativium_group")
-
-        cmake.definitions["NATIVIUM_VERSION"] = self.options.get_safe(
-            "nativium_version"
-        )
-
-        cmake.definitions["NATIVIUM_VERSION_CODE"] = self.options.get_safe(
-            "nativium_version_code"
-        )
-
-        cmake.definitions["NATIVIUM_ENTRYPOINT"] = self.options.get_safe(
-            "nativium_entrypoint"
-        )
-
-        cmake.definitions["NATIVIUM_CODE_COVERAGE"] = self.options.get_safe(
-            "nativium_code_coverage"
-        )
-
-        # configure and build
+        cmake = CMake(self)
         cmake.configure()
         cmake.build()
 
@@ -218,7 +295,14 @@ class TargetConan(ConanFile):
             )
 
     # -----------------------------------------------------------------------------
-    def imports(self):
-        if self.settings.os == "Windows":
-            self.copy("*.dll", dst="bin", src="lib")
-            self.copy("*.dylib", dst="bin", src="lib")
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
+
+    # -----------------------------------------------------------------------------
+    def get_options(self, key):
+        return self.options.get_safe(key)
+
+    # -----------------------------------------------------------------------------
+    def get_settings(self, key):
+        return self.settings.get_safe(key)

@@ -252,6 +252,10 @@ def code_format(params):
                     "path": os.path.join(format_path, "conan", "darwin-toolchain"),
                     "patterns": ["*.py"],
                 },
+                {
+                    "path": os.path.join(format_path, "conan", "recipe"),
+                    "patterns": ["*.py"],
+                },
             ]
 
             for module_name in modules:

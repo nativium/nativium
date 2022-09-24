@@ -209,6 +209,6 @@ post_install do |installer|
 end
 ```
 
-2 - Add target data in file `targets/ios/config/target.py`.
+2 - Add target data in file `targets/ios/config/target_config.py`.
 
 3 - Remove `Exclude Architectures` from Xcode project watchOS `extension` target.

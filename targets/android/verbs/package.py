@@ -6,7 +6,7 @@ from pygemstones.system import runner as r
 from pygemstones.util import log as l
 
 from core import const, module, util
-from targets.android.config import target as config
+from targets.android.config import target_config as config
 
 
 # -----------------------------------------------------------------------------

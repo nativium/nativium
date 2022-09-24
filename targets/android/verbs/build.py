@@ -6,7 +6,7 @@ from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
 from core import const, util
-from targets.android.config import target as config
+from targets.android.config import target_config as config
 
 
 # -----------------------------------------------------------------------------
@@ -38,6 +38,15 @@ def run(params):
                         "target",
                     )
 
+                    conan_dir = os.path.join(
+                        proj_path,
+                        "build",
+                        target_name,
+                        build_type,
+                        arch["arch"],
+                        "conan",
+                    )
+
                     clean_build_dir = True
 
                     # dry run
@@ -58,32 +67,12 @@ def run(params):
                             "recipe",
                             const.FILE_NAME_CONANFILE_PY,
                         ),
-                        "--source-folder",
-                        proj_path,
-                        "--build-folder",
-                        os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["arch"],
-                            "target",
-                        ),
-                        "--install-folder",
-                        os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["arch"],
-                            "conan",
-                        ),
                     ]
 
                     if param_dry_run:
                         run_args.append("--build")
 
-                    r.run(run_args, cwd=build_dir)
+                    r.run(run_args, cwd=conan_dir)
 
             l.ok()
         else:

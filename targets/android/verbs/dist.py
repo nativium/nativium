@@ -5,7 +5,7 @@ from pygemstones.util import log as l
 from pygemstones.vendor import aws as a
 
 from core import const, net, pack, util
-from targets.android.config import target as config
+from targets.android.config import target_config as config
 
 
 # -----------------------------------------------------------------------------

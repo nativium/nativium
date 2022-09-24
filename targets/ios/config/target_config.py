@@ -47,6 +47,7 @@ def run(proj_path, target_name, params):
                     "min_version": "9.0",
                     "supported_platform": "iPhoneOS",
                     "enable_bitcode": True,
+                    "enable_arc": True,
                     "sdk": "iphoneos",
                     "group": "ios",
                 },
@@ -64,6 +65,7 @@ def run(proj_path, target_name, params):
                     "min_version": "9.0",
                     "supported_platform": "iPhoneOS",
                     "enable_bitcode": True,
+                    "enable_arc": True,
                     "sdk": "iphoneos",
                     "group": "ios",
                 },
@@ -81,6 +83,7 @@ def run(proj_path, target_name, params):
                     "min_version": "9.0",
                     "supported_platform": "iPhoneSimulator",
                     "enable_bitcode": False,
+                    "enable_arc": True,
                     "sdk": "iphonesimulator",
                     "group": "ios_simulator",
                 },
@@ -98,6 +101,7 @@ def run(proj_path, target_name, params):
                     "min_version": "9.0",
                     "supported_platform": "iPhoneSimulator",
                     "enable_bitcode": False,
+                    "enable_arc": True,
                     "sdk": "iphonesimulator",
                     "group": "ios_simulator",
                 },
@@ -115,6 +119,7 @@ def run(proj_path, target_name, params):
                     "min_version": "11.0",
                     "supported_platform": "AppleTVOS",
                     "enable_bitcode": True,
+                    "enable_arc": True,
                     "sdk": "appletvos",
                     "group": "tvos",
                 },
@@ -132,6 +137,7 @@ def run(proj_path, target_name, params):
                     "min_version": "11.0",
                     "supported_platform": "AppleTVSimulator",
                     "enable_bitcode": False,
+                    "enable_arc": True,
                     "sdk": "appletvsimulator",
                     "group": "tvos_simulator",
                 },
@@ -149,6 +155,7 @@ def run(proj_path, target_name, params):
                     "min_version": "11.0",
                     "supported_platform": "AppleTVSimulator",
                     "enable_bitcode": False,
+                    "enable_arc": True,
                     "sdk": "appletvsimulator",
                     "group": "tvos_simulator",
                 },
@@ -166,6 +173,7 @@ def run(proj_path, target_name, params):
                     "min_version": "5.0",
                     "supported_platform": "WatchOS",
                     "enable_bitcode": True,
+                    "enable_arc": True,
                     "sdk": "watchos",
                     "group": "watchos",
                 },
@@ -183,6 +191,7 @@ def run(proj_path, target_name, params):
                     "min_version": "5.0",
                     "supported_platform": "WatchOS",
                     "enable_bitcode": True,
+                    "enable_arc": True,
                     "sdk": "watchos",
                     "group": "watchos",
                 },
@@ -200,6 +209,7 @@ def run(proj_path, target_name, params):
                     "min_version": "5.0",
                     "supported_platform": "WatchSimulator",
                     "enable_bitcode": False,
+                    "enable_arc": True,
                     "sdk": "watchsimulator",
                     "group": "watchos_simulator",
                 },
@@ -217,6 +227,7 @@ def run(proj_path, target_name, params):
                     "min_version": "5.0",
                     "supported_platform": "WatchSimulator",
                     "enable_bitcode": False,
+                    "enable_arc": True,
                     "sdk": "watchsimulator",
                     "group": "watchos_simulator",
                 },
@@ -234,6 +245,7 @@ def run(proj_path, target_name, params):
                     "min_version": "10.15",
                     "supported_platform": "MacOSX",
                     "enable_bitcode": False,
+                    "enable_arc": True,
                     "sdk": "macosx",
                     "group": "ios_catalyst",
                     "subsystem_ios_version": "13.1",
@@ -252,6 +264,7 @@ def run(proj_path, target_name, params):
                     "min_version": "10.15",
                     "supported_platform": "MacOSX",
                     "enable_bitcode": True,
+                    "enable_arc": True,
                     "sdk": "macosx",
                     "group": "ios_catalyst",
                     "subsystem_ios_version": "13.1",
@@ -267,61 +280,4 @@ def run(proj_path, target_name, params):
         "build_types": build_types,
         "archs": archs,
         "umbrella_header": "Nativium.h",
-        "install_headers": get_header_dir_list(
-            proj_path,
-            target_name,
-            params,
-        ),
     }
-
-
-# -----------------------------------------------------------------------------
-def get_header_dir_list(proj_path, target_name, params):
-    result = []
-    filter_gen_src = []
-    filter_impl_src = []
-
-    module_list = m.get_list(proj_path)
-    modules_path = os.path.join(proj_path, "modules")
-
-    for module_name in module_list:
-        gluecode_dir = os.path.join(
-            modules_path,
-            module_name,
-            "gluecode",
-        )
-
-        module_gen_dir = os.path.join(
-            gluecode_dir,
-            "generated-src",
-            "objc",
-        )
-
-        module_impl_dir = os.path.join(
-            modules_path,
-            module_name,
-            "implementation",
-            "objc",
-        )
-
-        # generated src
-        if module_name not in filter_gen_src:
-            if f.dir_exists(module_gen_dir):
-                result.append(
-                    {
-                        "type": "dir",
-                        "path": module_gen_dir,
-                    }
-                )
-
-        # implementation
-        if module_name not in filter_impl_src:
-            if f.dir_exists(module_impl_dir):
-                result.append(
-                    {
-                        "type": "dir",
-                        "path": module_impl_dir,
-                    }
-                )
-
-    return result
