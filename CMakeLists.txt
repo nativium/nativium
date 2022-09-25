@@ -4,6 +4,9 @@
 # cmake data
 cmake_minimum_required(VERSION 3.20.0)
 
+# project
+project(nativium LANGUAGES CXX)
+
 # system
 if(MSVC OR MSYS OR MINGW)
     # for detecting Windows compilers
@@ -51,9 +54,6 @@ set(NATIVIUM_FRAMEWORK_LINKS "" CACHE STRING "Framework Links")
 set(NATIVIUM_LIBRARY_LINKS "" CACHE STRING "Library Links")
 
 set(NATIVIUM_ENTRYPOINT "" CACHE STRING "Android Entrypoint Name (empty string or main or loader)")
-
-# project
-project(${NATIVIUM_PROJECT_NAME} LANGUAGES CXX)
 
 # flags
 set(NATIVIUM_C_FLAGS "-Wall" CACHE STRING "Custom C Flags")

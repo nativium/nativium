@@ -1,7 +1,7 @@
 import os
 import sys
 
-from conan.tools.apple import to_apple_arch
+from conan.tools.apple import is_apple_os, to_apple_arch
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import copy
 from pygemstones.io import file as f
@@ -113,58 +113,67 @@ class TargetConan(ConanFile):
 
     # -----------------------------------------------------------------------------
     def generate(self):
-        # toolchain
-        tc = CMakeToolchain(self)
+        # generator
+        generator = None
 
-        if self.settings.os in c.APPLE_OS_LIST:
+        if is_apple_os(self):
+            generator = "Xcode"
+
+        # toolchain
+        tc = CMakeToolchain(self, generator=generator)
+
+        # apple specific
+        if is_apple_os(self):
             os_version = str(self.get_settings("os.version"))
-            tc.cache_variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
+            tc.variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
 
             apple_arch = str(to_apple_arch(self))
-            tc.cache_variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
+            tc.variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
-        tc.cache_variables["CMAKE_BUILD_TYPE"] = str(
-            self.settings.build_type,
-        )
-
-        tc.cache_variables["NATIVIUM_PROJECT_NAME"] = str(
+        # nativium specific
+        tc.variables["NATIVIUM_PROJECT_NAME"] = str(
             self.get_options("nativium_project_name"),
         )
 
-        tc.cache_variables["NATIVIUM_PRODUCT_NAME"] = str(
+        tc.variables["NATIVIUM_PRODUCT_NAME"] = str(
             self.get_options("nativium_product_name"),
         )
 
-        tc.cache_variables["NATIVIUM_TARGET"] = str(
+        tc.variables["NATIVIUM_TARGET"] = str(
             self.get_options("nativium_target"),
         )
 
-        tc.cache_variables["NATIVIUM_BUILD_TYPE"] = str(
+        tc.variables["NATIVIUM_BUILD_TYPE"] = str(
             self.get_options("nativium_build_type"),
         )
 
-        tc.cache_variables["NATIVIUM_ARCH"] = str(
+        tc.variables["NATIVIUM_ARCH"] = str(
             self.get_options("nativium_arch"),
         )
 
-        tc.cache_variables["NATIVIUM_GROUP"] = str(
+        tc.variables["NATIVIUM_GROUP"] = str(
             self.get_options("nativium_group"),
         )
 
-        tc.cache_variables["NATIVIUM_VERSION"] = str(
+        tc.variables["NATIVIUM_VERSION"] = str(
             self.get_options("nativium_version"),
         )
 
-        tc.cache_variables["NATIVIUM_VERSION_CODE"] = str(
+        tc.variables["NATIVIUM_VERSION_CODE"] = str(
             self.get_options("nativium_version_code"),
         )
 
-        tc.cache_variables["NATIVIUM_ENTRYPOINT"] = str(
+        tc.variables["NATIVIUM_ENTRYPOINT"] = str(
             self.get_options("nativium_entrypoint"),
         )
 
-        tc.cache_variables["NATIVIUM_CODE_COVERAGE"] = bool(
-            self.get_options("nativium_code_coverage"),
+        tc.variables["NATIVIUM_CODE_COVERAGE"] = bool(
+            self.get_options("nativium_code_coverage")
+        )
+
+        # general
+        tc.variables["CMAKE_BUILD_TYPE"] = str(
+            self.settings.build_type,
         )
 
         tc.generate()
