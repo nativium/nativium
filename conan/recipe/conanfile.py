@@ -1,7 +1,7 @@
 import os
 import sys
 
-from conan.tools.apple import to_apple_arch
+from conan.tools.apple import is_apple_os, to_apple_arch
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import copy
 from pygemstones.io import file as f
@@ -113,20 +113,24 @@ class TargetConan(ConanFile):
 
     # -----------------------------------------------------------------------------
     def generate(self):
-        # toolchain
-        tc = CMakeToolchain(self)
+        # generator
+        generator = None
 
-        if self.settings.os in c.APPLE_OS_LIST:
+        if is_apple_os(self):
+            generator = "Xcode"
+
+        # toolchain
+        tc = CMakeToolchain(self, generator=generator)
+
+        # apple specific
+        if is_apple_os(self):
             os_version = str(self.get_settings("os.version"))
             tc.cache_variables["NATIVIUM_DEPLOYMENT_TARGET"] = os_version
 
             apple_arch = str(to_apple_arch(self))
             tc.cache_variables["NATIVIUM_PLATFORM_ARCH"] = apple_arch
 
-        tc.cache_variables["CMAKE_BUILD_TYPE"] = str(
-            self.settings.build_type,
-        )
-
+        # nativium specific
         tc.cache_variables["NATIVIUM_PROJECT_NAME"] = str(
             self.get_options("nativium_project_name"),
         )
@@ -165,6 +169,11 @@ class TargetConan(ConanFile):
 
         tc.cache_variables["NATIVIUM_CODE_COVERAGE"] = bool(
             self.get_options("nativium_code_coverage"),
+        )
+
+        # general
+        tc.cache_variables["CMAKE_BUILD_TYPE"] = str(
+            self.settings.build_type,
         )
 
         tc.generate()
