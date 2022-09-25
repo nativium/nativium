@@ -286,7 +286,7 @@ target_compile_definitions(${NATIVIUM_PROJECT_NAME} PRIVATE HAS_UNCAUGHT_EXCEPTI
 include(${NATIVIUM_ROOT_PATH}/cmake/dependencies.cmake)
 
 # copy public headers
-if("${NATIVIUM_TARGET}" MATCHES "^(ios)$")
+if(NATIVIUM_TARGET STREQUAL "ios")
     set(NATIVIUM_HEADERS_INCLUDE_DIR "Headers")
 else()
     set(NATIVIUM_HEADERS_INCLUDE_DIR "include")
