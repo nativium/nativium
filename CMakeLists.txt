@@ -280,8 +280,7 @@ elseif(NATIVIUM_TARGET STREQUAL "wasm")
     set_target_properties(
         ${NATIVIUM_PROJECT_NAME}
         PROPERTIES
-        LINK_FLAGS
-        ${NATIVIUM_WASM_LINK_FLAGS}
+        LINK_FLAGS ${NATIVIUM_WASM_LINK_FLAGS}
     )
 endif()
 
