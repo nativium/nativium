@@ -3,7 +3,7 @@ include(default)
 [settings]
 os=Macos
 os.subsystem=catalyst
-os.sdk=macos
+os.sdk=macosx
 arch=x86_64
 
 [build_requires]
