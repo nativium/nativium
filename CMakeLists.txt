@@ -15,7 +15,7 @@ if(MSVC OR MSYS OR MINGW)
 endif()
 
 if(APPLE)
-    # for macOS X or iOS, watchOS, tvOS (since 3.10.3)
+    # for macOS X or iOS, watchOS, tvOS
     set(NATIVIUM_SYSTEM_APPLE YES)
     set(NATIVIUM_DEFAULT_TARGET "macos")
 endif()
@@ -143,16 +143,14 @@ if(NATIVIUM_TARGET STREQUAL "ios")
     set(FRAMEWORK_NAME "${NATIVIUM_PROJECT_NAME}" CACHE STRING "Framework Name")
     set(FRAMEWORK_BUNDLE_IDENTIFIER "com.nativium.library" CACHE STRING "Bundle Identifier")
 
-    if(NATIVIUM_GROUP STREQUAL "ios" OR "ios_simulator")
+    if(NATIVIUM_GROUP MATCHES "ios|ios_simulator")
         set(DEVICE_FAMILY "1,2" CACHE STRING "Device Family")
-    elseif(NATIVIUM_GROUP STREQUAL "tvos" OR "tvos_simulator")
+    elseif(NATIVIUM_GROUP MATCHES "ios_catalyst")
+        set(DEVICE_FAMILY "2" CACHE STRING "Device Family")
+    elseif(NATIVIUM_GROUP MATCHES "tvos|tvos_simulator")
         set(DEVICE_FAMILY "3" CACHE STRING "Device Family")
-    elseif(NATIVIUM_GROUP STREQUAL "watchos")
+    elseif(NATIVIUM_GROUP MATCHES "watchos|watchos_simulator")
         set(DEVICE_FAMILY "4" CACHE STRING "Device Family")
-        set(CMAKE_SYSTEM_VERSION "10.5")
-    elseif(NATIVIUM_GROUP STREQUAL "watchos_simulator")
-        set(DEVICE_FAMILY "4" CACHE STRING "Device Family")
-        set(CMAKE_SYSTEM_VERSION "10.5")
     endif()
 
     set(NATIVIUM_FRAMEWORK_LINKS_IOS "-framework Foundation")
@@ -190,7 +188,7 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELWITH
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # specify project type
-if("${NATIVIUM_TARGET}" MATCHES "^(ios|android)$")
+if(NATIVIUM_TARGET MATCHES "ios|android")
     add_library(${NATIVIUM_PROJECT_NAME} SHARED ${NATIVIUM_SOURCE_FILES})
 else()
     add_executable(${NATIVIUM_PROJECT_NAME} ${NATIVIUM_SOURCE_FILES})
@@ -230,7 +228,6 @@ if(NATIVIUM_TARGET STREQUAL "ios")
         MACOSX_FRAMEWORK_SHORT_VERSION_STRING "${NATIVIUM_VERSION}"
         # xcode
         XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${FRAMEWORK_BUNDLE_IDENTIFIER}"
-        XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "${CMAKE_OSX_DEPLOYMENT_TARGET}"
         XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "${CODE_SIGN_IDENTITY}"
         XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED NO
         XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "${DEVELOPMENT_TEAM_ID}"
@@ -243,9 +240,22 @@ if(NATIVIUM_TARGET STREQUAL "ios")
     )
 
     if(NATIVIUM_GROUP STREQUAL "ios_catalyst")
-        set_target_properties(${NATIVIUM_PROJECT_NAME} PROPERTIES INSTALL_RPATH "@loader_path/../../..")
+        set(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-maccatalyst")
+
+        set_target_properties(
+            ${NATIVIUM_PROJECT_NAME}
+            PROPERTIES
+            INSTALL_RPATH "@loader_path/../../.."
+            XCODE_ATTRIBUTE_MACOSX_DEPLOYMENT_TARGET "${CMAKE_OSX_DEPLOYMENT_TARGET}"
+            CMAKE_XCODE_ATTRIBUTE_SUPPORTED_PLATFORMS "macosx"
+        )
     else()
-        set_target_properties(${NATIVIUM_PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_INSTALL_PATH "@loader_path/Frameworks")
+        set_target_properties(
+            ${NATIVIUM_PROJECT_NAME}
+            PROPERTIES
+            XCODE_ATTRIBUTE_INSTALL_PATH "@loader_path/Frameworks"
+            XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "${CMAKE_OSX_DEPLOYMENT_TARGET}"
+        )
     endif()
 elseif(NATIVIUM_TARGET STREQUAL "android")
     set_target_properties(
