@@ -48,7 +48,6 @@ class TargetConan(ConanFile):
         "nativium_entrypoint": "",
         "nativium_code_coverage": False,
     }
-    generators = "CMakeToolchain", "CMakeDeps"
 
     # -----------------------------------------------------------------------------
     def config_options(self):
