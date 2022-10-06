@@ -76,27 +76,15 @@ darwin-toolchain/1.0.0@nativium/stable
 
 ## Bitcode support
 
-Bitcode is an option available on iOS, it is **required** on tvOS/watchOS.
+Bitcode is an option available on iOS and it is **required** on tvOS and watchOS.
 
-It is set by default to `True`.
+It is set by default to `True` on tvOS and watchOS, so you can only set it to `False` for iOS.
 
-So you can only set it to `False` for iOS. Note that it is not defined for macOS.
+Note that it is not defined for macOS.
 
 ## Local development
 
-1. Install python packages:  
-```python3 -m pip install conan_package_tools```
-2. Enter on project folder:  
+1. Enter on project folder:  
 ```cd conan/darwin-toolchain```
-3. Install:  
+2. Install:  
 ```conan create . nativium/stable```
-4. Build:  
-```python3 build.py```  
-
-or
-
-```rm -rf test_package/build/ && python3 build.py```  
-5. Check all generated files:  
-```find test_package/build -name hello -exec lipo -info {} \;```
-6. To install it as local package:  
-```conan export-pkg . darwin-toolchain/1.0.0@nativium/stable -f```
