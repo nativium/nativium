@@ -39,7 +39,7 @@ class DarwinToolchainConan(ConanFile):
         if self.settings.os_build != "Macos":
             raise ConanInvalidConfiguration("Build machine must be Macos")
 
-        if not is_apple_os(self.settings.os):
+        if not is_apple_os(self):
             raise ConanInvalidConfiguration("OS must be an Apple OS")
 
         if self.settings.os in ["watchOS", "tvOS"] and not self.options.enable_bitcode:
