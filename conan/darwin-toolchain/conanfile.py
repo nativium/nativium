@@ -1,10 +1,9 @@
 from conan.errors import ConanInvalidConfiguration
-from conan.tools import apple
-from conan.tools.apple.apple import XCRun
+from conan.tools.apple import XCRun, is_apple_os
 
 from conan import ConanFile
 
-required_conan_version = ">=1.52.0"
+required_conan_version = ">=1.53.0"
 
 
 class DarwinToolchainConan(ConanFile):
@@ -40,7 +39,7 @@ class DarwinToolchainConan(ConanFile):
         if self.settings.os_build != "Macos":
             raise ConanInvalidConfiguration("Build machine must be Macos")
 
-        if not apple.is_apple_os(self):
+        if not is_apple_os(self):
             raise ConanInvalidConfiguration("OS must be an Apple OS")
 
         if self.settings.os in ["watchOS", "tvOS"] and not self.options.enable_bitcode:
