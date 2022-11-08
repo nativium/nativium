@@ -41,7 +41,7 @@ conan profile update settings.arch_build="x86_64" default
 source 'https://github.com/CocoaPods/Specs.git'
 
 # variables
-IOS_PLATFORM = '9.0'
+IOS_PLATFORM = '11.0'
 WATCHOS_PLATFORM = '6.2'
 TVOS_PLATFORM = '14.0'
 

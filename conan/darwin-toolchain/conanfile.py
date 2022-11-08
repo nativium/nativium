@@ -1,9 +1,9 @@
-from conan import ConanFile
-from conans import tools
 from conan.errors import ConanInvalidConfiguration
+from conan.tools.apple import XCRun, is_apple_os
 
+from conan import ConanFile
 
-required_conan_version = ">=1.52.0"
+required_conan_version = ">=1.54.0"
 
 
 class DarwinToolchainConan(ConanFile):
@@ -39,7 +39,7 @@ class DarwinToolchainConan(ConanFile):
         if self.settings.os_build != "Macos":
             raise ConanInvalidConfiguration("Build machine must be Macos")
 
-        if not tools.is_apple_os(self.settings.os):
+        if not is_apple_os(self):
             raise ConanInvalidConfiguration("OS must be an Apple OS")
 
         if self.settings.os in ["watchOS", "tvOS"] and not self.options.enable_bitcode:
@@ -99,7 +99,7 @@ class DarwinToolchainConan(ConanFile):
             self.output.info("Settings: Default")
 
         # Sysroot
-        xcrun = tools.XCRun(settings_target)
+        xcrun = XCRun(self, use_settings_target=True)
         sysroot = xcrun.sdk_path
 
         self.cpp_info.sysroot = sysroot

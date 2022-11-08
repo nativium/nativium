@@ -31,4 +31,4 @@ node_modules
 package-lock.json
 
 # conan
-/CMakeUserPresets.json
+CMakeUserPresets.json

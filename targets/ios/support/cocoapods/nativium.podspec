@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = '{BUILD_TYPE}/{PROJECT_NAME}.{PACKAGE_EXTENSION}'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '11.0'
   s.watchos.deployment_target = '5.0'
   s.tvos.deployment_target = '11.0'
 

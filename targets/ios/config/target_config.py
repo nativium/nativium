@@ -13,7 +13,7 @@ def run(proj_path, target_name, params):
         build_types.append("release")
 
     # archs
-    has_ios_arm32 = True
+    has_ios_arm32 = False
     has_ios_arm64 = True
     has_ios_simulator_x64 = True
     has_ios_simulator_arm64 = True
@@ -37,7 +37,7 @@ def run(proj_path, target_name, params):
                     "arch": "armv7",
                     "conan_arch": "armv7",
                     "conan_profile": "nativium_ios_profile",
-                    "min_version": "9.0",
+                    "min_version": "11.0",
                     "supported_platform": "iPhoneOS",
                     "enable_bitcode": True,
                     "enable_arc": True,
@@ -55,7 +55,7 @@ def run(proj_path, target_name, params):
                     "arch": "arm64",
                     "conan_arch": "armv8",
                     "conan_profile": "nativium_ios_profile",
-                    "min_version": "9.0",
+                    "min_version": "11.0",
                     "supported_platform": "iPhoneOS",
                     "enable_bitcode": True,
                     "enable_arc": True,
@@ -73,7 +73,7 @@ def run(proj_path, target_name, params):
                     "arch": "x86_64",
                     "conan_arch": "x86_64",
                     "conan_profile": "nativium_ios_profile",
-                    "min_version": "9.0",
+                    "min_version": "11.0",
                     "supported_platform": "iPhoneSimulator",
                     "enable_bitcode": False,
                     "enable_arc": True,
@@ -91,7 +91,7 @@ def run(proj_path, target_name, params):
                     "arch": "arm64",
                     "conan_arch": "armv8",
                     "conan_profile": "nativium_ios_profile",
-                    "min_version": "9.0",
+                    "min_version": "11.0",
                     "supported_platform": "iPhoneSimulator",
                     "enable_bitcode": False,
                     "enable_arc": True,
@@ -240,7 +240,7 @@ def run(proj_path, target_name, params):
                     "enable_bitcode": False,
                     "enable_arc": True,
                     "sdk": "macosx",
-                    "group": "ios_catalyst",
+                    "group": "mac_catalyst",
                     "subsystem_ios_version": "13.1",
                 },
             ]
@@ -259,7 +259,7 @@ def run(proj_path, target_name, params):
                     "enable_bitcode": True,
                     "enable_arc": True,
                     "sdk": "macosx",
-                    "group": "ios_catalyst",
+                    "group": "mac_catalyst",
                     "subsystem_ios_version": "13.1",
                 },
             ]
