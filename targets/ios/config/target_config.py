@@ -13,7 +13,7 @@ def run(proj_path, target_name, params):
         build_types.append("release")
 
     # archs
-    has_ios_arm32 = True
+    has_ios_arm32 = False
     has_ios_arm64 = True
     has_ios_simulator_x64 = True
     has_ios_simulator_arm64 = True
