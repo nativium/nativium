@@ -145,7 +145,7 @@ if(NATIVIUM_TARGET STREQUAL "ios")
 
     if(NATIVIUM_GROUP MATCHES "ios|ios_simulator")
         set(DEVICE_FAMILY "1,2" CACHE STRING "Device Family")
-    elseif(NATIVIUM_GROUP MATCHES "ios_catalyst")
+    elseif(NATIVIUM_GROUP MATCHES "mac_catalyst")
         set(DEVICE_FAMILY "2" CACHE STRING "Device Family")
     elseif(NATIVIUM_GROUP MATCHES "tvos|tvos_simulator")
         set(DEVICE_FAMILY "3" CACHE STRING "Device Family")
@@ -239,7 +239,7 @@ if(NATIVIUM_TARGET STREQUAL "ios")
         VERSION "${NATIVIUM_VERSION}"
     )
 
-    if(NATIVIUM_GROUP STREQUAL "ios_catalyst")
+    if(NATIVIUM_GROUP STREQUAL "mac_catalyst")
         set(CMAKE_XCODE_EFFECTIVE_PLATFORMS "-maccatalyst")
 
         set_target_properties(

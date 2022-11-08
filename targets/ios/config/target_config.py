@@ -240,7 +240,7 @@ def run(proj_path, target_name, params):
                     "enable_bitcode": False,
                     "enable_arc": True,
                     "sdk": "macosx",
-                    "group": "ios_catalyst",
+                    "group": "mac_catalyst",
                     "subsystem_ios_version": "13.1",
                 },
             ]
@@ -259,7 +259,7 @@ def run(proj_path, target_name, params):
                     "enable_bitcode": True,
                     "enable_arc": True,
                     "sdk": "macosx",
-                    "group": "ios_catalyst",
+                    "group": "mac_catalyst",
                     "subsystem_ios_version": "13.1",
                 },
             ]
