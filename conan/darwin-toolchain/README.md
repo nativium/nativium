@@ -24,7 +24,7 @@ include(default)
 
 [settings]
 os=iOS
-os.version=9.0
+os.version=11.0
 arch=armv8
 
 [build_requires]
