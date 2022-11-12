@@ -146,6 +146,10 @@ class DarwinToolchainConan(ConanFile):
             else:
                 self.output.info("Bitcode enabled: NO")
 
+            self.conf_info.define(
+                "tools.apple:enable_bitcode", self.options.enable_bitcode
+            )
+
         # ARC
         if self.options.enable_arc is None:
             self.output.info("ObjC ARC enabled: IGNORED")
@@ -171,6 +175,8 @@ class DarwinToolchainConan(ConanFile):
                 )
                 self.output.info("ObjC ARC enabled: NO")
 
+            self.conf_info.define("tools.apple:enable_arc", self.options.enable_arc)
+
         # Visibility
         if self.options.enable_visibility is None:
             self.output.info("Visibility enabled: IGNORED")
@@ -194,6 +200,10 @@ class DarwinToolchainConan(ConanFile):
                     "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "YES"
                 )
                 self.output.info("Visibility enabled: NO")
+
+            self.conf_info.define(
+                "tools.apple:enable_visibility", self.options.enable_visibility
+            )
 
         self.cpp_info.cflags.extend(common_flags)
         self.cpp_info.cxxflags.extend(common_flags)
