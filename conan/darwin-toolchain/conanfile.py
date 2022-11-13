@@ -115,7 +115,7 @@ class DarwinToolchainConan(ConanFile):
         self.conf_info.define("tools.apple:sdk_path", sysroot)
 
         # Bitcode
-        if self.options.enable_bitcode is None:
+        if self.options.enable_bitcode is None or self.options.enable_bitcode == "None":
             self.output.info("Bitcode enabled: IGNORED")
         else:
             if self.options.enable_bitcode:
@@ -142,6 +142,12 @@ class DarwinToolchainConan(ConanFile):
                     self.env_info.CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE = (
                         "bitcode"
                     )
+                    self.buildenv_info.define(
+                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "bitcode"
+                    )
+                    self.runenv_info.define(
+                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "bitcode"
+                    )
                     common_flags.append("-fembed-bitcode")
             else:
                 self.output.info("Bitcode enabled: NO")
@@ -151,7 +157,7 @@ class DarwinToolchainConan(ConanFile):
             )
 
         # ARC
-        if self.options.enable_arc is None:
+        if self.options.enable_arc is None or self.options.enable_arc == "None":
             self.output.info("ObjC ARC enabled: IGNORED")
         else:
             if self.options.enable_arc:
@@ -178,10 +184,14 @@ class DarwinToolchainConan(ConanFile):
             self.conf_info.define("tools.apple:enable_arc", self.options.enable_arc)
 
         # Visibility
-        if self.options.enable_visibility is None:
+        if (
+            self.options.enable_visibility is None
+            or self.options.enable_visibility == "None"
+        ):
             self.output.info("Visibility enabled: IGNORED")
         else:
             if self.options.enable_visibility:
+                common_flags.append("-fvisibility=default")
                 self.env_info.CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN = "NO"
                 self.buildenv_info.define(
                     "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "NO"

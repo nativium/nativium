@@ -209,7 +209,6 @@ set_target_properties(
     CXX_STANDARD "${NATIVIUM_CXX_STANDARD}"
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
-    CXX_VISIBILITY_PRESET default
     SOVERSION "${NATIVIUM_VERSION_MAJOR}" # "compatibility version" in semantic format in Mach-O binary file
     PUBLIC_HEADER "${NATIVIUM_PUBLIC_HEADER_FILES}"
 )
