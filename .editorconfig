@@ -31,7 +31,7 @@ trim_trailing_whitespace = false
 [*.gemspec]
 indent_size = 2
 
-[*.rb]
+[*.rb,Fastfile,Gemfile,Brewfile,Podfile]
 indent_size = 2
 
 [*.bat]

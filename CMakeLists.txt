@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.24.0)
 
 # project
-project(nativium LANGUAGES CXX)
+project(nativium LANGUAGES C CXX)
 
 # system
 if(MSVC OR MSYS OR MINGW)
