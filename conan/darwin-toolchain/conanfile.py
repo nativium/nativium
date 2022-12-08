@@ -3,7 +3,7 @@ from conan.tools.apple import XCRun, is_apple_os
 
 from conan import ConanFile
 
-required_conan_version = ">=1.54.0"
+required_conan_version = ">=1.55.0"
 
 
 class DarwinToolchainConan(ConanFile):
@@ -88,19 +88,10 @@ class DarwinToolchainConan(ConanFile):
         self.cpp_info.resdirs = []
         self.cpp_info.frameworkdirs = []
 
-        # Settings
-        settings_target = None
-
-        if hasattr(self, "settings_target"):
-            settings_target = self.settings_target
-            self.output.info("Settings: Target")
-        else:
-            settings_target = self.settings
-            self.output.info("Settings: Default")
-
-        # Sysroot
+        # Sysroot and Settings
         xcrun = XCRun(self, use_settings_target=True)
         sysroot = xcrun.sdk_path
+        settings_target = xcrun.settings
 
         self.cpp_info.sysroot = sysroot
         common_flags = ["-isysroot%s" % sysroot]
