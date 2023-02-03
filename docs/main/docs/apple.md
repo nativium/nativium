@@ -124,7 +124,7 @@ Some useful macros to check OS and execute specific code for that OS:
 
 or
 
-if #available(macOS 10.9, *) {
+if #available(macOS 10.13, *) {
   // compiles for OS X
 } else if #available(iOS 9, *) {
   // compiles for iOS
@@ -162,7 +162,7 @@ or
 
 or 
 
-if (@available(macOS 10.9, *)) {
+if (@available(macOS 10.13, *)) {
   // compiles for OS X
 } else if (@available(iOS 9, *)) {
   // compiles for iOS
@@ -174,7 +174,7 @@ if (@available(macOS 10.9, *)) {
 
 or
 
-if (@available(macOS 10.9, iOS 9, tvOS 11, watchOS 5, *)) {
+if (@available(macOS 10.13, iOS 9, tvOS 11, watchOS 5, *)) {
   // compiles for OS X and iOS and TV OS and Watch OS with specified versions
 }
 ```
