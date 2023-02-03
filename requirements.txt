@@ -1,4 +1,4 @@
-conan>=1.55
+conan>=1.58
 boto3>=1.9.232
 botocore>=1.23.27
 mkdocs>=1.2.3
