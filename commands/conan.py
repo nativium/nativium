@@ -34,7 +34,10 @@ def setup(params):
         [
             "conan",
             "profile",
-            "detect",
+            "new",
+            "default",
+            "--detect",
+            "--force",
         ],
         cwd=proj_path,
     )
