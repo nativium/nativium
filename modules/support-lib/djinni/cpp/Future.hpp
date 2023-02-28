@@ -24,17 +24,21 @@
 #include <mutex>
 #include <cassert>
 
-#if defined(DJINNI_FUTURE_COROUTINE_SUPPORT)
+#ifdef __cpp_coroutines
 #if __has_include(<coroutine>)
     #include <coroutine>
     namespace djinni::detail {
         template <typename Promise = void> using CoroutineHandle = std::coroutine_handle<Promise>;
+        using SuspendNever = std::suspend_never;
     }
+    #define DJINNI_FUTURE_HAS_COROUTINE_SUPPORT 1
 #elif __has_include(<experimental/coroutine>)
     #include <experimental/coroutine>
     namespace djinni::detail {
         template <typename Promise = void> using CoroutineHandle = std::experimental::coroutine_handle<Promise>;
+        using SuspendNever = std::experimental::suspend_never;
     }
+    #define DJINNI_FUTURE_HAS_COROUTINE_SUPPORT 1
 #endif
 #endif
 
@@ -113,12 +117,12 @@ public:
     // Examples:
     //   return Promise<int>::resolve(4);
     //   return Promise<std::string>::resolve(std::move(someStr));
-    static Future<T> resolve(const typename ValueHolder<T>::type& val) {
+    [[nodiscard]] static Future<T> resolve(const typename ValueHolder<T>::type& val) {
         PromiseBase<T> promise;
         promise.setValue(val);
         return promise.getFuture();
     }
-    static Future<T> resolve(typename ValueHolder<T>::type&& val) {
+    [[nodiscard]] static Future<T> resolve(typename ValueHolder<T>::type&& val) {
         PromiseBase<T> promise;
         promise.setValue(std::move(val));
         return promise.getFuture();
@@ -140,12 +144,12 @@ public:
     //   } catch (...) {
     //     return Promise<std::string>::reject(std::current_exception());
     //   }
-    static Future<T> reject(const std::exception& e) {
+    [[nodiscard]] static Future<T> reject(const std::exception& e) {
         PromiseBase<T> promise;
         promise.setException(e);
         return promise.getFuture();
     }
-    static Future<T> reject(std::exception_ptr ex) {
+    [[nodiscard]] static Future<T> reject(std::exception_ptr ex) {
         PromiseBase<T> promise;
         promise.setException(ex);
         return promise.getFuture();
@@ -170,6 +174,9 @@ protected:
     }
     template <typename E>
     void setException(const E& ex) {
+        // Let's try to prevent throwing non-exception types.
+        static_assert(std::is_convertible_v<E, std::exception>, "setException() called with type that is not convertible to std::exception");
+
         setException(std::make_exception_ptr(ex));
     }
     void setException(std::exception_ptr ex) {
@@ -336,28 +343,53 @@ public:
 private:
     detail::SharedStatePtr<T> _sharedState;
 
-#if defined(DJINNI_FUTURE_COROUTINE_SUPPORT)
+#if defined(DJINNI_FUTURE_HAS_COROUTINE_SUPPORT)
 public:
     bool await_ready() {
         return isReady();
     }
     auto await_resume() {
-        auto sharedState = std::atomic_load(&_sharedState);
-        if (sharedState) {
-            return Future<T>(sharedState).get();
-        } else {
-            return Future<T>(_coroState).get();
-        }
+        // after resuming from await, the future should be in an invalid state
+        // (_sharedState is null)
+        detail::SharedStatePtr<T> sharedState;
+        sharedState = std::atomic_exchange(&_sharedState, sharedState);
+        return Future<T>(sharedState).get();
     }
     bool await_suspend(detail::CoroutineHandle<> h) {
         this->then([h, this] (Future<T> x) mutable {
-            _coroState = x._sharedState;
+            std::atomic_store(&_sharedState, x._sharedState);
             h();
         });
         return true;
     }
-private:
-    detail::SharedStatePtr<T> _coroState;
+
+    struct PromiseTypeBase {
+        Promise<T> _promise;
+
+        detail::SuspendNever initial_suspend() { return {}; }
+        detail::SuspendNever final_suspend() noexcept { return {}; }
+
+        Future<T> get_return_object() noexcept {
+            return _promise.getFuture();
+        }
+        void unhandled_exception() {
+            _promise.setException(std::current_exception());
+        }
+    };
+    template <typename U>
+    struct PromiseType: PromiseTypeBase{
+        template <typename V>
+        void return_value(V&& value) {
+            this->_promise.setValue(std::forward<V>(value));
+        }
+    };
+    template <>
+    struct PromiseType<void>: PromiseTypeBase {
+        void return_void() {
+            this->_promise.setValue();
+        }
+    };
+    using promise_type = PromiseType<T>;
 #endif
 };
 

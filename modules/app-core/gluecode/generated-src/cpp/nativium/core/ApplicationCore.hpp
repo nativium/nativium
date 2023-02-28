@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-namespace nativium { namespace core {
+namespace nativium::core {
 
 class ApplicationCore {
 public:
@@ -19,4 +19,4 @@ public:
     virtual std::string getVersion() = 0;
 };
 
-} }  // namespace nativium::core
+} // namespace nativium::core

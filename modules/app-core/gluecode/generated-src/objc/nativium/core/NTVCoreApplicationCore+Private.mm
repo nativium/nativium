@@ -71,6 +71,6 @@ auto ApplicationCore::fromCppOpt(const CppOptType& cpp) -> ObjcType
     return ::djinni::get_cpp_proxy<NTVCoreApplicationCore>(cpp);
 }
 
-}  // namespace djinni_generated
+} // namespace djinni_generated
 
 @end

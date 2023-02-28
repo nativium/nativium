@@ -6,5 +6,5 @@ compiler.version=14
 compiler.libcxx=c++_static
 arch=armv8
 
-[build_requires]
+[tool_requires]
 android-ndk/r24

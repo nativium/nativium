@@ -15,6 +15,7 @@ Thumbs.db
 CMakeSettings.json
 .vs
 __pycache__
+.metals
 
 # nativium
 build
