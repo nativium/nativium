@@ -385,6 +385,13 @@ struct Array<F64> : PrimitiveArray<F64> {
     }
 };
 
+class Void {
+public:
+    using CppType = void;
+    using JsType = em::val;
+    using Boxed = Void;
+};
+
 class CppResolveHandlerBase {
 public:
     virtual ~CppResolveHandlerBase() = default;
@@ -395,34 +402,43 @@ public:
         handler->init(resolveFunc, rejectFunc);
     }
     
-    static void resolveNativePromise(int func, int context, em::val res, em::val err) {
-        typedef void (*ResolveNativePromiseFunc)(int context, em::val res, em::val err);
+    static void resolveNativePromise(int func, int context, em::val res) {
+        typedef void (*ResolveNativePromiseFunc)(int context, em::val res);
         auto resolveNativePromiseFunc = reinterpret_cast<ResolveNativePromiseFunc>(func);
-        resolveNativePromiseFunc(context, res, err);
+        resolveNativePromiseFunc(context, res);
+    }
+
+    static void rejectNativePromise(int func, int context, em::val err) {
+        typedef void (*RejectNativePromiseFunc)(int context, em::val err);
+        auto rejectNativePromiseFunc = reinterpret_cast<RejectNativePromiseFunc>(func);
+        rejectNativePromiseFunc(context, err);
     }
 };
 
 using JsProxyId = uint64_t;
 
-// The stack property is non-standard, but well supported in browsers
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Stack#browser_compatibility
-// It also seems to include the name and message properties, so no need to access them separately
-//
-// >>> function doThrow() { throw new Error("foo")}
-// >>> try { doThrow() } catch (e) { console.log(e.stack) }
-// Error: foo
-//     at doThrow (<anonymous>:1:25)
-//     at <anonymous>:1:7
-// >>> try { doThrow() } catch (e) { console.log(e.name) }
-// Error
-// >>> try { doThrow() } catch (e) { console.log(e.message) }
-// foo
 class JsException : public std::runtime_error {
 public:
+    // Input must be an instanceof an Error Type
     JsException(const em::val& e):
-        std::runtime_error(e["stack"].as<std::string>()),
+        std::runtime_error(resolveCppErrorString(e)),
         _jsEx(e)
     {}
+
+    static std::string resolveCppErrorString(const em::val& e) {
+        // The stack property is non-standard, but well supported in browsers
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/Stack#browser_compatibility
+        // It also seems to include the name and message properties, so no need to access them separately
+        // However, DOMExceptions tend not to include the stack as they originate from C++ inside the browser engine, so
+        // check for presence, and fallback if necessary.
+        if (e["stack"].isString()) {
+            return e["stack"].as<std::string>();
+        }
+
+        // toString() will include the name and message, but not the stack. All wasm browsers support this.
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/toString
+        return e.call<std::string>("toString");
+    }
 
     const em::val& cause() const { return _jsEx; }
 private:
@@ -601,6 +617,7 @@ private:
 
 extern "C" void djinni_register_name_in_ns(const char* prefixedName, const char* namespacedName);
 extern "C" void djinni_throw_native_exception(const std::exception& e);
+em::val djinni_native_exception_to_js(const std::exception& e);
 
 template<typename U>
 struct DefaultInit {

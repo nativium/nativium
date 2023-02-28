@@ -1,6 +1,4 @@
 if (gradle.ext.nativiumUseRemoteLibrary) {
-    apply plugin: "de.undercouch.download"
-
     var fileURL = ""
 
     if (gradle.ext.nativiumUseLocalServer) {

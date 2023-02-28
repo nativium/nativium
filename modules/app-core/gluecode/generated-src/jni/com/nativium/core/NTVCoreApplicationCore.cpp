@@ -45,4 +45,4 @@ CJNIEXPORT jstring JNICALL Java_com_nativium_core_ApplicationCore_00024CppProxy_
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, 0 /* value doesn't matter */)
 }
 
-}  // namespace djinni_generated
+} // namespace djinni_generated
