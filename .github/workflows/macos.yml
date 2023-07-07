@@ -46,7 +46,12 @@ jobs:
           version: "1.10.0"
 
       - name: Install LCOV
-        run: brew install lcov
+        run: |
+          curl -LO https://github.com/linux-test-project/lcov/archive/v1.16.tar.gz
+          tar -xzf v1.16.tar.gz
+          cd lcov-1.16
+          sudo make install
+          lcov --version
 
       - name: Nativium - Install Python Dependencies
         run: python3 -m pip install -r requirements.txt
