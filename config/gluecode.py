@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 def run(proj_path, params):
     return {
-        "version": "0.5.11",
+        "version": "0.5.12",
         "cpp_namespace_prefix": "nativium",
         "cpp_include_prefix": "nativium",
         "objc_prefix": "NTV",
