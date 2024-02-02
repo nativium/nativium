@@ -98,19 +98,19 @@ jobs:
           path: build/${{ matrix.config.target }}/dist/dist.tar.gz
 
       - name: Nativium - Dist Upload
-        if: startsWith(github.ref, 'refs/tags/main-')
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           NATIVIUM_AWS_KEY_ID: ${{ secrets.NATIVIUM_AWS_KEY_ID }}
           NATIVIUM_AWS_SECRET_KEY: ${{ secrets.NATIVIUM_AWS_SECRET_KEY }}
         run: python3 nativium.py target ${{ matrix.config.target }} dist upload --force
 
       - name: Release - Setup
-        if: startsWith(github.ref, 'refs/tags/main-')
+        if: startsWith(github.ref, 'refs/tags/')
         run: mv build/${{ matrix.config.target }}/dist/dist.tar.gz ${{ matrix.config.target }}.tar.gz
 
       - name: Release
         id: upload-release-asset
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/main-')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: ${{ matrix.config.target }}.tar.gz
