@@ -52,19 +52,19 @@ jobs:
           path: build/docs.tar.gz
 
       - name: Nativium - Publish
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/main-')
         env:
           NATIVIUM_AWS_KEY_ID: ${{ secrets.NATIVIUM_AWS_KEY_ID }}
           NATIVIUM_AWS_SECRET_KEY: ${{ secrets.NATIVIUM_AWS_SECRET_KEY }}
         run: python3 nativium.py doc publish --force
 
       - name: Release - Setup
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/main-')
         run: mv build/docs.tar.gz docs.tar.gz
 
       - name: Release
         id: upload-release-asset
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/main-')
         with:
           files: docs.tar.gz
