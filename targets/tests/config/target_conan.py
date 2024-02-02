@@ -10,4 +10,4 @@ def configure(params={}):
 def requirements(params={}):
     conanfile: ConanFile = params["conanfile"]
 
-    conanfile.requires("gtest/1.11.0")
+    conanfile.requires("gtest/1.14.0")
