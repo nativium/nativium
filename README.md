@@ -108,4 +108,4 @@ These projects were made using the Nativium architecture with a feature called `
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2021-2022, Paulo Coutinho
+Copyright (c) 2021-2024, Paulo Coutinho

@@ -16,13 +16,13 @@ jobs:
       matrix:
         config:
           - { name: "Ubuntu", os: ubuntu-latest, target: "wasm" }
-        python-version: [3.7]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 

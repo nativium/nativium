@@ -1,30 +1,18 @@
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+plugins {
+    id 'com.android.library'
 }
-
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.1'
-    }
-}
-
-apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
-    ndkVersion "24.0.8215888"
+    namespace 'com.ubook.library'
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 33
+        buildToolsVersion = '34.0.0'
+        ndkVersion = "24.0.8215888"
+
+        minSdk 16
+        targetSdk 34
+        compileSdk 34
+
         versionCode {VERSION_CODE}
         versionName '{VERSION}'
     }
@@ -52,4 +40,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.annotation:annotation:1.7.1"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
+    implementation "androidx.preference:preference:1.2.1"
 }
