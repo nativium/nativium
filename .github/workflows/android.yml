@@ -16,13 +16,13 @@ jobs:
       matrix:
         config:
           - { name: "Ubuntu", os: ubuntu-latest, target: "android" }
-        python-version: [3.7]
+        python-version: [3.9]
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -44,6 +44,12 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@master
         with:
           version: "1.10.0"
+
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "corretto"
+          java-version: "17"
 
       - name: Nativium - Install Python Dependencies
         run: python3 -m pip install -r requirements.txt
