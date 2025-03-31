@@ -225,6 +225,9 @@ def code_format(params):
                     "path": os.path.join(format_path, "nativium.py"),
                 },
                 {
+                    "path": os.path.join(format_path, "conanfile.py"),
+                },
+                {
                     "path": os.path.join(format_path, "commands"),
                     "patterns": ["*.py"],
                 },
@@ -250,10 +253,6 @@ def code_format(params):
                 },
                 {
                     "path": os.path.join(format_path, "conan", "darwin-toolchain"),
-                    "patterns": ["*.py"],
-                },
-                {
-                    "path": os.path.join(format_path, "conan", "recipe"),
                     "patterns": ["*.py"],
                 },
             ]

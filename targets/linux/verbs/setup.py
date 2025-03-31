@@ -47,8 +47,6 @@ def run(params):
                         "install",
                         os.path.join(
                             proj_path,
-                            "conan",
-                            "recipe",
                             const.FILE_NAME_CONANFILE_PY,
                         ),
                         "-pr:b",

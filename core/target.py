@@ -74,41 +74,41 @@ def add_target_setup_common_args(
         run_args.append("os.sdk={0}".format(arch["sdk"]))
 
     run_args.append("-o")
-    run_args.append("nativium_target={0}".format(target_name))
+    run_args.append("*:nativium_target={0}".format(target_name))
 
     run_args.append("-o")
-    run_args.append("nativium_build_type={0}".format(build_type))
+    run_args.append("*:nativium_build_type={0}".format(build_type))
 
     run_args.append("-o")
-    run_args.append("nativium_arch={0}".format(arch["arch"]))
+    run_args.append("*:nativium_arch={0}".format(arch["arch"]))
 
     run_args.append("-o")
-    run_args.append("nativium_project_name={0}".format(target_config["project_name"]))
+    run_args.append("*:nativium_project_name={0}".format(target_config["project_name"]))
 
     run_args.append("-o")
     run_args.append(
-        "nativium_product_name={0}".format(
+        "*:nativium_product_name={0}".format(
             target_config["product_name"] if "product_name" in target_config else ""
         )
     )
 
     run_args.append("-o")
-    run_args.append("nativium_version={0}".format(target_config["version"]))
+    run_args.append("*:nativium_version={0}".format(target_config["version"]))
 
     run_args.append("-o")
     run_args.append(
-        "nativium_version_code={0}".format(
+        "*:nativium_version_code={0}".format(
             target_config["version_code"] if "version_code" in target_config else ""
         )
     )
 
     if "group" in arch:
-        run_args.append("-o"),
-        run_args.append("nativium_group={0}".format(arch["group"]))
+        run_args.append("-o")
+        run_args.append("*:nativium_group={0}".format(arch["group"]))
 
     if "entrypoint" in target_config:
-        run_args.append("-o"),
-        run_args.append("nativium_entrypoint={0}".format(target_config["entrypoint"]))
+        run_args.append("-o")
+        run_args.append("*:nativium_entrypoint={0}".format(target_config["entrypoint"]))
 
 
 # -----------------------------------------------------------------------------

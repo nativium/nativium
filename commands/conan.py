@@ -34,26 +34,11 @@ def setup(params):
         [
             "conan",
             "profile",
-            "new",
-            "default",
-            "--detect",
+            "detect",
             "--force",
         ],
         cwd=proj_path,
     )
-
-    # install darwin toolchain
-    if p.is_macos():
-        l.i("Installing darwin toolchain...")
-
-        r.run(
-            ["conan", "create", ".", "nativium/stable"],
-            cwd=os.path.join(
-                proj_path,
-                "conan",
-                "darwin-toolchain",
-            ),
-        )
 
     l.ok()
 

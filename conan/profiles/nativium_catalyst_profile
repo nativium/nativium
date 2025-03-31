@@ -5,6 +5,3 @@ os=Macos
 os.subsystem=catalyst
 os.sdk=macosx
 arch=x86_64
-
-[tool_requires]
-darwin-toolchain/1.0.0@nativium/stable

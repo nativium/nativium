@@ -5,6 +5,3 @@ os=iOS
 os.version=11.0
 os.sdk=iphoneos
 arch=armv8
-
-[tool_requires]
-darwin-toolchain/1.0.0@nativium/stable

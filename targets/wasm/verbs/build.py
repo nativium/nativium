@@ -64,8 +64,6 @@ def run(params):
                         "build",
                         os.path.join(
                             proj_path,
-                            "conan",
-                            "recipe",
                             const.FILE_NAME_CONANFILE_PY,
                         ),
                     ]

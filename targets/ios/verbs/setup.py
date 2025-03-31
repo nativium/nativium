@@ -79,7 +79,7 @@ def run(params):
                         if "enable_bitcode" in arch:
                             run_args.append("-o:h")
                             run_args.append(
-                                "darwin-toolchain:enable_bitcode={0}".format(
+                                "*:darwin-toolchain:enable_bitcode={0}".format(
                                     arch["enable_bitcode"]
                                 )
                             )
@@ -87,7 +87,7 @@ def run(params):
                         if "enable_arc" in arch:
                             run_args.append("-o:h")
                             run_args.append(
-                                "darwin-toolchain:enable_arc={0}".format(
+                                "*:darwin-toolchain:enable_arc={0}".format(
                                     arch["enable_arc"]
                                 )
                             )
@@ -95,7 +95,7 @@ def run(params):
                         if "enable_visibility" in arch:
                             run_args.append("-o:h")
                             run_args.append(
-                                "darwin-toolchain:enable_visibility={0}".format(
+                                "*:darwin-toolchain:enable_visibility={0}".format(
                                     arch["enable_visibility"]
                                 )
                             )

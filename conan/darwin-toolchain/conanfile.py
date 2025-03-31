@@ -3,14 +3,14 @@ from conan.tools.apple import XCRun, is_apple_os
 
 from conan import ConanFile
 
-required_conan_version = ">=1.55.0"
+required_conan_version = ">=2.0.0"
 
 
 class DarwinToolchainConan(ConanFile):
     name = "darwin-toolchain"
     version = "1.0.0"
     license = "MIT"
-    settings = "os", "arch", "build_type", "os_build", "compiler"
+    settings = "os", "arch", "build_type", "compiler"
     options = {
         "enable_bitcode": [True, False, None],
         "enable_arc": [True, False, None],
@@ -23,7 +23,9 @@ class DarwinToolchainConan(ConanFile):
     }
     description = "Darwin toolchain to (cross) compile macOS/iOS/watchOS/tvOS"
     url = "https://github.com/nativium/nativium"
-    build_policy = "missing"
+
+    # In Conan 2.0, build_policy="missing" is replaced by package_id_mode
+    package_id_mode = "recipe_revision_mode"
 
     def config_options(self):
         if self.settings.os == "Macos":
@@ -81,98 +83,43 @@ class DarwinToolchainConan(ConanFile):
                 "watchOS: Only supported archs: [armv7k, armv8_32, x86, x86_64]"
             )
 
-    def package_info(self):
-        self.cpp_info.libdirs = []
-        self.cpp_info.bindirs = []
-        self.cpp_info.includedirs = []
-        self.cpp_info.resdirs = []
-        self.cpp_info.frameworkdirs = []
-
+    def generate(self):
         # Sysroot and Settings
         xcrun = XCRun(self, use_settings_target=True)
         sysroot = xcrun.sdk_path
         settings_target = xcrun.settings
 
-        self.cpp_info.sysroot = sysroot
-        common_flags = ["-isysroot%s" % sysroot]
+        # Variables for CMake
+        self.output.info(f"Setting SDKROOT to {sysroot}")
 
-        self.env_info.CONAN_CMAKE_OSX_SYSROOT = sysroot
-        self.env_info.SDKROOT = sysroot
-
-        self.buildenv_info.define("CONAN_CMAKE_OSX_SYSROOT", sysroot)
-        self.buildenv_info.define("SDKROOT", sysroot)
-        self.runenv_info.define("CONAN_CMAKE_OSX_SYSROOT", sysroot)
-        self.runenv_info.define("SDKROOT", sysroot)
-        self.conf_info.define("tools.apple:sdk_path", sysroot)
-
+        # Set variables as part of the conanbuild.sh/bat file
         # Bitcode
         if self.options.enable_bitcode is None or self.options.enable_bitcode == "None":
             self.output.info("Bitcode enabled: IGNORED")
         else:
             if self.options.enable_bitcode:
                 self.output.info("Bitcode enabled: YES")
-
-                self.env_info.CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE = "YES"
-                self.buildenv_info.define("CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE", "YES")
-                self.runenv_info.define("CMAKE_XCODE_ATTRIBUTE_ENABLE_BITCODE", "YES")
+                self.conf.define("tools.apple:enable_bitcode", True)
 
                 build_type = settings_target.get_safe("build_type")
-
                 if build_type.lower() == "debug":
-                    self.env_info.CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE = (
-                        "marker"
-                    )
-                    self.buildenv_info.define(
-                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "marker"
-                    )
-                    self.runenv_info.define(
-                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "marker"
-                    )
-                    common_flags.append("-fembed-bitcode-marker")
+                    self.conf.define("tools.apple:bitcode_mode", "marker")
                 else:
-                    self.env_info.CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE = (
-                        "bitcode"
-                    )
-                    self.buildenv_info.define(
-                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "bitcode"
-                    )
-                    self.runenv_info.define(
-                        "CMAKE_XCODE_ATTRIBUTE_BITCODE_GENERATION_MODE", "bitcode"
-                    )
-                    common_flags.append("-fembed-bitcode")
+                    self.conf.define("tools.apple:bitcode_mode", "bitcode")
             else:
                 self.output.info("Bitcode enabled: NO")
-
-            self.conf_info.define(
-                "tools.apple:enable_bitcode", self.options.enable_bitcode
-            )
+                self.conf.define("tools.apple:enable_bitcode", False)
 
         # ARC
         if self.options.enable_arc is None or self.options.enable_arc == "None":
             self.output.info("ObjC ARC enabled: IGNORED")
         else:
             if self.options.enable_arc:
-                common_flags.append("-fobjc-arc")
-                self.env_info.CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC = "YES"
-                self.buildenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "YES"
-                )
-                self.runenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "YES"
-                )
                 self.output.info("ObjC ARC enabled: YES")
+                self.conf.define("tools.apple:enable_arc", True)
             else:
-                common_flags.append("-fno-objc-arc")
-                self.env_info.CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC = "NO"
-                self.buildenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "NO"
-                )
-                self.runenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC", "NO"
-                )
                 self.output.info("ObjC ARC enabled: NO")
-
-            self.conf_info.define("tools.apple:enable_arc", self.options.enable_arc)
+                self.conf.define("tools.apple:enable_arc", False)
 
         # Visibility
         if (
@@ -182,47 +129,53 @@ class DarwinToolchainConan(ConanFile):
             self.output.info("Visibility enabled: IGNORED")
         else:
             if self.options.enable_visibility:
-                common_flags.append("-fvisibility=default")
-                self.env_info.CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN = "NO"
-                self.buildenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "NO"
-                )
-                self.runenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "NO"
-                )
                 self.output.info("Visibility enabled: YES")
+                self.conf.define("tools.apple:enable_visibility", True)
             else:
-                common_flags.append("-fvisibility=hidden")
-                self.env_info.CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN = "YES"
-                self.buildenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "YES"
-                )
-                self.runenv_info.define(
-                    "CMAKE_XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN", "YES"
-                )
                 self.output.info("Visibility enabled: NO")
+                self.conf.define("tools.apple:enable_visibility", False)
 
-            self.conf_info.define(
-                "tools.apple:enable_visibility", self.options.enable_visibility
-            )
+        # Set the SDK path
+        self.conf.define("tools.apple:sdk_path", sysroot)
 
+    def package_id(self):
+        self.info.clear()
+
+    def package_info(self):
+        # In Conan 2.0, we use the cpp_info and conf objects
+        xcrun = XCRun(self, use_settings_target=True)
+        sysroot = xcrun.sdk_path
+
+        self.cpp_info.includedirs = []
+        self.cpp_info.libdirs = []
+        self.cpp_info.bindirs = []
+        self.cpp_info.resdirs = []
+        self.cpp_info.frameworkdirs = []
+        self.cpp_info.builddirs = []
+
+        # Set the sysroot in cpp_info
+        self.cpp_info.sysroot = sysroot
+
+        # Common flags
+        common_flags = [f"-isysroot{sysroot}"]
+
+        # Apply bitcode flags
+        if self.options.enable_bitcode and self.options.enable_bitcode != "None":
+            if self.settings.build_type and self.settings.build_type.lower() == "debug":
+                common_flags.append("-fembed-bitcode-marker")
+            else:
+                common_flags.append("-fembed-bitcode")
+
+        # Apply ARC flags
+        if self.options.enable_arc and self.options.enable_arc != "None":
+            common_flags.append("-fobjc-arc" if self.options.enable_arc else "-fno-objc-arc")
+
+        # Apply visibility flags
+        if self.options.enable_visibility and self.options.enable_visibility != "None":
+            common_flags.append("-fvisibility=default" if self.options.enable_visibility else "-fvisibility=hidden")
+
+        # Set flags in cpp_info
         self.cpp_info.cflags.extend(common_flags)
         self.cpp_info.cxxflags.extend(common_flags)
         self.cpp_info.sharedlinkflags.extend(common_flags)
         self.cpp_info.exelinkflags.extend(common_flags)
-
-        cflags_str = " ".join(self.cpp_info.cflags)
-        cxxflags_str = " ".join(self.cpp_info.cxxflags)
-        ldflags_str = " ".join(self.cpp_info.sharedlinkflags)
-
-        self.env_info.CFLAGS = cflags_str
-        self.env_info.ASFLAGS = cflags_str
-        self.env_info.CPPFLAGS = cxxflags_str
-        self.env_info.CXXFLAGS = cxxflags_str
-        self.env_info.LDFLAGS = ldflags_str
-
-        self.buildenv_info.define("CFLAGS", cflags_str)
-        self.buildenv_info.define("ASFLAGS", cflags_str)
-        self.buildenv_info.define("CPPFLAGS", cxxflags_str)
-        self.buildenv_info.define("CXXFLAGS", cxxflags_str)
-        self.buildenv_info.define("LDFLAGS", ldflags_str)
