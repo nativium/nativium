@@ -65,6 +65,26 @@ def run(params):
                             proj_path,
                             const.FILE_NAME_CONANFILE_PY,
                         ),
+                        "--source-folder",
+                        proj_path,
+                        "--build-folder",
+                        os.path.join(
+                            proj_path,
+                            "build",
+                            target_name,
+                            build_type,
+                            arch["arch"],
+                            "target",
+                        ),
+                        "--install-folder",
+                        os.path.join(
+                            proj_path,
+                            "build",
+                            target_name,
+                            build_type,
+                            arch["arch"],
+                            "conan",
+                        ),
                     ]
 
                     if param_dry_run:
