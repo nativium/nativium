@@ -58,6 +58,16 @@ def run(params):
                         f.recreate_dir(build_dir)
 
                     # build
+                    output_folder = os.path.join(
+                        proj_path,
+                        "build",
+                        target_name,
+                        build_type,
+                        arch["arch"],
+                        "target",
+                    )
+
+                    # No Conan v2, talvez seja necessário criar um perfil temporário ou referenciar o conanfile
                     run_args = [
                         "conan",
                         "build",
@@ -65,26 +75,7 @@ def run(params):
                             proj_path,
                             const.FILE_NAME_CONANFILE_PY,
                         ),
-                        "--source-folder",
-                        proj_path,
-                        "--build-folder",
-                        os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["arch"],
-                            "target",
-                        ),
-                        "--install-folder",
-                        os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["arch"],
-                            "conan",
-                        ),
+                        "-of", output_folder,  # output folder é o equivalente mais próximo
                     ]
 
                     if param_dry_run:
