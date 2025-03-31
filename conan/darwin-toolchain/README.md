@@ -27,7 +27,7 @@ os=iOS
 os.version=11.0
 arch=armv8
 
-[tool_requires]
+[build_requires]
 darwin-toolchain/1.0.0@nativium/stable
 ```
 
@@ -42,7 +42,7 @@ os=watchOS
 os.version=5.0
 arch=armv8_32
 
-[tool_requires]
+[build_requires]
 darwin-toolchain/1.0.0@nativium/stable
 ```
 
@@ -56,7 +56,7 @@ os=tvOS
 os.version=11.0
 arch=armv8
 
-[tool_requires]
+[build_requires]
 darwin-toolchain/1.0.0@nativium/stable
 ```
 
@@ -70,7 +70,7 @@ os=Macos
 os.subsystem=catalyst
 arch=x86_64
 
-[tool_requires]
+[build_requires]
 darwin-toolchain/1.0.0@nativium/stable
 ```
 
