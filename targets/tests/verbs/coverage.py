@@ -63,6 +63,8 @@ def run(params):
                         "-d",
                         build_dir,
                         "-c",
+                        "--ignore-errors",
+                        "mismatch",
                         "-o",
                         coverage_info_file,
                     ]
