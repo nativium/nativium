@@ -19,7 +19,7 @@ jobs:
         python-version: [3.9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -36,7 +36,7 @@ jobs:
         run: python3 -m pip --version
 
       - name: Install CMake
-        uses: jwlawson/actions-setup-cmake@v1.8
+        uses: jwlawson/actions-setup-cmake@v2
         with:
           cmake-version: "3.24.0"
 
@@ -67,7 +67,7 @@ jobs:
         run: python3 nativium.py target ${{ matrix.config.target }} dist generate
 
       - name: Github Action - Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: artifact-${{ matrix.config.target }}.tar.gz
           path: build/${{ matrix.config.target }}/dist/dist.tar.gz
@@ -92,7 +92,7 @@ jobs:
 
       - name: Release
         id: upload-release-asset
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: ${{ matrix.config.target }}.tar.gz
