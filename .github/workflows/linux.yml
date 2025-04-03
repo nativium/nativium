@@ -71,7 +71,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/tests/debug/x86_64/lcov.coverage.info
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           functionalities: fixes
           verbose: true
 
