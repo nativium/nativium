@@ -95,7 +95,7 @@ def run(params):
                         if "enable_arc" in arch:
                             run_args.append("-o:h")
                             run_args.append(
-                                "tools.apple:enable_arc={0}".format(arch["enable_arc"])
+                                "tools.apple/*:enable_arc={0}".format(arch["enable_arc"])
                             )
 
                         if "enable_visibility" in arch:
