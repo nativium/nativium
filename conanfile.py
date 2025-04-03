@@ -106,6 +106,7 @@ class TargetConan(ConanFile):
 
         # toolchain
         tc = CMakeToolchain(self, generator=generator)
+        tc.user_presets_path = {}
 
         # apple specific
         if is_apple_os(self):

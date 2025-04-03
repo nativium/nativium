@@ -5,7 +5,7 @@ from pygemstones.system import runner as r
 from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
-from core import const, util
+from core import const, target, util
 from targets.tests.config import target_config as config
 
 
@@ -38,15 +38,6 @@ def run(params):
                         "target",
                     )
 
-                    conan_dir = os.path.join(
-                        proj_path,
-                        "build",
-                        target_name,
-                        build_type,
-                        arch["arch"],
-                        "conan",
-                    )
-
                     clean_build_dir = True
 
                     # dry run
@@ -57,17 +48,15 @@ def run(params):
                     if clean_build_dir:
                         f.recreate_dir(build_dir)
 
-                    # build
-                    output_folder = os.path.join(
-                        proj_path,
-                        "build",
-                        target_name,
-                        build_type,
-                        arch["arch"],
-                        "target",
-                    )
+                    # prepare build profile
+                    build_profile = target.get_build_profile()
 
-                    # No Conan v2, talvez seja necessário criar um perfil temporário ou referenciar o conanfile
+                    if build_profile != "default":
+                        build_profile = os.path.join(
+                            proj_path, "conan", "profiles", build_profile
+                        )
+
+                    # build
                     run_args = [
                         "conan",
                         "build",
@@ -75,13 +64,29 @@ def run(params):
                             proj_path,
                             const.FILE_NAME_CONANFILE_PY,
                         ),
-                        "-of", output_folder,  # output folder é o equivalente mais próximo
+                        "-pr:b",
+                        build_profile,
+                        "-pr:h",
+                        os.path.join(
+                            proj_path, "conan", "profiles", arch["conan_profile"]
+                        ),
                     ]
 
-                    if param_dry_run:
-                        run_args.append("--build")
+                    target.add_target_setup_common_args(
+                        run_args, target_name, target_config, arch, build_type
+                    )
 
-                    r.run(run_args, cwd=conan_dir)
+                    run_args.append("-o")
+                    run_args.append(
+                        "*:nativium_code_coverage={0}".format(
+                            target_config["code_coverage"]
+                        )
+                    )
+
+                    run_args.append("--build=missing")
+                    run_args.append("--update")
+
+                    r.run(run_args, cwd=build_dir)
 
                     # copy assets
                     if "assets_dir" in target_config:
