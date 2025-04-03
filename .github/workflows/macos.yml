@@ -72,8 +72,9 @@ jobs:
         run: python3 nativium.py target tests coverage
 
       - name: Code Coverage - Upload
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: build/tests/debug/x86_64/lcov.coverage.info
           fail_ci_if_error: true
           functionalities: fixes
