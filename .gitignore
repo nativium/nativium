@@ -33,3 +33,6 @@ package-lock.json
 
 # conan
 CMakeUserPresets.json
+
+# python
+.venv
