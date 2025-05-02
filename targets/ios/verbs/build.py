@@ -5,7 +5,7 @@ from pygemstones.system import runner as r
 from pygemstones.type import list as ls
 from pygemstones.util import log as l
 
-from core import const, util
+from core import const, target, util
 from targets.ios.config import target_config as config
 
 
@@ -48,16 +48,6 @@ def run(params):
                             "target",
                         )
 
-                        conan_dir = os.path.join(
-                            proj_path,
-                            "build",
-                            target_name,
-                            build_type,
-                            arch["group"],
-                            arch["arch"],
-                            "conan",
-                        )
-
                         clean_build_dir = True
 
                         if param_dry_run and os.path.isdir(build_dir):
@@ -67,22 +57,72 @@ def run(params):
                             # clean
                             f.recreate_dir(build_dir)
 
+                        # prepare build profile
+                        build_profile = target.get_build_profile()
+
+                        if build_profile != "default":
+                            build_profile = os.path.join(
+                                proj_path, "conan", "profiles", build_profile
+                            )
+
                         # build
                         run_args = [
                             "conan",
                             "build",
                             os.path.join(
                                 proj_path,
-                                "conan",
-                                "recipe",
                                 const.FILE_NAME_CONANFILE_PY,
                             ),
+                            "-pr:b",
+                            build_profile,
+                            "-pr:h",
+                            os.path.join(
+                                proj_path, "conan", "profiles", arch["conan_profile"]
+                            ),
+                            "-s:h",
+                            "os.version={0}".format(arch["min_version"]),
                         ]
 
-                        if param_dry_run:
-                            run_args.append("--build")
+                        # extra run args
+                        if "enable_bitcode" in arch:
+                            run_args.append("-c:h")
+                            run_args.append(
+                                "tools.apple:enable_bitcode={0}".format(
+                                    arch["enable_bitcode"]
+                                )
+                            )
 
-                        r.run(run_args, cwd=conan_dir)
+                        if "enable_arc" in arch:
+                            run_args.append("-c:h")
+                            run_args.append(
+                                "tools.apple:enable_arc={0}".format(arch["enable_arc"])
+                            )
+
+                        if "enable_visibility" in arch:
+                            run_args.append("-c:h")
+                            run_args.append(
+                                "tools.apple:enable_visibility={0}".format(
+                                    arch["enable_visibility"]
+                                )
+                            )
+
+                        if "subsystem_ios_version" in arch:
+                            run_args.append("-s:h")
+                            run_args.append(
+                                "os.subsystem.ios_version={0}".format(
+                                    arch["subsystem_ios_version"]
+                                )
+                            )
+
+                        target.add_target_setup_common_args(
+                            run_args, target_name, target_config, arch, build_type
+                        )
+
+                        # final run args
+                        run_args.append("--build=missing")
+                        run_args.append("--update")
+
+                        r.run(run_args, cwd=build_dir)
 
                         # find correct info plist file
                         plist_path1 = os.path.join(

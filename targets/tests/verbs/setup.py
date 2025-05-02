@@ -49,8 +49,6 @@ def run(params):
                         "install",
                         os.path.join(
                             proj_path,
-                            "conan",
-                            "recipe",
                             const.FILE_NAME_CONANFILE_PY,
                         ),
                         "-pr:b",
@@ -66,12 +64,12 @@ def run(params):
                     )
 
                     if p.is_macos():
-                        run_args.append("-s"),
+                        run_args.append("-s:h")
                         run_args.append("os.version={0}".format(arch["min_version"]))
 
                     run_args.append("-o")
                     run_args.append(
-                        "nativium_code_coverage={0}".format(
+                        "*:nativium_code_coverage={0}".format(
                             target_config["code_coverage"]
                         )
                     )

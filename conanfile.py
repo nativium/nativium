@@ -3,18 +3,15 @@ import sys
 
 from conan.tools.apple import is_apple_os, to_apple_arch
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
-from conan.tools.files import copy
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
 from pygemstones.util import log as l
 
 from conan import ConanFile
-
-proj_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.append(proj_path)
-
-from core import const as c
 from core import module as m
+
+proj_path = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(proj_path)
 
 
 class TargetConan(ConanFile):
@@ -96,19 +93,8 @@ class TargetConan(ConanFile):
         )
 
         # others
-        self.folders.root = os.path.join("..", "..")
-        self.folders.source = "."
         self.folders.build = build_dir
         self.folders.generators = generators_dir
-
-    # -----------------------------------------------------------------------------
-    def export_sources(self):
-        copy(
-            self,
-            "CMakeLists.txt",
-            os.path.join(self.recipe_folder, os.path.join("..", "..")),
-            self.export_sources_folder,
-        )
 
     # -----------------------------------------------------------------------------
     def generate(self):
@@ -120,6 +106,7 @@ class TargetConan(ConanFile):
 
         # toolchain
         tc = CMakeToolchain(self, generator=generator)
+        tc.user_presets_path = {}
 
         # apple specific
         if is_apple_os(self):

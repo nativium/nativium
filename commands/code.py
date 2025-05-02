@@ -168,10 +168,6 @@ def code_format(params):
                     "path": os.path.join(format_path, "apps", "wasm"),
                     "patterns": ["*.cpp", "*.hpp", "*.c", "*.h", "*.m", "*.mm"],
                 },
-                {
-                    "path": os.path.join(format_path, "conan", "darwin-toolchain"),
-                    "patterns": ["*.cpp", "*.hpp", "*.c", "*.h", "*.m", "*.mm"],
-                },
             ]
 
             for module_name in modules:
@@ -202,13 +198,6 @@ def code_format(params):
                     ignore_path_list=[
                         os.path.join(format_path, "apps", "ios", "runner", "Pods"),
                         os.path.join(format_path, "modules", "support-lib"),
-                        os.path.join(
-                            format_path,
-                            "conan",
-                            "darwin-toolchain",
-                            "test_package",
-                            "build",
-                        ),
                     ],
                 )
 
@@ -223,6 +212,9 @@ def code_format(params):
             path_list = [
                 {
                     "path": os.path.join(format_path, "nativium.py"),
+                },
+                {
+                    "path": os.path.join(format_path, "conanfile.py"),
                 },
                 {
                     "path": os.path.join(format_path, "commands"),
@@ -246,14 +238,6 @@ def code_format(params):
                 },
                 {
                     "path": os.path.join(format_path, "targets"),
-                    "patterns": ["*.py"],
-                },
-                {
-                    "path": os.path.join(format_path, "conan", "darwin-toolchain"),
-                    "patterns": ["*.py"],
-                },
-                {
-                    "path": os.path.join(format_path, "conan", "recipe"),
                     "patterns": ["*.py"],
                 },
             ]
@@ -283,13 +267,6 @@ def code_format(params):
                     ignore_path_list=[
                         os.path.join(format_path, "apps", "ios", "runner", "Pods"),
                         os.path.join(format_path, "modules", "support-lib"),
-                        os.path.join(
-                            format_path,
-                            "conan",
-                            "darwin-toolchain",
-                            "test_package",
-                            "build",
-                        ),
                     ],
                 )
 
@@ -308,10 +285,6 @@ def code_format(params):
                 {
                     "path": os.path.join(format_path, "cmake"),
                     "patterns": ["*.cmake"],
-                },
-                {
-                    "path": os.path.join(format_path, "conan", "darwin-toolchain"),
-                    "patterns": ["CMakeLists.txt"],
                 },
             ]
 
@@ -385,13 +358,6 @@ def code_format(params):
                     ignore_path_list=[
                         os.path.join(format_path, "apps", "ios", "runner", "Pods"),
                         os.path.join(format_path, "modules", "support-lib"),
-                        os.path.join(
-                            format_path,
-                            "conan",
-                            "darwin-toolchain",
-                            "test_package",
-                            "build",
-                        ),
                     ],
                 )
 

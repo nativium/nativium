@@ -27,7 +27,6 @@ def run(proj_path, target_name, params):
                     "conan_arch": "x86_64",
                     "conan_profile": "nativium_macos_profile",
                     "min_version": "10.13",
-                    "sdk": "macosx",
                 },
             ]
         )
@@ -41,7 +40,6 @@ def run(proj_path, target_name, params):
                     "conan_arch": "armv8",
                     "conan_profile": "nativium_macos_profile",
                     "min_version": "11.0",
-                    "sdk": "macosx",
                 },
             ]
         )
