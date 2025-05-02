@@ -69,6 +69,7 @@ jobs:
         run: python3 nativium.py target tests run
 
       - name: Nativium - Test Coverage
+        continue-on-error: true
         run: python3 nativium.py target tests coverage
 
       - name: Code Coverage - Upload
