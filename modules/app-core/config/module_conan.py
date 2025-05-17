@@ -13,5 +13,5 @@ def configure(params={}):
 def requirements(params={}):
     # example:
     # conanfile: ConanFile = params["conanfile"]
-    # conanfile.requires("openssl/1.1.1o")
+    # conanfile.requires("openssl/1.1.1w")
     pass
