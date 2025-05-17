@@ -97,7 +97,7 @@ set(NATIVIUM_PLATFORM_ARCH ${NATIVIUM_CURRENT_ARCH} CACHE STRING "Platform Archi
 if(NATIVIUM_TARGET STREQUAL "")
     nativium_set_default_target()
     message(STATUS "Nativium: Using default target (${NATIVIUM_DEFAULT_TARGET})")
-    set(NATIVIUM_TARGET "${NATIVIUM_DEFAULT_TARGET}")
+    set(NATIVIUM_TARGET "${NATIVIUM_DEFAULT_TARGET}" CACHE STRING "Target Name")
 endif()
 
 # build type
