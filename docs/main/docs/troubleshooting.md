@@ -50,3 +50,19 @@ If you are using `local path` enabled inside `apps/ios/runner/Podfile` and get a
 NATIVIUM_LIBRARY_LOCAL_PATH = false
 NATIVIUM_LIBRARY_LOCAL_SERVER = true
 ```
+
+### IDE can't find dependencies or libraries
+
+If your IDE can't find the dependencies or libraries, it might be because the dependencies are managed by Conan and your IDE needs to be configured with the proper toolchain.
+
+You need to configure your IDE to use the **conan toolchain** file that is generated after building the project.
+
+The toolchain file location follows this pattern:
+`build/{platform}/{configuration}/{architecture}/conan/generators/conan_toolchain.cmake`
+
+**Examples:**
+
+- **macOS ARM64:** `build/macos/debug/arm64/conan/generators/conan_toolchain.cmake`
+- **macOS x86-64:** `build/macos/debug/x86_64/conan/generators/conan_toolchain.cmake`
+
+Configure your IDE to use the appropriate toolchain file for your target platform and architecture.
