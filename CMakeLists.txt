@@ -264,6 +264,11 @@ elseif(NATIVIUM_TARGET STREQUAL "android")
         # version in semantic format in Mach-O binary file
         VERSION "${NATIVIUM_VERSION}"
     )
+
+    if(DEFINED ANDROID_ABI AND ANDROID_ABI STREQUAL "arm64-v8a")
+        message(STATUS "Nativium: Using page size 16384 for arm64-v8a")
+        target_link_options(${NATIVIUM_PROJECT_NAME} PRIVATE "-Wl,-z,max-page-size=16384")
+    endif()
 elseif(NATIVIUM_TARGET STREQUAL "macos")
     set_target_properties(
         ${NATIVIUM_PROJECT_NAME}
