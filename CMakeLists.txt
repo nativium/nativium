@@ -265,8 +265,8 @@ elseif(NATIVIUM_TARGET STREQUAL "android")
         VERSION "${NATIVIUM_VERSION}"
     )
 
-    if(DEFINED ANDROID_ABI AND ANDROID_ABI STREQUAL "arm64-v8a")
-        message(STATUS "Nativium: Using page size 16384 for arm64-v8a")
+    if(DEFINED ANDROID_ABI AND ANDROID_ABI MATCHES "arm64-v8a|x86_64")
+        message(STATUS "Nativium: Using page size 16384 for ${ANDROID_ABI}")
         target_link_options(${NATIVIUM_PROJECT_NAME} PRIVATE "-Wl,-z,max-page-size=16384")
     endif()
 elseif(NATIVIUM_TARGET STREQUAL "macos")
