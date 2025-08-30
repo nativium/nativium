@@ -5,4 +5,4 @@ os=iOS
 os.version=11.0
 os.sdk=iphoneos
 arch=armv8
-compiler.cppstd=17
+compiler.cppstd=gnu17
