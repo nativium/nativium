@@ -2,6 +2,6 @@ include(default)
 
 [settings]
 os=Macos
-os.version=10.13
+os.version=10.15
 arch=x86_64
 compiler.cppstd=gnu17
