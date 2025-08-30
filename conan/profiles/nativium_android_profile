@@ -4,6 +4,7 @@ os.api_level=21
 compiler=clang
 compiler.version=14
 compiler.libcxx=c++_static
+compiler.cppstd=17
 arch=armv8
 
 [tool_requires]
