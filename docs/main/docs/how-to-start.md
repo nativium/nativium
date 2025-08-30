@@ -14,25 +14,34 @@ git clone https://github.com/nativium/nativium.git
 cd nativium
 ```
 
-3 - Install python requirements:
+3 - Create and activate Python virtual environment:
 
 ```
-python3 -m pip install -r requirements.txt
+python3 -m venv venv
+source venv/bin/activate  # On Linux/macOS
+# or
+venv\Scripts\activate     # On Windows
 ```
 
-4 -  Setup conan tool:
+4 - Install python requirements:
+
+```
+pip install -r requirements.txt
+```
+
+5 -  Setup conan tool:
 
 ```
 python3 nativium.py conan setup
 ```
 
-5 - Setup glue code tool:
+6 - Setup glue code tool:
 
 ```
 python3 nativium.py gluecode setup
 ```
 
-6 - Now all commands are available. Run the following command to list all targets that you can build:
+7 - Now all commands are available. Run the following command to list all targets that you can build:
 
 ```
 python3 nativium.py target
