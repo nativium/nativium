@@ -4,3 +4,4 @@ include(default)
 os=Macos
 os.version=10.13
 arch=x86_64
+compiler.cppstd=17
