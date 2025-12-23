@@ -1,0 +1,35 @@
+############################################
+# GENERAL (applies to geninfo, lcov, genhtml)
+############################################
+
+# global ignore-errors (equivalent to --ignore-errors)
+# applies ONLY if --ignore-errors is NOT passed on CLI
+ignore_errors = format,category,unsupported,unused,inconsistent
+
+# check data consistency
+check_data_consistency = 0
+
+# clang + headers often break function end detection
+derive_function_end_line = 0
+
+
+############################################
+# GENINFO (collection stage)
+############################################
+
+# be defensive with llvm/clang gcov output
+geninfo_ignore_errors = format,unsupported,unused,inconsistent
+
+# avoid path mismatches when clang rewrites source paths
+geninfo_auto_base = 1
+
+# do not fail on unexecuted basic blocks
+geninfo_unexecuted_blocks = 1
+
+
+############################################
+# GENHTML (report stage)
+############################################
+
+# genhtml has additional issues with clang categories
+genhtml_ignore_errors = format,category,corrupt,unused,inconsistent
