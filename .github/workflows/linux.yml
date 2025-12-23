@@ -47,13 +47,19 @@ jobs:
       - name: Install LCOV
         run: |
           sudo apt-get update
-          sudo apt-get install -y git make perl libcapture-tiny-perl
+          sudo apt-get install -y \
+            git make perl \
+            libcapture-tiny-perl \
+            libdatetime-perl \
+            libfile-spec-perl \
+            libipc-run3-perl \
+            libjson-perl \
+            liblist-moreutils-perl
+
           git clone --branch v2.4 --depth 1 https://github.com/linux-test-project/lcov.git
           cd lcov
           sudo make install
           lcov --version
-
-
 
       - name: Nativium - Install Python Dependencies
         run: python3 -m pip install -r requirements.txt
