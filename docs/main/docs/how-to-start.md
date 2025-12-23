@@ -17,10 +17,10 @@ cd nativium
 3 - Create and activate Python virtual environment:
 
 ```
-python3 -m venv venv
-source venv/bin/activate  # On Linux/macOS
+python3 -m venv .venv
+source .venv/bin/activate  # On Linux/macOS
 # or
-venv\Scripts\activate     # On Windows
+.venv\Scripts\activate     # On Windows
 ```
 
 4 - Install python requirements:

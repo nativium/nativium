@@ -42,10 +42,17 @@ jobs:
       - name: Install Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
         with:
-          version: "1.10.0"
+          version: "1.12.1"
 
-      - name: Install LCOV
-        run: sudo apt-get install -y lcov
+      - name: Install LCOV (v2.4)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git make perl
+          git clone --branch v2.4 --depth 1 https://github.com/linux-test-project/lcov.git
+          cd lcov
+          sudo make install
+          lcov --version
+
 
       - name: Nativium - Install Python Dependencies
         run: python3 -m pip install -r requirements.txt

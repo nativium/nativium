@@ -42,7 +42,7 @@ jobs:
       - name: Install Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
         with:
-          version: "1.10.0"
+          version: "1.12.1"
 
       - name: Nativium - Install Python Dependencies
         run: python3 -m pip install -r requirements.txt
