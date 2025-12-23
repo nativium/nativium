@@ -36,6 +36,8 @@ def run(params):
                         arch["arch"],
                     )
 
+                    lcovrc_path = os.path.join(proj_path, ".lcovrc")
+
                     coverage_info_file = os.path.join(
                         build_dir,
                         "lcov.coverage.info",
@@ -60,6 +62,8 @@ def run(params):
 
                     run_args = [
                         "lcov",
+                        "--config-file",
+                        lcovrc_path,
                         "-d",
                         build_dir,
                         "-c",
@@ -78,6 +82,8 @@ def run(params):
 
                     run_args = [
                         "lcov",
+                        "--config-file",
+                        lcovrc_path,
                         "-r",
                         coverage_info_file,
                     ]
@@ -102,6 +108,8 @@ def run(params):
 
                     run_args = [
                         "genhtml",
+                        "--config-file",
+                        lcovrc_path,
                         coverage_info_file,
                         "--output-directory",
                         output_dir,
