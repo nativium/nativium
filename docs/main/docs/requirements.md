@@ -4,7 +4,7 @@ The general minimum requirements that you need is:
 
 1. Python 3 ([https://www.python.org](https://www.python.org))
 2. PIP ([https://pip.pypa.io](https://pip.pypa.io))
-3. CMake 3.24.0 ([https://cmake.org](https://cmake.org))
+3. CMake 4.4.0 ([https://cmake.org](https://cmake.org))
 4. Conan 2.16.1 ([https://conan.io](https://conan.io))
 5. Java 11 (JDK) ([https://www.oracle.com/java/technologies/downloads](https://www.oracle.com/java/technologies/downloads))
 
