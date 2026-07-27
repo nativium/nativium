@@ -6,7 +6,7 @@ options:
   deploymentTarget:
     iOS: "12.0"
     tvOS: "14.0"
-    watchOS: "6.2"
+    watchOS: "7.0"
 
 packages:
   Nativium:
@@ -60,33 +60,19 @@ targets:
         product: nativium
 
   Runner-Watch:
-    type: application.watchapp2
+    type: application
     platform: watchOS
-    deploymentTarget: "6.2"
-    sources:
-      - Runner-Watch
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app.watch
-        INFOPLIST_FILE: Runner-Watch/Info.plist
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        TARGETED_DEVICE_FAMILY: "4"
-    dependencies:
-      - target: Runner-WatchExtension
-        embed: true
-
-  Runner-WatchExtension:
-    type: watchkit2-extension
-    platform: watchOS
-    deploymentTarget: "6.2"
+    deploymentTarget: "7.0"
     sources:
       - Runner-WatchExtension
+      - path: Runner-Watch/Assets.xcassets
       - Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app.watch.extension
+        PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app.watch
         INFOPLIST_FILE: Runner-WatchExtension/App/Info.plist
         SWIFT_OBJC_BRIDGING_HEADER: Runner-WatchExtension/Runner-Bridging-Header.h
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "4"
     dependencies:
       - package: Nativium
