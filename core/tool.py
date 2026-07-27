@@ -63,14 +63,14 @@ def check_tool_ios_deploy():
 
 
 # -----------------------------------------------------------------------------
-def check_tool_cocoapods():
-    """Checks if invoking supplied pod binary works."""
+def check_tool_xcodegen():
+    """Checks if invoking supplied xcodegen binary works."""
     try:
-        subprocess.check_output(["pod", "--version"])
+        subprocess.check_output(["xcodegen", "--version"])
         return True
     except OSError:
         l.e(
-            "The tool cocoapods is not installed, check: https://github.com/CocoaPods/CocoaPods"
+            "The tool xcodegen is not installed, check: https://github.com/yonaskolb/XcodeGen"
         )
         return False
 

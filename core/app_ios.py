@@ -31,8 +31,8 @@ def run(params):
                 ios_archive(params)
             elif action == "clean":
                 ios_clean(params)
-            elif action == "pods":
-                ios_pods(params)
+            elif action == "project":
+                ios_project(params)
             else:
                 show_help(params)
         else:
@@ -64,8 +64,8 @@ def ios_build(params):
         config["scheme"],
         "-derivedDataPath",
         derived_path,
-        "-workspace",
-        config["workspace"],
+        "-project",
+        config["project"],
         "-configuration",
         build_type,
         "build",
@@ -100,8 +100,8 @@ def ios_test(params):
         config["scheme"],
         "-derivedDataPath",
         derived_path,
-        "-workspace",
-        config["workspace"],
+        "-project",
+        config["project"],
         "test",
         "-destination",
         config["destination"]["test"],
@@ -251,8 +251,8 @@ def ios_archive(params):
         "xcodebuild",
         "-scheme",
         config["name"],
-        "-workspace",
-        config["workspace"],
+        "-project",
+        config["project"],
         "-destination",
         config["destination"]["archive"],
         "archive",
@@ -286,8 +286,8 @@ def ios_clean(params):
         "xcodebuild",
         "-scheme",
         config["name"],
-        "-workspace",
-        config["workspace"],
+        "-project",
+        config["project"],
         "-destination",
         config["destination"]["archive"],
         "-derivedDataPath",
@@ -301,21 +301,20 @@ def ios_clean(params):
 
 
 # -----------------------------------------------------------------------------
-def ios_pods(params):
+def ios_project(params):
     # parameters
     name = get_name(params)
     path = get_ios_path(params)
-    config = get_config(params, "ios")
 
-    l.i("Running cocoapods for {0}...".format(name))
+    l.i("Generating Xcode project for {0}...".format(name))
 
-    # check tool cocoapods
-    tool.check_tool_cocoapods()
+    # check tool xcodegen
+    tool.check_tool_xcodegen()
 
-    # run cocoapods
+    # run xcodegen
     run_args = [
-        "pod",
-        "install",
+        "xcodegen",
+        "generate",
     ]
 
     r.run(run_args, cwd=path)
@@ -404,4 +403,4 @@ def show_help(params):
     l.m("  - run")
     l.m("  - archive")
     l.m("  - clean")
-    l.m("  - pods")
+    l.m("  - project")
