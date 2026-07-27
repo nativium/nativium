@@ -64,14 +64,13 @@ targets:
     platform: watchOS
     deploymentTarget: "7.0"
     sources:
-      - Runner-WatchExtension
-      - path: Runner-Watch/Assets.xcassets
+      - Runner-Watch
       - Shared
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app.watch
-        INFOPLIST_FILE: Runner-WatchExtension/App/Info.plist
-        SWIFT_OBJC_BRIDGING_HEADER: Runner-WatchExtension/Runner-Bridging-Header.h
+        INFOPLIST_FILE: Runner-Watch/App/Info.plist
+        SWIFT_OBJC_BRIDGING_HEADER: Runner-Watch/Runner-Bridging-Header.h
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "4"
     dependencies:

@@ -40,4 +40,4 @@ clean-derived-data:
 	rm -rf ~/Library/Developer/Xcode/DerivedData
 
 format:
-	swiftformat --swiftversion 5.0 "Runner/" "Runner-Tv/" "Runner-Watch/" "Runner-WatchExtension/" "Runner-Tests/" "Shared/"
+	swiftformat --swiftversion 5.0 "Runner/" "Runner-Tv/" "Runner-Watch/" "Runner-Tests/" "Shared/"
