@@ -31,3 +31,10 @@ DerivedData
 /Pods
 Podfile.lock
 Gemfile.lock
+
+# xcodegen (generated project)
+Runner.xcodeproj/
+Runner.xcworkspace/
+
+# swift package manager
+.swiftpm/
