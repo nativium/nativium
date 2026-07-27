@@ -59,14 +59,18 @@ python3 nativium.py target android serve
 
 ## iOS
 
-The iOS sample project is configured with a custom Pod to download SDK from AWS S3 or local server. You can change to local path or remote file.
+The iOS sample project consumes the SDK through Swift Package Manager as a local
+package. The binary (**dist.zip**) and the **Package.swift** of each version are
+published on AWS S3 by `target ios dist generate` + `dist upload`.
 
-1. Local repository mode
-2. Remote repository mode
-3. Local server mode
-
-When use local server, you need start a simple HTTP server to cocoapods tool download the file **dist.tar.gz** that was generated. You can do it with the command:
+The sample app downloads the versioned `Package.swift` into its local package
+folder with:
 
 ```
-python3 nativium.py target ios serve
+cd apps/ios/runner
+make sdk
 ```
+
+For local development, point the `binaryTarget` in `NativiumSDK/Package.swift` to
+the local `dist/ios/release/nativium.xcframework` using `path` instead of
+`url`/`checksum` (see the Apple page for details).

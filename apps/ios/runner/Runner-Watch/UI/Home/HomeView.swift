@@ -58,9 +58,3 @@ struct HomeView: View {
         }
     }
 }
-
-class HomeHostingController: WKHostingController<HomeView> {
-    override var body: HomeView {
-        return HomeView()
-    }
-}

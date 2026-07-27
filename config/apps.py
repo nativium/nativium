@@ -6,7 +6,7 @@ def run(proj_path, params):
                 "name": "Runner",
                 "bundle-id": "com.nativium.app",
                 "scheme": "Runner",
-                "workspace": "Runner.xcworkspace",
+                "project": "Runner.xcodeproj",
                 "product": "Runner.app",
                 "destination": {
                     "build": "generic/platform=iOS",

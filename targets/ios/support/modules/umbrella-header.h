@@ -11,8 +11,8 @@
 #endif
 
 //! Project version number
-FOUNDATION_EXPORT double NativiumVersionNumber;
+FOUNDATION_EXPORT double {PROJECT_NAME}VersionNumber;
 
 //! Project version string
-FOUNDATION_EXPORT const unsigned char NativiumVersionString[];
+FOUNDATION_EXPORT const unsigned char {PROJECT_NAME}VersionString[];
 

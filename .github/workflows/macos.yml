@@ -37,7 +37,7 @@ jobs:
       - name: Install CMake
         uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "3.24.0"
+          cmake-version: "4.4.0"
 
       - name: Install Ninja
         uses: seanmiddleditch/gha-setup-ninja@master

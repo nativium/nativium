@@ -1,0 +1,95 @@
+name: Runner
+
+options:
+  bundleIdPrefix: com.nativium
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "12.0"
+    tvOS: "14.0"
+    watchOS: "7.0"
+
+packages:
+  Nativium:
+    path: NativiumSDK
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  Runner:
+    type: application
+    platform: iOS
+    deploymentTarget: "12.0"
+    sources:
+      - Runner
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app
+        INFOPLIST_FILE: Runner/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Runner/Runner.entitlements
+        SWIFT_OBJC_BRIDGING_HEADER: Runner/Runner-Bridging-Header.h
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1,2"
+    dependencies:
+      - package: Nativium
+        product: nativium
+      - target: Runner-Watch
+        embed: true
+
+  Runner-Tv:
+    type: application
+    platform: tvOS
+    deploymentTarget: "14.0"
+    sources:
+      - Runner-Tv
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app.tv
+        PRODUCT_NAME: Runner
+        GENERATE_INFOPLIST_FILE: "YES"
+        SWIFT_OBJC_BRIDGING_HEADER: Runner-Tv/Runner-Bridging-Header.h
+        ASSETCATALOG_COMPILER_APPICON_NAME: "Brand Assets"
+        TARGETED_DEVICE_FAMILY: "3"
+    dependencies:
+      - package: Nativium
+        product: nativium
+
+  Runner-Watch:
+    type: application
+    platform: watchOS
+    deploymentTarget: "7.0"
+    sources:
+      - Runner-Watch
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app.watch
+        INFOPLIST_FILE: Runner-Watch/App/Info.plist
+        SWIFT_OBJC_BRIDGING_HEADER: Runner-Watch/Runner-Bridging-Header.h
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "4"
+    dependencies:
+      - package: Nativium
+        product: nativium
+
+  Runner-Tests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "12.0"
+    sources:
+      - Runner-Tests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nativium.app.tests
+        GENERATE_INFOPLIST_FILE: "YES"
+        SWIFT_OBJC_BRIDGING_HEADER: Runner-Tests/Runner-Bridging-Header.h
+        TARGETED_DEVICE_FAMILY: "1,2"
+    dependencies:
+      - target: Runner
+      - package: Nativium
+        product: nativium
