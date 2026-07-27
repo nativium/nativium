@@ -1,4 +1,5 @@
 import os
+import re
 
 from pygemstones.io import file as f
 from pygemstones.system import runner as r
@@ -212,9 +213,26 @@ def run(params):
 
                         f.recreate_dir(modules_dir)
 
+                        modulemap_file = os.path.join(
+                            modules_dir, "module.modulemap"
+                        )
+
                         f.copy_file(
                             os.path.join(support_modules_dir, "module.modulemap"),
-                            os.path.join(modules_dir, "module.modulemap"),
+                            modulemap_file,
+                        )
+
+                        # the framework module name must match the framework name
+                        f.replace_in_file(
+                            modulemap_file,
+                            "{PROJECT_NAME}",
+                            target_config["project_name"],
+                        )
+
+                        f.replace_in_file(
+                            modulemap_file,
+                            "{UMBRELLA_HEADER}",
+                            target_config["umbrella_header"],
                         )
 
                         # umbrella header
@@ -235,16 +253,58 @@ def run(params):
                             build_headers_dir, "*.h", recursive=True
                         )
 
+                        # rewrite the framework headers quoted imports (relative to the Headers dir) into angle-bracket imports prefixed with the framework name, so the module is self-contained and does not depend on HEADER_SEARCH_PATHS (needed by SPM)
+                        import_pattern = re.compile(
+                            r'(#\s*(?:import|include)\s+)"([^"]+)"'
+                        )
+
+                        for header_file in header_files:
+                            header_content = f.get_file_contents(header_file)
+
+                            new_content = import_pattern.sub(
+                                r"\1<{0}/\2>".format(target_config["project_name"]),
+                                header_content,
+                            )
+
+                            if new_content != header_content:
+                                f.set_file_content(header_file, new_content)
+
+                        # fail-fast: no quoted import may remain in the framework
+                        # headers, otherwise it would break under SPM (which does
+                        # not set HEADER_SEARCH_PATHS)
+                        for header_file in header_files:
+                            leftover = import_pattern.search(
+                                f.get_file_contents(header_file)
+                            )
+
+                            if leftover:
+                                l.e(
+                                    'Quoted import still present in "{0}": {1} '
+                                    "(framework headers must use angle-bracket "
+                                    "imports for SPM)".format(
+                                        header_file, leftover.group(0)
+                                    )
+                                )
+
                         content = f.get_file_contents(
                             os.path.join(support_modules_dir, "umbrella-header.h")
                         )
 
+                        content = content.replace(
+                            "{PROJECT_NAME}", target_config["project_name"]
+                        )
+
+                        # use angle-bracket imports prefixed with the framework
+                        # name so the module is self-contained (works with SPM,
+                        # which does not add anything to HEADER_SEARCH_PATHS)
                         for header_file in header_files:
                             header_file = header_file.replace(
                                 build_headers_dir + "/", ""
                             )
 
-                            content = content + '#import "{0}"\n'.format(header_file)
+                            content = content + "#import <{0}/{1}>\n".format(
+                                target_config["project_name"], header_file
+                            )
 
                         if len(content) > 0:
                             umbrella_file = os.path.join(

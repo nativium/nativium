@@ -1,5 +1,5 @@
-framework module Nativium {
-    umbrella header "Nativium.h"
+framework module {PROJECT_NAME} {
+    umbrella header "{UMBRELLA_HEADER}"
 
     export *
     module * { export * }
