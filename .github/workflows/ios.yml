@@ -87,4 +87,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: ${{ matrix.config.target }}.zip
+          files: |
+            ${{ matrix.config.target }}.zip
+            build/${{ matrix.config.target }}/dist/Package.swift
