@@ -68,8 +68,8 @@ jobs:
       - name: Github Action - Upload
         uses: actions/upload-artifact@v4
         with:
-          name: artifact-${{ matrix.config.target }}.tar.gz
-          path: build/${{ matrix.config.target }}/dist/dist.tar.gz
+          name: artifact-${{ matrix.config.target }}.zip
+          path: build/${{ matrix.config.target }}/dist/dist.zip
 
       - name: Nativium - Dist Upload
         if: startsWith(github.ref, 'refs/tags/')
@@ -80,11 +80,13 @@ jobs:
 
       - name: Release - Setup
         if: startsWith(github.ref, 'refs/tags/')
-        run: mv build/${{ matrix.config.target }}/dist/dist.tar.gz ${{ matrix.config.target }}.tar.gz
+        run: mv build/${{ matrix.config.target }}/dist/dist.zip ${{ matrix.config.target }}.zip
 
       - name: Release
         id: upload-release-asset
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: ${{ matrix.config.target }}.tar.gz
+          files: |
+            ${{ matrix.config.target }}.zip
+            build/${{ matrix.config.target }}/dist/Package.swift
